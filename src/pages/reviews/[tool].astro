@@ -1,0 +1,352 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import TestDates from '../../components/TestDates.astro';
+import ScoreBars from '../../components/ScoreBars.astro';
+import GetItSkipIt from '../../components/GetItSkipIt.astro';
+import ProsCons from '../../components/ProsCons.astro';
+import MeasurementsTable from '../../components/MeasurementsTable.astro';
+import PricingTable from '../../components/PricingTable.astro';
+import MockScreenshot from '../../components/MockScreenshot.astro';
+import AffiliateLink from '../../components/AffiliateLink.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import Faq from '../../components/Faq.astro';
+import ToolTeaser from '../../components/ToolTeaser.astro';
+import LogoMark from '../../components/LogoMark.astro';
+import DemoRequestForm from '../../components/DemoRequestForm.astro';
+import { CATEGORY_META, TEAM_SIZE_LABELS } from '../../lib/site';
+import { money, score1, formatDate } from '../../lib/format';
+import { compareUrl, bestUrl, alternativesUrl, toolUrl, CALCULATOR_URL } from '../../lib/urls';
+import { breadcrumbs, productReview, faqPage } from '../../lib/schema';
+import {
+  allTools,
+  relatedTools,
+  comparisonFor,
+  tradeFor,
+  alternativesFor,
+  type Tool,
+} from '../../lib/content';
+
+export async function getStaticPaths() {
+  const tools = await getCollection('tools');
+  return tools.map((tool) => ({ params: { tool: tool.data.slug }, props: { tool } }));
+}
+
+interface Props {
+  tool: Tool;
+}
+
+const { tool } = Astro.props;
+const t = tool.data;
+const { Content } = await render(tool);
+
+const tools = await allTools();
+const trades = await getCollection('trades');
+const comparisons = await getCollection('comparisons');
+const alternativeEntries = await getCollection('alternatives');
+
+// Internal linking: three related tools, one comparison, one best page.
+const related = relatedTools(tool, tools, 3);
+const comparison = comparisonFor(tool, comparisons);
+const trade = tradeFor(tool, trades);
+const alternativePage = alternativesFor(tool, alternativeEntries);
+
+const rank = tools.findIndex((x) => x.id === tool.id) + 1;
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Reviews', path: '/reviews/' },
+  { name: t.name, path: toolUrl(t.slug) },
+];
+
+const description = `${t.name} review: scored ${score1(t.score)} out of 10 after testing on the ${t.planTested}. ${t.bestFor}. Pricing from ${money(t.priceFrom)} a month.`;
+---
+
+<BaseLayout
+  title={`${t.name} review (${new Date(t.testDate).getUTCFullYear()}) - scored ${score1(t.score)}/10`}
+  description={description}
+  path={toolUrl(t.slug)}
+  ogType="article"
+  jsonLd={[
+    breadcrumbs(crumbs),
+    productReview({
+      name: t.name,
+      slug: t.slug,
+      website: t.website,
+      priceFrom: t.priceFrom,
+      score: t.score,
+      verdict: t.verdict,
+      testDate: t.testDate,
+      pros: t.pros,
+      cons: t.cons,
+    }),
+    ...(t.faq.length > 0 ? [faqPage(t.faq)] : []),
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <article>
+    <header class="wrap pt-8">
+      <div class="flex flex-wrap items-center gap-4">
+        <LogoMark text={t.logoText} color={t.logoColor} size="lg" />
+        <div class="min-w-0">
+          <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+            {t.name} review
+          </h1>
+          <p class="mt-2 text-ink-muted">
+            {t.bestFor}
+          </p>
+        </div>
+      </div>
+
+      <!-- The verdict is the first paragraph after the H1, deliberately: it is the
+           quotable answer for anyone (or anything) reading the page for one. -->
+      <VerdictBox score={t.score} class="mt-6">
+        <p>{t.verdict}</p>
+      </VerdictBox>
+
+      <TestDates testDate={t.testDate} nextRetest={t.nextRetest} planTested={t.planTested} class="mt-5" />
+
+      <div class="mt-5 flex flex-wrap items-center gap-4">
+        <AffiliateLink slug={t.slug} name={t.name} variant="primary" />
+        <a href="#demo-request" class="btn btn-ghost">Book a demo</a>
+      </div>
+      <Disclosure class="mt-3 max-w-2xl" />
+    </header>
+
+    <div class="wrap mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_19rem]">
+      <div class="min-w-0">
+        <!-- Scores -->
+        <section aria-labelledby="scores-heading">
+          <h2 id="scores-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            How did {t.name} score?
+          </h2>
+          <p class="mt-2 text-ink-soft">
+            Six categories, each scored out of 10 against the rubric on
+            <a href="/how-we-test/" class="underline decoration-yellow decoration-[3px] underline-offset-2"
+              >how we test</a
+            >. Overall is a weighted average, not a mean.
+          </p>
+          <div class="board mt-5 p-5">
+            <ScoreBars subscores={t.subscores} />
+            <p class="mt-5 flex items-baseline gap-2 border-t border-line pt-4 font-condensed uppercase">
+              <span class="text-lg font-bold tracking-wide">Overall</span>
+              <span class="ml-auto text-4xl font-bold leading-none">{score1(t.score)}</span>
+              <span class="text-base font-semibold text-ink-muted">/ 10</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Get it if / skip it if -->
+        <section class="mt-14" aria-labelledby="fit-heading">
+          <h2 id="fit-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            Should you buy {t.name}?
+          </h2>
+          <div class="mt-5">
+            <GetItSkipIt getItIf={t.getItIf} skipItIf={t.skipItIf} name={t.name} />
+          </div>
+        </section>
+
+        <!-- Pros and cons -->
+        <section class="mt-14" aria-labelledby="proscons-heading">
+          <h2 id="proscons-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            What did we like and dislike?
+          </h2>
+          <div class="mt-5">
+            <ProsCons pros={t.pros} cons={t.cons} />
+          </div>
+        </section>
+
+        <!-- Measurements -->
+        <section class="mt-14" aria-labelledby="measured-heading">
+          <h2 id="measured-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            What did we actually measure?
+          </h2>
+          <p class="mt-2 text-ink-soft">
+            Timed on the {t.planTested}, {formatDate(t.testDate)}.
+          </p>
+          <div class="mt-5">
+            <MeasurementsTable name={t.name} measurements={t.measurements} />
+          </div>
+        </section>
+
+        <!-- Screenshot stand-in -->
+        <section class="mt-14" aria-labelledby="looks-heading">
+          <h2 id="looks-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            What does it look like to use?
+          </h2>
+          <p class="mt-2 text-ink-soft">
+            We do not publish vendor marketing screenshots. Real captures from our own account
+            replace this illustration as each review is finalised.
+          </p>
+          <div class="mt-5">
+            <MockScreenshot color={t.logoColor} logoText={t.logoText} name={t.name} />
+          </div>
+        </section>
+
+        {
+          t.videoId && (
+            <section class="mt-14" aria-labelledby="video-heading">
+              <h2 id="video-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+                Watch the walkthrough
+              </h2>
+              <div class="board mt-5 aspect-video overflow-hidden">
+                <iframe
+                  class="h-full w-full"
+                  src={`https://www.youtube-nocookie.com/embed/${t.videoId}`}
+                  title={`${t.name} walkthrough`}
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                />
+              </div>
+            </section>
+          )
+        }
+
+        <!-- Pricing -->
+        <section class="mt-14" aria-labelledby="pricing-heading">
+          <h2 id="pricing-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            How much does {t.name} cost?
+          </h2>
+          <p class="mt-2 text-ink-soft">
+            Prices checked {formatDate(t.testDate)}. Payment processing is billed separately by
+            every vendor on this site.
+          </p>
+          <div class="mt-5">
+            <PricingTable name={t.name} pricing={t.pricing} />
+          </div>
+        </section>
+
+        <!-- Long-form review -->
+        <div class="prose-shop mt-14">
+          <Content />
+        </div>
+
+        <Faq items={t.faq} heading={`${t.name} questions we get asked`} />
+
+        <!-- Internal links -->
+        <section class="mt-14" aria-labelledby="next-heading">
+          <h2 id="next-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+            What else should you look at?
+          </h2>
+
+          <ul class="mt-5 grid gap-5 sm:grid-cols-3">
+            {related.map((r) => <li><ToolTeaser tool={r.data} /></li>)}
+          </ul>
+
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+            {
+              comparison && (
+                <li>
+                  <a
+                    href={compareUrl(comparison.data.slug)}
+                    class="board flex h-full flex-col p-4 no-underline hover:border-ink"
+                  >
+                    <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                      Head to head
+                    </span>
+                    <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                      {comparison.data.title}
+                    </span>
+                  </a>
+                </li>
+              )
+            }
+            {
+              trade && (
+                <li>
+                  <a
+                    href={bestUrl(trade.data.category, trade.data.slug)}
+                    class="board flex h-full flex-col p-4 no-underline hover:border-ink"
+                  >
+                    <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                      Ranked list
+                    </span>
+                    <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                      Best {CATEGORY_META[trade.data.category].label.toLowerCase()} for{' '}
+                      {trade.data.name.toLowerCase()}
+                    </span>
+                  </a>
+                </li>
+              )
+            }
+            {
+              alternativePage && (
+                <li>
+                  <a
+                    href={alternativesUrl(t.slug)}
+                    class="board flex h-full flex-col p-4 no-underline hover:border-ink"
+                  >
+                    <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                      Thinking of leaving
+                    </span>
+                    <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                      {t.name} alternatives
+                    </span>
+                  </a>
+                </li>
+              )
+            }
+            <li>
+              <a href={CALCULATOR_URL} class="board flex h-full flex-col p-4 no-underline hover:border-ink">
+                <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                  Free tool
+                </span>
+                <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                  Job pricing calculator
+                </span>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:sticky lg:top-6 lg:self-start">
+        <div class="board p-5">
+          <p class="eyebrow">At a glance</p>
+          <dl class="mt-4 space-y-3 text-[0.95rem]">
+            <div class="flex justify-between gap-4 border-b border-line pb-3">
+              <dt class="text-ink-muted">Overall score</dt>
+              <dd class="font-condensed text-lg font-bold">{score1(t.score)} / 10</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-line pb-3">
+              <dt class="text-ink-muted">Our ranking</dt>
+              <dd class="font-semibold">#{rank} of {tools.length}</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-line pb-3">
+              <dt class="text-ink-muted">From</dt>
+              <dd class="font-semibold">{money(t.priceFrom)}/mo</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-line pb-3">
+              <dt class="text-ink-muted">Team sizes</dt>
+              <dd class="text-right font-semibold">
+                {t.teamSizes.map((s) => TEAM_SIZE_LABELS[s]).join(', ')}
+              </dd>
+            </div>
+            <div class="flex justify-between gap-4">
+              <dt class="text-ink-muted">Categories</dt>
+              <dd class="text-right font-semibold">
+                {t.categories.map((c) => CATEGORY_META[c].label).join(', ')}
+              </dd>
+            </div>
+          </dl>
+
+          <div class="mt-5 flex flex-col gap-3">
+            <AffiliateLink slug={t.slug} name={t.name} variant="primary" />
+            <a href="#demo-request" class="btn btn-ghost">Book a demo</a>
+          </div>
+          <Disclosure class="mt-3" />
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <div class="mt-16">
+    <DemoRequestForm provider={t.name} providerSlug={t.slug} />
+  </div>
+</BaseLayout>

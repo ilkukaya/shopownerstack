@@ -1,0 +1,300 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import TestDates from '../../components/TestDates.astro';
+import RankedTool from '../../components/RankedTool.astro';
+import Faq from '../../components/Faq.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import TradeIcon from '../../components/TradeIcon.astro';
+import { CATEGORY_META, TEAM_SIZES, TEAM_SIZE_LABELS } from '../../lib/site';
+import { bestSlug, bestUrl, toolUrl, CALCULATOR_URL } from '../../lib/urls';
+import { money, score1 } from '../../lib/format';
+import { breadcrumbs, faqPage } from '../../lib/schema';
+import { toolsInCategory, oldestTest, type Tool, type Trade } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const trades = await getCollection('trades');
+  const tools = await getCollection('tools');
+
+  return trades.map((trade) => {
+    const ranked = toolsInCategory(tools, trade.data.category);
+    return {
+      params: { slug: bestSlug(trade.data.category, trade.data.slug) },
+      props: { trade, ranked },
+    };
+  });
+}
+
+interface Props {
+  trade: Trade;
+  ranked: Tool[];
+}
+
+const { trade, ranked } = Astro.props;
+const category = CATEGORY_META[trade.data.category];
+const tradeName = trade.data.name.toLowerCase();
+
+const winner = ranked[0];
+const dates = oldestTest(ranked);
+
+const title = `Best ${category.label.toLowerCase()} for ${tradeName}`;
+const path = bestUrl(trade.data.category, trade.data.slug);
+
+// The verdict is assembled from the tested data rather than written per page,
+// so it can never drift away from the scores below it.
+const verdict = `${winner.data.name} is our pick for ${tradeName}, scoring ${score1(
+  winner.data.score,
+)} out of 10 and starting at ${money(winner.data.priceFrom)} a month. ${
+  ranked.length > 1
+    ? `${ranked[1].data.name} is the one to take instead if ${ranked[1].data.getItIf[0].charAt(0).toLowerCase()}${ranked[1].data.getItIf[0].slice(1)}.`
+    : ''
+}`;
+
+const soloPick = ranked.find((t) => t.data.teamSizes.includes('solo'));
+const biggestPick = ranked.find((t) => t.data.teamSizes.includes('16+'));
+const cheapest = [...ranked].sort((a, b) => a.data.priceFrom - b.data.priceFrom)[0];
+
+const faqItems = [
+  {
+    q: `What is the best ${category.label.toLowerCase()} for ${tradeName}?`,
+    a: `${winner.data.name}, on our testing. It scored ${score1(winner.data.score)} out of 10 on the ${winner.data.planTested} and suits ${winner.data.bestFor.toLowerCase()}. ${verdict.split('. ').slice(1).join('. ')}`.trim(),
+  },
+  {
+    q: `How much does ${category.label.toLowerCase()} cost for ${tradeName}?`,
+    a: `Across the ${ranked.length} tools we tested for this list, entry pricing runs from ${money(
+      cheapest.data.priceFrom,
+    )} to ${money(
+      Math.max(...ranked.map((t) => t.data.priceFrom)),
+    )} a month. Payment processing is billed separately by every vendor, and per-seat plans cost far more than the headline once you add the office.`,
+  },
+  ...(soloPick
+    ? [
+        {
+          q: `What should a solo ${tradeName.replace(/s$/, '')} use?`,
+          a: `${soloPick.data.name}. It is the highest scoring option on this list that supports a single-person operation, at ${money(soloPick.data.priceFrom)} a month. ${soloPick.data.getItIf[0]}.`,
+        },
+      ]
+    : []),
+  ...(biggestPick
+    ? [
+        {
+          q: `What works for a team of sixteen or more?`,
+          a: `${biggestPick.data.name} is the highest scoring option here that handles that headcount. Above about fifteen field staff the deciding factor is usually pricing model rather than features - check whether you are paying per seat or per user block.`,
+        },
+      ]
+    : []),
+  {
+    q: `How often is this list retested?`,
+    a: `Every tool is fully retested twice a year and prices are checked more often. The oldest test behind this page was ${dates.testDate.toISOString().slice(0, 10)}, and the next retest is due ${dates.nextRetest.toISOString().slice(0, 10)}.`,
+  },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Best of', path: '/best/' },
+  { name: title, path },
+];
+
+const description = `Ranked ${category.label.toLowerCase()} for ${tradeName}, tested on real jobs. ${winner.data.name} scored highest at ${score1(winner.data.score)}/10. Filter the list by team size.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  ogType="article"
+  jsonLd={[breadcrumbs(crumbs), faqPage(faqItems)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <div class="flex items-start gap-4">
+      <span class="flex h-14 w-14 flex-none items-center justify-center bg-ink text-yellow">
+        <TradeIcon name={trade.data.icon} class="h-8 w-8" />
+      </span>
+      <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+        {title}
+      </h1>
+    </div>
+
+    <!-- Verdict first, immediately after the H1. -->
+    <VerdictBox class="mt-6">
+      <p>{verdict}</p>
+    </VerdictBox>
+
+    <TestDates testDate={dates.testDate} nextRetest={dates.nextRetest} class="mt-5" />
+
+    <p class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">{trade.data.description}</p>
+    <Disclosure class="mt-4 max-w-3xl" />
+  </div>
+
+  <!-- Size filter -->
+  <section class="wrap mt-10" aria-labelledby="filter-heading">
+    <div class="board p-4">
+      <h2 id="filter-heading" class="font-condensed text-lg font-bold uppercase tracking-[0.1em]">
+        Filter by team size
+      </h2>
+      <div class="mt-3 flex flex-wrap gap-2" role="group" aria-labelledby="filter-heading">
+        <button
+          type="button"
+          class="size-filter btn btn-primary"
+          data-size="all"
+          aria-pressed="true">All sizes</button
+        >
+        {
+          TEAM_SIZES.map((size) => (
+            <button type="button" class="size-filter btn btn-ghost" data-size={size} aria-pressed="false">
+              {TEAM_SIZE_LABELS[size]}
+            </button>
+          ))
+        }
+      </div>
+      <p class="mt-3 text-sm text-ink-muted" data-filter-status role="status">
+        Showing all {ranked.length} tools.
+      </p>
+    </div>
+  </section>
+
+  <!-- Ranked list -->
+  <section class="wrap mt-8" aria-label={`Ranked ${category.label.toLowerCase()} for ${tradeName}`}>
+    <ol class="space-y-6" data-tool-list>
+      {ranked.map((tool, i) => <li><RankedTool rank={i + 1} tool={tool.data} /></li>)}
+    </ol>
+    <p class="mt-6 hidden text-center text-ink-muted" data-empty-state>
+      None of the tools we have tested for this trade fit that team size yet. Clear the filter to
+      see the full list.
+    </p>
+  </section>
+
+  <!-- Score table -->
+  <section class="wrap mt-14" aria-labelledby="table-heading">
+    <h2 id="table-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+      How do the scores compare?
+    </h2>
+    <div class="table-scroll board mt-5">
+      <table class="w-full min-w-[40rem] border-collapse text-left">
+        <caption class="sr-only">
+          Scores and entry pricing for {category.label.toLowerCase()} tested for {tradeName}
+        </caption>
+        <thead>
+          <tr class="bg-ink text-white">
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">#</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Tool</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Score</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">From</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ranked.map((tool, i) => (
+              <tr class:list={['border-t border-line align-top', i === 0 && 'bg-yellow-wash']}>
+                <td class="px-4 py-3 font-condensed text-lg font-bold">{i + 1}</td>
+                <th scope="row" class="px-4 py-3">
+                  <a
+                    href={toolUrl(tool.data.slug)}
+                    class="font-condensed text-lg font-bold uppercase underline decoration-yellow decoration-[3px] underline-offset-2"
+                  >
+                    {tool.data.name}
+                  </a>
+                </th>
+                <td class="px-4 py-3 font-condensed text-lg font-bold tabular-nums">
+                  {score1(tool.data.score)}
+                </td>
+                <td class="px-4 py-3 font-semibold tabular-nums">{money(tool.data.priceFrom)}/mo</td>
+                <td class="px-4 py-3 text-sm text-ink-soft">{tool.data.bestFor}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="board mt-6 flex flex-wrap items-center justify-between gap-4 border-l-[6px] border-l-yellow p-5">
+      <div>
+        <h3 class="font-condensed text-2xl font-bold uppercase leading-none">
+          Before you pick on price
+        </h3>
+        <p class="mt-2 max-w-xl text-ink-soft">
+          Work out what an hour of your time actually costs. A $60 saving on software is not a
+          saving if the cheaper tool adds an hour of admin a week.
+        </p>
+      </div>
+      <a href={CALCULATOR_URL} class="btn btn-primary">Job pricing calculator</a>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <Faq items={faqItems} heading={`Questions about ${category.label.toLowerCase()} for ${tradeName}`} />
+  </div>
+
+  <!-- Other trades -->
+  <section class="wrap mt-14">
+    <h2 class="font-condensed text-3xl font-bold uppercase sm:text-4xl">Every review on this list</h2>
+    <ul class="mt-5 flex flex-wrap gap-3">
+      {
+        ranked.map((tool) => (
+          <li>
+            <a href={toolUrl(tool.data.slug)} class="btn btn-ghost">
+              {tool.data.name} review
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  // Team size filter. Vanilla, no framework: it toggles the `hidden` attribute
+  // on already-rendered cards, so the page works with JavaScript disabled and
+  // simply shows everything.
+  (function () {
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('.size-filter'));
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-tool-card]'));
+    var status = document.querySelector('[data-filter-status]');
+    var empty = document.querySelector('[data-empty-state]');
+    if (!buttons.length || !cards.length) return;
+
+    function apply(size) {
+      var shown = 0;
+
+      cards.forEach(function (card) {
+        var sizes = (card.getAttribute('data-sizes') || '').split(' ');
+        var match = size === 'all' || sizes.indexOf(size) !== -1;
+        // The <li> wrapper is what carries layout spacing.
+        var item = card.parentElement;
+        (item || card).hidden = !match;
+        if (match) shown += 1;
+      });
+
+      buttons.forEach(function (button) {
+        var active = button.getAttribute('data-size') === size;
+        button.setAttribute('aria-pressed', String(active));
+        button.classList.toggle('btn-primary', active);
+        button.classList.toggle('btn-ghost', !active);
+      });
+
+      if (status) {
+        status.textContent =
+          size === 'all'
+            ? 'Showing all ' + shown + ' tools.'
+            : 'Showing ' + shown + ' of ' + cards.length + ' tools that fit that team size.';
+      }
+      if (empty) empty.classList.toggle('hidden', shown !== 0);
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        apply(button.getAttribute('data-size') || 'all');
+      });
+    });
+  })();
+</script>

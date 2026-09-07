@@ -1,0 +1,217 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import TestDates from '../../components/TestDates.astro';
+import CompareTable from '../../components/CompareTable.astro';
+import AffiliateLink from '../../components/AffiliateLink.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import LogoMark from '../../components/LogoMark.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import { money, score1 } from '../../lib/format';
+import { compareUrl, toolUrl, alternativesUrl } from '../../lib/urls';
+import { breadcrumbs } from '../../lib/schema';
+import { oldestTest, comparisonLoser, type Tool, type Comparison } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const comparisons = await getCollection('comparisons');
+  const tools = await getCollection('tools');
+  const byId = new Map(tools.map((t) => [t.id, t]));
+  const alternatives = await getCollection('alternatives');
+  const altSlugs = new Set(alternatives.map((a) => a.data.tool.id));
+
+  return comparisons.map((comparison) => ({
+    params: { slug: comparison.data.slug },
+    props: {
+      comparison,
+      a: byId.get(comparison.data.toolA.id)!,
+      b: byId.get(comparison.data.toolB.id)!,
+      altSlugs: [...altSlugs],
+    },
+  }));
+}
+
+interface Props {
+  comparison: Comparison;
+  a: Tool;
+  b: Tool;
+  altSlugs: string[];
+}
+
+const { comparison, a, b, altSlugs } = Astro.props;
+const c = comparison.data;
+const { Content } = await render(comparison);
+
+const dates = oldestTest([a, b]);
+const loser = comparisonLoser(a, b);
+const winner = loser.id === a.id ? b : a;
+const loserHasAlternatives = altSlugs.includes(loser.id);
+
+const path = compareUrl(c.slug);
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Compare', path: '/compare/' },
+  { name: c.title, path },
+];
+
+const description = `${c.title}: ${c.rows.length} points compared side by side after testing both. ${a.data.name} scored ${score1(a.data.score)}/10, ${b.data.name} scored ${score1(b.data.score)}/10.`;
+
+const sides = [
+  { tool: a, label: 'Pick ' + a.data.name + ' if', points: c.pickAIf },
+  { tool: b, label: 'Pick ' + b.data.name + ' if', points: c.pickBIf },
+];
+---
+
+<BaseLayout
+  title={`${c.title} - which should you buy?`}
+  description={description}
+  path={path}
+  ogType="article"
+  jsonLd={[breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <article>
+    <header class="wrap pt-8">
+      <div class="flex flex-wrap items-center gap-3">
+        <LogoMark text={a.data.logoText} color={a.data.logoColor} size="md" />
+        <span class="font-condensed text-2xl font-bold uppercase text-ink-muted">vs</span>
+        <LogoMark text={b.data.logoText} color={b.data.logoColor} size="md" />
+      </div>
+
+      <h1 class="mt-4 font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+        {c.title}
+      </h1>
+
+      <!-- Verdict is the first paragraph after the H1. -->
+      <VerdictBox class="mt-6">
+        <p>{c.verdict}</p>
+      </VerdictBox>
+
+      <TestDates testDate={dates.testDate} nextRetest={dates.nextRetest} class="mt-5" />
+
+      <!-- Score headline -->
+      <div class="mt-6 grid gap-px border border-ink bg-ink sm:grid-cols-2">
+        {
+          [a, b].map((tool) => (
+            <div class="bg-white p-5">
+              <div class="flex items-center justify-between gap-4">
+                <a
+                  href={toolUrl(tool.data.slug)}
+                  class="font-condensed text-2xl font-bold uppercase leading-none no-underline hover:underline"
+                >
+                  {tool.data.name}
+                </a>
+                <span class="flex items-baseline gap-1 font-condensed leading-none">
+                  <span class="text-3xl font-bold">{score1(tool.data.score)}</span>
+                  <span class="text-sm font-semibold text-ink-muted">/ 10</span>
+                </span>
+              </div>
+              <p class="mt-2 text-sm text-ink-soft">{tool.data.bestFor}</p>
+              <p class="mt-3 font-semibold">From {money(tool.data.priceFrom)}/mo</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <AffiliateLink slug={tool.data.slug} name={tool.data.name} variant="primary" />
+                <a href={toolUrl(tool.data.slug)} class="btn btn-ghost">Full review</a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <Disclosure class="mt-3 max-w-3xl" />
+    </header>
+
+    <!-- Pick A if / Pick B if -->
+    <section class="wrap mt-14" aria-labelledby="pick-heading">
+      <h2 id="pick-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+        Which one should you buy?
+      </h2>
+      <div class="mt-5 grid gap-5 md:grid-cols-2">
+        {
+          sides.map(({ tool, label, points }) => (
+            <section class="board border-t-4 p-5" style={`border-top-color:${tool.data.logoColor}`}>
+              <h3 class="font-condensed text-xl font-bold uppercase tracking-wide">{label}</h3>
+              <ul class="mt-3 space-y-2.5">
+                {points.map((point) => (
+                  <li class="flex gap-2.5 leading-snug">
+                    <span class="mt-2 h-2 w-2 flex-none bg-yellow" aria-hidden="true" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-4">
+                <AffiliateLink slug={tool.data.slug} name={tool.data.name} variant="ghost" />
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Comparison table -->
+    <section class="wrap mt-14" aria-labelledby="table-heading">
+      <h2 id="table-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+        How do they compare feature by feature?
+      </h2>
+      <div class="mt-5">
+        <CompareTable a={a.data} b={b.data} rows={c.rows} />
+      </div>
+    </section>
+
+    <div class="wrap-narrow prose-shop mt-14">
+      <Content />
+    </div>
+
+    <!-- Internal links: both reviews, plus the loser's alternatives page. -->
+    <section class="wrap mt-14" aria-labelledby="next-heading">
+      <h2 id="next-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+        Read further
+      </h2>
+      <ul class="mt-5 grid gap-3 sm:grid-cols-3">
+        {
+          [a, b].map((tool) => (
+            <li>
+              <a href={toolUrl(tool.data.slug)} class="board flex h-full flex-col p-4 no-underline hover:border-ink">
+                <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                  Full review
+                </span>
+                <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                  {tool.data.name}
+                </span>
+                <span class="mt-1 text-sm text-ink-soft">Scored {score1(tool.data.score)} / 10</span>
+              </a>
+            </li>
+          ))
+        }
+        {
+          loserHasAlternatives && (
+            <li>
+              <a
+                href={alternativesUrl(loser.data.slug)}
+                class="board flex h-full flex-col p-4 no-underline hover:border-ink"
+              >
+                <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                  Not convinced by {loser.data.name}
+                </span>
+                <span class="mt-1 font-condensed text-xl font-bold uppercase">
+                  {loser.data.name} alternatives
+                </span>
+                <span class="mt-1 text-sm text-ink-soft">
+                  What to use instead, and how to move off it
+                </span>
+              </a>
+            </li>
+          )
+        }
+      </ul>
+      <p class="mt-4 text-sm text-ink-muted">
+        {winner.data.name} scores higher overall, but the tally in the table is not the decision.
+        Read both reviews before you commit to a year of anything.
+      </p>
+    </section>
+  </article>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>

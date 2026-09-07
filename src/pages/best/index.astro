@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import TradeBoard from '../../components/TradeBoard.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import { CATEGORY_META } from '../../lib/site';
+import { bestUrl } from '../../lib/urls';
+import { score1 } from '../../lib/format';
+import { toolsInCategory } from '../../lib/content';
+import { breadcrumbs } from '../../lib/schema';
+
+const trades = await getCollection('trades');
+const tools = await getCollection('tools');
+
+const rows = trades.map((trade) => {
+  const ranked = toolsInCategory(tools, trade.data.category);
+  return { trade, ranked, winner: ranked[0] };
+});
+
+const toolCounts = Object.fromEntries(rows.map((r) => [r.trade.data.slug, r.ranked.length]));
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Best of', path: '/best/' },
+];
+---
+
+<BaseLayout
+  title="Best software by trade"
+  description={`Ranked software lists for ${trades.length} trades, each filtered by team size and built from the same tests. Pick your trade and see what came top.`}
+  path="/best/"
+  jsonLd={[breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+      Best software by trade
+    </h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        There is no single best product - the right one depends on your trade and how many people
+        you have. Each list below ranks only the tools we have tested for that trade, and every
+        list can be filtered by team size.
+      </p>
+    </VerdictBox>
+  </div>
+
+  <section class="wrap mt-10">
+    <TradeBoard trades={trades.map((t) => t.data)} toolCounts={toolCounts} />
+  </section>
+
+  <section class="wrap mt-12" aria-labelledby="picks-heading">
+    <h2 id="picks-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+      Our pick for each trade
+    </h2>
+    <div class="table-scroll board mt-5">
+      <table class="w-full min-w-[38rem] border-collapse text-left">
+        <caption class="sr-only">The top-scoring tool for each trade we cover</caption>
+        <thead>
+          <tr class="bg-ink text-white">
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Trade</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Our pick</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Score</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Tested</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map(({ trade, ranked, winner }) => (
+              <tr class="border-t border-line">
+                <th scope="row" class="px-4 py-3">
+                  <a
+                    href={bestUrl(trade.data.category, trade.data.slug)}
+                    class="font-condensed text-lg font-bold uppercase underline decoration-yellow decoration-[3px] underline-offset-2"
+                  >
+                    {trade.data.name}
+                  </a>
+                  <span class="block text-sm font-normal text-ink-muted">
+                    {CATEGORY_META[trade.data.category].label}
+                  </span>
+                </th>
+                <td class="px-4 py-3 font-semibold">{winner.data.name}</td>
+                <td class="px-4 py-3 font-condensed text-lg font-bold tabular-nums">
+                  {score1(winner.data.score)}
+                </td>
+                <td class="px-4 py-3 tabular-nums">{ranked.length}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>

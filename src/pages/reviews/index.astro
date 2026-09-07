@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import RankedTool from '../../components/RankedTool.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import Disclosure from '../../components/Disclosure.astro';
+import { allTools, oldestTest } from '../../lib/content';
+import { score1, formatDate } from '../../lib/format';
+import { breadcrumbs } from '../../lib/schema';
+
+const tools = await allTools();
+const dates = oldestTest(tools);
+const newest = tools
+  .map((t) => t.data.testDate)
+  .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Reviews', path: '/reviews/' },
+];
+---
+
+<BaseLayout
+  title="Every software review"
+  description={`All ${tools.length} tools we have bought, set up and scored, ranked. Field service, salon, fitness and auto repair software, retested twice a year.`}
+  path="/reviews/"
+  jsonLd={[breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+      Every review
+    </h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        {tools[0].data.name} is the highest scoring tool we have tested at {score1(tools[0].data.score)}
+        out of 10, but the right answer depends on your trade and your headcount - use the
+        <a href="/#trade-board" class="underline decoration-yellow decoration-[3px] underline-offset-2"
+          >trade board</a
+        > for a list ranked for the work you actually do.
+      </p>
+    </VerdictBox>
+
+    <p class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">
+      Every tool below was bought with our own money, set up from scratch and used on real jobs
+      before it got a number. Oldest test on this page: {formatDate(dates.testDate)}. Most recent:
+      {formatDate(newest)}.
+    </p>
+    <Disclosure class="mt-4 max-w-3xl" />
+  </div>
+
+  <section class="wrap mt-10" aria-label="All reviewed tools, ranked by score">
+    <ol class="space-y-6">
+      {tools.map((tool, i) => <li><RankedTool rank={i + 1} tool={tool.data} /></li>)}
+    </ol>
+  </section>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>
