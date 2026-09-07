@@ -1,0 +1,216 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import VerdictBox from '../components/VerdictBox.astro';
+import Faq from '../components/Faq.astro';
+import { SUBSCORES, SUBSCORE_LABELS } from '../lib/site';
+import { breadcrumbs, faqPage } from '../lib/schema';
+import { formatDate } from '../lib/format';
+
+const tools = await getCollection('tools');
+const newest = tools
+  .map((t) => t.data.testDate)
+  .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+
+const weights: Record<(typeof SUBSCORES)[number], { weight: string; what: string }> = {
+  setup: {
+    weight: '15%',
+    what: 'Time from signup to a first invoice reaching a customer, quality of data import, and how much of the setup a shop owner can do without help.',
+  },
+  scheduling: {
+    weight: '20%',
+    what: 'Moving a job between people, recurring visits, capacity warnings, and whether the field app is usable with no signal.',
+  },
+  invoicing: {
+    weight: '20%',
+    what: 'Quote to invoice to payment, deposits and progress billing, settlement time, and how cleanly it posts to accounting software.',
+  },
+  communication: {
+    weight: '15%',
+    what: 'What the customer sees and receives: confirmations, reminders, arrival notice, portal, and how much inbound phone traffic it removes.',
+  },
+  reporting: {
+    weight: '15%',
+    what: 'Whether an owner can answer "did this job make money" without exporting to a spreadsheet.',
+  },
+  value: {
+    weight: '15%',
+    what: 'All-in monthly cost at a realistic headcount, including seats, processing and any third-party subscription the product depends on.',
+  },
+};
+
+const faqItems = [
+  {
+    q: 'Do vendors pay to be reviewed?',
+    a: 'No. We buy every subscription ourselves at the advertised price, on the plan a real shop would buy. No vendor sees a review before it publishes, and no vendor can pay for a score, a ranking or a place on a list.',
+  },
+  {
+    q: 'How do you make money then?',
+    a: 'Partner links. When a reader books a demo or starts a trial through one of our links we may earn a commission. The commission rate is never an input to a score, and we link to products we recommend against as readily as ones we recommend.',
+  },
+  {
+    q: 'How often is a review updated?',
+    a: 'A full retest twice a year, with prices checked more often. Every review, comparison and ranked list shows the date of the last full retest and the date the next one is due.',
+  },
+  {
+    q: 'What happens if a vendor disputes a result?',
+    a: 'We re-run the specific test. If we got it wrong we correct it and note the correction on the page. If the result stands, it stands - and the disagreement does not change the score.',
+  },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'How we test', path: '/how-we-test/' },
+];
+---
+
+<BaseLayout
+  title="How we test"
+  description="We buy every subscription, set it up from scratch, run real jobs through it and time the things that cost money. Here is the full method, the rubric and how we make money."
+  path="/how-we-test/"
+  jsonLd={[breadcrumbs(crumbs), faqPage(faqItems)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+      How we test
+    </h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        We buy every subscription with our own money at the advertised price, set it up from
+        scratch, run real jobs through it for at least five weeks, and time the tasks that cost a
+        shop money. Vendors cannot pay for a score, see a review early, or have a result removed.
+      </p>
+    </VerdictBox>
+
+    <p class="mt-4 text-sm text-ink-muted">
+      Most recent full retest: {formatDate(newest)}. Every review page carries its own test date
+      and the date its next retest is due.
+    </p>
+  </div>
+
+  <div class="wrap-narrow prose-shop mt-12">
+    <h2>What does a test actually involve?</h2>
+
+    <p>
+      Every product goes through the same five stages. A review is not published until all five
+      are complete, which is why we cover fewer products than sites that summarise feature lists.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Buy it.</strong> We pay the advertised price for the plan a real shop of that size
+        would buy, and we say on every review which plan we were on. Free trials are used for
+        setup only; scoring happens on a paid account.
+      </li>
+      <li>
+        <strong>Set it up cold.</strong> No vendor onboarding call, because most small shops do not
+        get one and the ones that do still have to do the work. We time from signup to a first
+        invoice reaching a real customer.
+      </li>
+      <li>
+        <strong>Run real work through it.</strong> At least five weeks and at least ten real jobs,
+        including the awkward ones: a job that gets rescheduled, a customer who part-pays, a
+        technician working with no signal.
+      </li>
+      <li>
+        <strong>Time the expensive tasks.</strong> The measurements table on every review is the
+        raw output of this stage. Same tasks, same stopwatch, every product.
+      </li>
+      <li>
+        <strong>Try to leave.</strong> We export everything and record whether it was self-serve.
+        A product that is hard to leave is a worse purchase and we score it that way.
+      </li>
+    </ol>
+
+    <h2>How is the score calculated?</h2>
+
+    <p>
+      Six categories, each scored out of 10, combined with the weights below. The overall score is
+      a weighted average, not a mean, and it is never adjusted by hand to move a product up or
+      down a ranking.
+    </p>
+  </div>
+
+  <div class="wrap mt-8">
+    <div class="table-scroll board">
+      <table class="w-full min-w-[38rem] border-collapse text-left">
+        <caption class="sr-only">Scoring categories and their weights</caption>
+        <thead>
+          <tr class="bg-ink text-white">
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Category</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Weight</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">What it covers</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            SUBSCORES.map((key) => (
+              <tr class="border-t border-line align-top">
+                <th scope="row" class="px-4 py-3 font-condensed text-lg font-bold uppercase">
+                  {SUBSCORE_LABELS[key]}
+                </th>
+                <td class="px-4 py-3 font-condensed text-lg font-bold tabular-nums">
+                  {weights[key].weight}
+                </td>
+                <td class="px-4 py-3 text-sm text-ink-soft">{weights[key].what}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="wrap-narrow prose-shop mt-12">
+    <h2>How do we make money, and does it change anything?</h2>
+
+    <p>
+      Partner links. If you book a demo or start a trial through one of our links we may earn a
+      commission at no extra cost to you. That is the whole business model and we would rather
+      state it plainly than bury it.
+    </p>
+
+    <p>Three rules keep it from affecting what we publish:</p>
+
+    <ul>
+      <li>
+        Commission rates are not visible to whoever writes the review, and they are never an input
+        to a score or a ranking.
+      </li>
+      <li>
+        We link to products with no partner programme at all, and we recommend against products we
+        do earn from when the testing says so.
+      </li>
+      <li>
+        Every outbound link goes through <code>/go/</code>, is marked
+        <code>rel="sponsored nofollow"</code>, and sits under a visible disclosure.
+      </li>
+    </ul>
+
+    <h2>What we will not do</h2>
+
+    <ul>
+      <li>Publish a score for a product we have not paid for and used</li>
+      <li>Let a vendor read a review before it goes live</li>
+      <li>Remove or soften a result because a vendor asked</li>
+      <li>Use vendor marketing screenshots and present them as our own captures</li>
+      <li>Rank by commission, or quietly drop a product that stopped paying</li>
+    </ul>
+
+    <h2>How do you correct something?</h2>
+
+    <p>
+      Tell us what is wrong and we will re-run the test. If we got it wrong the page is corrected
+      and the correction is noted on it, dated. Email is on the
+      <a href="/contact/">contact page</a>.
+    </p>
+  </div>
+
+  <div class="wrap">
+    <Faq items={faqItems} heading="Questions about our testing" />
+  </div>
+</BaseLayout>

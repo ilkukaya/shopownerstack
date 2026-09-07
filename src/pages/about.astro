@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import VerdictBox from '../components/VerdictBox.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import { SITE } from '../lib/site';
+import { breadcrumbs } from '../lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about/' },
+];
+---
+
+<BaseLayout
+  title={`About ${SITE.name}`}
+  description="Who we are, why this site exists and how it pays for itself. Software reviews written for people who run a shop rather than a software team."
+  path="/about/"
+  jsonLd={[breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+      About {SITE.name}
+    </h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        We review the software local service businesses run on - scheduling, dispatch, invoicing,
+        payments and phones - by buying it, using it on real jobs and timing the tasks that cost
+        money. We are funded by partner links, disclosed on every page.
+      </p>
+    </VerdictBox>
+  </div>
+
+  <div class="wrap-narrow prose-shop mt-12">
+    <h2>Why does this site exist?</h2>
+
+    <p>
+      Because almost every "best field service software" list is a feature table assembled from
+      vendor marketing pages by someone who has never dispatched a technician. The lists agree
+      with each other because they are copied from the same source, and they are useless for the
+      one decision they claim to help with.
+    </p>
+
+    <p>
+      A shop owner does not need to know whether a product has a feature. They need to know how
+      long it takes to raise a quote on a phone in a driveway, whether the app works in a
+      basement, and what the bill looks like when they hire a fourth person. Those answers only
+      come from using the thing.
+    </p>
+
+    <h2>Who is this for?</h2>
+
+    <p>
+      Owners of local service businesses between one and about thirty people: plumbers, HVAC
+      contractors, electricians, cleaning companies, landscapers, salons, fitness studios and
+      independent auto repair shops. Everything here is written for someone who is still close
+      enough to the work to know what a bad day looks like.
+    </p>
+
+    <p>
+      It is not written for enterprise buyers, and we do not cover software priced for them.
+    </p>
+
+    <h2>What do we actually do?</h2>
+
+    <p>
+      We buy every product at the advertised price, set it up without vendor help, run real jobs
+      through it for at least five weeks, and time the same set of tasks on every product. Then we
+      try to leave, because how hard a product is to escape is part of what you are buying.
+    </p>
+
+    <p>
+      The full method, the scoring rubric and the weights are on
+      <a href="/how-we-test/">how we test</a>. It is worth reading before you trust a number on
+      this site.
+    </p>
+
+    <h2>How is it funded?</h2>
+
+    <p>
+      Partner links. When a reader books a demo or starts a trial through one of our links we may
+      earn a commission at no extra cost to them. No vendor pays for coverage, a score, or a
+      ranking, and no vendor sees a review before it publishes.
+    </p>
+
+    <p>
+      The full arrangement, including what we will and will not do, is on the
+      <a href="/affiliate-disclosure/">affiliate disclosure</a> page.
+    </p>
+
+    <h2>What we get wrong</h2>
+
+    <p>
+      Software changes, prices change, and a product that was right in March can be wrong by
+      November. That is why every review carries the date it was last fully retested and the date
+      the next test is due, and why we would rather cover fewer products properly than more of
+      them badly.
+    </p>
+
+    <p>
+      If something on this site is wrong, tell us and we will re-run the test. Corrections are
+      made on the page and dated. <a href="/contact/">Get in touch</a>.
+    </p>
+  </div>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>

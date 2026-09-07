@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import VerdictBox from '../components/VerdictBox.astro';
+import { SITE } from '../lib/site';
+import { breadcrumbs } from '../lib/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Privacy', path: '/privacy/' },
+];
+
+const updated = '2026-09-01';
+---
+
+<BaseLayout
+  title="Privacy"
+  description="What ShopOwnerStack collects, what happens to a demo request, what analytics we run and how to get your data removed."
+  path="/privacy/"
+  jsonLd={[breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">Privacy</h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        We collect what you type into a form and anonymous analytics about which pages get read.
+        Demo request details go to the vendor named on that form and nowhere else. We do not sell
+        anything to anyone.
+      </p>
+    </VerdictBox>
+
+    <p class="mt-4 text-sm text-ink-muted">
+      Last updated <time datetime={updated}>1 September 2026</time>.
+    </p>
+  </div>
+
+  <div class="wrap-narrow prose-shop mt-12">
+    <h2>What we collect</h2>
+
+    <p>Three things, and nothing else:</p>
+
+    <ul>
+      <li>
+        <strong>Form submissions.</strong> If you submit a demo request we collect your name,
+        business name, email, phone, trade and team size, plus which product the request was for.
+        If you subscribe to the newsletter we collect your email address.
+      </li>
+      <li>
+        <strong>Analytics.</strong> Anonymous, aggregated page view data via Google Analytics 4,
+        including which outbound partner links are clicked and from which page. We do not attempt
+        to identify individual visitors.
+      </li>
+      <li>
+        <strong>Server logs.</strong> Our host records standard request logs, including IP
+        addresses, for security and abuse prevention.
+      </li>
+    </ul>
+
+    <h2>What happens to a demo request</h2>
+
+    <p>
+      The details you enter are passed to the vendor named on that form so they can contact you
+      about a demo. That vendor then holds your details under their own privacy policy, and you
+      should read it if that matters to you.
+    </p>
+
+    <p>
+      We keep a copy so we can tell whether a referral worked. We do not pass demo request details
+      to any vendor other than the one on the form, and we do not add you to our mailing list
+      because you asked for a demo.
+    </p>
+
+    <h2>Newsletter</h2>
+
+    <p>
+      If you subscribe, we use your email address to send occasional updates when a score changes
+      or a price moves. Every email has a one-click unsubscribe, and unsubscribing removes your
+      address rather than suppressing it.
+    </p>
+
+    <h2>Cookies and analytics</h2>
+
+    <p>
+      We use Google Analytics 4 to understand which pages are read and which partner links are
+      clicked. That sets cookies in your browser. If you block them, the site works exactly the
+      same - nothing on this site depends on analytics loading.
+    </p>
+
+    <p>
+      Partner links may set a cookie on the vendor's side so they can attribute a referral. That
+      is the vendor's cookie under the vendor's policy, and it is why every outbound link is
+      marked as sponsored before you click it.
+    </p>
+
+    <h2>What we do not do</h2>
+
+    <ul>
+      <li>Sell, rent or trade your details</li>
+      <li>Pass demo request details to vendors you did not ask about</li>
+      <li>Run advertising trackers or retargeting pixels</li>
+      <li>Ask for payment details - we never take money from readers</li>
+    </ul>
+
+    <h2>Your data, on request</h2>
+
+    <p>
+      Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and ask for a copy of what we hold
+      about you, or ask us to delete it. We will do either within 30 days. If you have asked a
+      vendor for a demo, you will need to ask that vendor separately for their copy.
+    </p>
+
+    <h2>Changes</h2>
+
+    <p>
+      If this page changes materially, the date at the top changes with it. {SITE.name} is
+      operated from the address given on the <a href="/contact/">contact page</a>.
+    </p>
+  </div>
+</BaseLayout>

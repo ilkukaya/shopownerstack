@@ -1,0 +1,400 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VerdictBox from '../../components/VerdictBox.astro';
+import Faq from '../../components/Faq.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import TradeIcon from '../../components/TradeIcon.astro';
+import { money } from '../../lib/format';
+import { CALCULATOR_URL, guideUrl } from '../../lib/urls';
+import { breadcrumbs, faqPage } from '../../lib/schema';
+
+const trades = await getCollection('trades');
+
+// Passed to the client script so the trade selector can prefill benchmarks.
+const benchmarks = Object.fromEntries(
+  trades.map((t) => [
+    t.data.slug,
+    {
+      name: t.data.name,
+      rate: t.data.medianHourlyRate,
+      overheadPerHour: t.data.overheadPerHourSolo,
+    },
+  ]),
+);
+
+const faqItems = [
+  {
+    q: 'What hourly rate should a small service business charge?',
+    a: 'Enough to cover annual overhead, the income you need to take out and a target profit, divided by the hours you can actually bill. For most solo trades that lands well above the rate they are charging, because they divide by hours worked rather than hours billed.',
+  },
+  {
+    q: 'How many hours a year can a solo operator actually bill?',
+    a: 'Usually 55 to 65 percent of hours worked. Quoting, driving, invoicing, chasing payment and buying parts are all real work and none of it is chargeable. A 45-hour week over 48 weeks is 2,160 hours worked and roughly 1,200 to 1,400 billable.',
+  },
+  {
+    q: 'Should materials be included in the hourly rate?',
+    a: 'No. Price labour by the hour and materials separately with a markup that varies by cost band, so cheap parts carry a higher percentage than expensive ones. Handling a four dollar fitting costs about the same as handling a four hundred dollar unit.',
+  },
+  {
+    q: 'What counts as overhead?',
+    a: 'Everything that is not the labour on the job: vehicle and fuel, insurance, software subscriptions, phone, accountant, rent, tools, marketing, bank and card fees. Most owners under-count it by about a third because the small recurring subscriptions get forgotten.',
+  },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Job pricing calculator', path: CALCULATOR_URL },
+];
+---
+
+<BaseLayout
+  title="Job pricing calculator"
+  description="Work out the hourly rate that actually covers your overhead, your income and a profit, then compare it with the benchmark rate for your trade."
+  path={CALCULATOR_URL}
+  jsonLd={[breadcrumbs(crumbs), faqPage(faqItems)]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <div class="wrap pt-8">
+    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
+      Job pricing calculator
+    </h1>
+
+    <VerdictBox class="mt-6" label="The short answer">
+      <p>
+        Your hourly rate should be your annual overhead plus the income you need plus a target
+        profit, divided by the hours you can actually bill - not the hours you work. Put your own
+        numbers in below and the difference is usually uncomfortable.
+      </p>
+    </VerdictBox>
+  </div>
+
+  <section class="wrap mt-10" aria-labelledby="calc-heading">
+    <h2 id="calc-heading" class="sr-only">Calculator</h2>
+
+    <form class="grid gap-8 lg:grid-cols-[1fr_20rem]" id="rate-calc" novalidate>
+      <div class="board p-5 sm:p-6">
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label for="calc-trade" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Trade (prefills benchmark figures)
+            </label>
+            <select
+              id="calc-trade"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5"
+            >
+              <option value="">Choose a trade</option>
+              {trades.map((t) => <option value={t.data.slug}>{t.data.name}</option>)}
+            </select>
+          </div>
+
+          <div>
+            <label for="calc-overhead" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Annual overhead
+            </label>
+            <input
+              type="number"
+              id="calc-overhead"
+              inputmode="numeric"
+              min="0"
+              step="500"
+              value="46000"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+            <p class="mt-1 text-sm text-ink-muted">Vehicle, insurance, software, phone, rent, tools, marketing.</p>
+          </div>
+
+          <div>
+            <label for="calc-income" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Owner income you need
+            </label>
+            <input
+              type="number"
+              id="calc-income"
+              inputmode="numeric"
+              min="0"
+              step="1000"
+              value="85000"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+            <p class="mt-1 text-sm text-ink-muted">What you actually have to take out of the business.</p>
+          </div>
+
+          <div>
+            <label for="calc-profit" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Target profit
+            </label>
+            <input
+              type="number"
+              id="calc-profit"
+              inputmode="numeric"
+              min="0"
+              step="1000"
+              value="15000"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+            <p class="mt-1 text-sm text-ink-muted">Retained in the business. Leave it out and you will not get any.</p>
+          </div>
+
+          <div>
+            <label for="calc-hours" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Hours worked per week
+            </label>
+            <input
+              type="number"
+              id="calc-hours"
+              inputmode="numeric"
+              min="1"
+              max="100"
+              step="1"
+              value="45"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+          </div>
+
+          <div>
+            <label for="calc-weeks" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Working weeks per year
+            </label>
+            <input
+              type="number"
+              id="calc-weeks"
+              inputmode="numeric"
+              min="1"
+              max="52"
+              step="1"
+              value="48"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+          </div>
+
+          <div>
+            <label for="calc-utilisation" class="block font-condensed text-sm font-bold uppercase tracking-[0.12em]">
+              Billable share of hours (%)
+            </label>
+            <input
+              type="number"
+              id="calc-utilisation"
+              inputmode="numeric"
+              min="10"
+              max="100"
+              step="1"
+              value="60"
+              class="mt-1.5 w-full border border-line bg-paper px-3 py-2.5 tabular-nums"
+            />
+            <p class="mt-1 text-sm text-ink-muted">Quoting, driving and paperwork are not billable. 55-65% is typical.</p>
+          </div>
+        </div>
+
+        <p class="mt-5 border-t border-line pt-4 text-sm text-ink-muted">
+          Nothing you type here leaves your browser. There is no submit and nothing is stored.
+        </p>
+      </div>
+
+      <!-- Results -->
+      <output for="rate-calc" class="board block h-max p-5 lg:sticky lg:top-6" aria-live="polite">
+        <p class="eyebrow">Your rate</p>
+
+        <p class="mt-4 font-condensed text-6xl font-bold leading-none" id="out-rate">$112</p>
+        <p class="mt-1 text-sm text-ink-muted">per billable hour, to hit all three targets</p>
+
+        <dl class="mt-5 space-y-3 border-t border-line pt-4 text-[0.95rem]">
+          <div class="flex justify-between gap-3">
+            <dt class="text-ink-muted">Billable hours a year</dt>
+            <dd class="font-semibold tabular-nums" id="out-hours">1,296</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="text-ink-muted">Overhead per billable hour</dt>
+            <dd class="font-semibold tabular-nums" id="out-overhead">$36</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="text-ink-muted">Break-even rate</dt>
+            <dd class="font-semibold tabular-nums" id="out-breakeven">$101</dd>
+          </div>
+          <div class="flex justify-between gap-3 border-t border-line pt-3">
+            <dt class="text-ink-muted">Trade benchmark</dt>
+            <dd class="font-semibold tabular-nums" id="out-benchmark">Pick a trade</dd>
+          </div>
+        </dl>
+
+        <p class="mt-4 border-l-4 border-yellow bg-yellow-wash p-3 text-sm leading-snug" id="out-note">
+          Choose your trade above to compare this with the benchmark rate for your work.
+        </p>
+      </output>
+    </form>
+  </section>
+
+  <!-- Benchmarks -->
+  <section class="wrap mt-14" aria-labelledby="benchmarks-heading">
+    <h2 id="benchmarks-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
+      What do other trades charge?
+    </h2>
+    <p class="mt-2 max-w-3xl text-ink-soft">
+      Benchmark figures for the trades we cover. Overhead per hour is for a one-person operation;
+      it rises with every van and every person in the office.
+    </p>
+
+    <div class="table-scroll board mt-5">
+      <table class="w-full min-w-[36rem] border-collapse text-left">
+        <caption class="sr-only">Median billed rate and solo overhead per hour, by trade</caption>
+        <thead>
+          <tr class="bg-ink text-white">
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Trade</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Median rate</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Solo overhead / hr</th>
+            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Gross per hour</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            trades.map((t) => (
+              <tr class="border-t border-line">
+                <th scope="row" class="px-4 py-3">
+                  <span class="flex items-center gap-2.5">
+                    <TradeIcon name={t.data.icon} class="h-5 w-5 text-ink-muted" />
+                    <span class="font-condensed text-lg font-bold uppercase">{t.data.name}</span>
+                  </span>
+                </th>
+                <td class="px-4 py-3 font-semibold tabular-nums">{money(t.data.medianHourlyRate)}</td>
+                <td class="px-4 py-3 tabular-nums">{money(t.data.overheadPerHourSolo)}</td>
+                <td class="px-4 py-3 font-semibold tabular-nums">
+                  {money(t.data.medianHourlyRate - t.data.overheadPerHourSolo)}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-3 text-sm text-ink-muted">
+      Benchmark figures are placeholders pending a sourced dataset - see SAMPLE_DATA.md in the
+      repository. Treat them as illustrative, not as research.
+    </p>
+  </section>
+
+  <div class="wrap">
+    <Faq items={faqItems} heading="Pricing questions" />
+
+    <p class="mt-8">
+      <a href={guideUrl('how-to-price-a-service-job')} class="btn btn-ghost">
+        Read the full pricing guide
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-16">
+    <NewsletterForm />
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ benchmarks }}>
+  // Job pricing calculator. Plain JS, no framework, no network.
+  (function () {
+    var form = document.getElementById('rate-calc');
+    if (!form) return;
+
+    var ids = ['overhead', 'income', 'profit', 'hours', 'weeks', 'utilisation'];
+    var inputs = {};
+    ids.forEach(function (id) {
+      inputs[id] = document.getElementById('calc-' + id);
+    });
+    var tradeSelect = document.getElementById('calc-trade');
+
+    var out = {
+      rate: document.getElementById('out-rate'),
+      hours: document.getElementById('out-hours'),
+      overhead: document.getElementById('out-overhead'),
+      breakeven: document.getElementById('out-breakeven'),
+      benchmark: document.getElementById('out-benchmark'),
+      note: document.getElementById('out-note'),
+    };
+
+    function num(el, fallback) {
+      var value = parseFloat(el && el.value);
+      return isFinite(value) && value >= 0 ? value : fallback;
+    }
+
+    var dollars = function (n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    };
+
+    function recalc() {
+      var overhead = num(inputs.overhead, 0);
+      var income = num(inputs.income, 0);
+      var profit = num(inputs.profit, 0);
+      var hours = Math.max(num(inputs.hours, 40), 1);
+      var weeks = Math.min(Math.max(num(inputs.weeks, 48), 1), 52);
+      var utilisation = Math.min(Math.max(num(inputs.utilisation, 60), 1), 100);
+
+      var billable = hours * weeks * (utilisation / 100);
+      var required = (overhead + income + profit) / billable;
+      var breakeven = (overhead + income) / billable;
+      var overheadPerHour = overhead / billable;
+
+      out.rate.textContent = dollars(required);
+      out.hours.textContent = Math.round(billable).toLocaleString('en-US');
+      out.overhead.textContent = dollars(overheadPerHour);
+      out.breakeven.textContent = dollars(breakeven);
+
+      var slug = tradeSelect ? tradeSelect.value : '';
+      var bench = benchmarks[slug];
+
+      if (!bench) {
+        out.benchmark.textContent = 'Pick a trade';
+        out.note.textContent =
+          'Choose your trade above to compare this with the benchmark rate for your work.';
+        return;
+      }
+
+      out.benchmark.textContent = dollars(bench.rate) + '/hr';
+
+      var gap = required - bench.rate;
+      if (gap > 1) {
+        out.note.textContent =
+          'You need ' +
+          dollars(gap) +
+          ' an hour more than the ' +
+          bench.name.toLowerCase() +
+          ' benchmark. Either your overhead is high, your billable share is low, or the benchmark rate does not support the income you asked for.';
+      } else if (gap < -1) {
+        out.note.textContent =
+          'You are ' +
+          dollars(-gap) +
+          ' an hour below the ' +
+          bench.name.toLowerCase() +
+          ' benchmark, so there is room to raise the rate or to take more profit than you entered.';
+      } else {
+        out.note.textContent =
+          'You are within a dollar of the ' + bench.name.toLowerCase() + ' benchmark rate.';
+      }
+    }
+
+    ids.forEach(function (id) {
+      if (inputs[id]) inputs[id].addEventListener('input', recalc);
+    });
+    if (tradeSelect) {
+      tradeSelect.addEventListener('change', function () {
+        var bench = benchmarks[tradeSelect.value];
+        // Prefill overhead from the benchmark so the trade choice does something
+        // useful rather than only changing the comparison line.
+        if (bench && inputs.overhead) {
+          var hours = Math.max(num(inputs.hours, 45), 1);
+          var weeks = Math.min(Math.max(num(inputs.weeks, 48), 1), 52);
+          var utilisation = Math.min(Math.max(num(inputs.utilisation, 60), 1), 100);
+          var billable = hours * weeks * (utilisation / 100);
+          inputs.overhead.value = Math.round((bench.overheadPerHour * billable) / 500) * 500;
+        }
+        recalc();
+      });
+    }
+
+    // Never submit: there is nowhere to submit to.
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+    });
+
+    recalc();
+  })();
+</script>

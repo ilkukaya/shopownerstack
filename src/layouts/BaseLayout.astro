@@ -47,14 +47,14 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
 
-    {jsonLd.length > 0 && <script type="application/ld+json" set:html={graph(jsonLd)} />}
+    {jsonLd.length > 0 && <script is:inline type="application/ld+json" set:html={graph(jsonLd)} />}
 
     {
       /* GA4 is only loaded when PUBLIC_GA_ID is set, so local and preview builds
          ship no analytics JS at all. */
       GA_ID && (
         <>
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
           <script is:inline define:vars={{ GA_ID }}>
             window.dataLayer = window.dataLayer || [];
             function gtag() {

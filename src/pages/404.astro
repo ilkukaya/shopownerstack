@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CALCULATOR_URL } from '../lib/urls';
+---
+
+<BaseLayout title="Page not found" description="That page does not exist." path="/404/" noindex>
+  <div class="wrap-narrow py-20 text-center">
+    <p class="font-condensed text-7xl font-bold leading-none text-yellow sm:text-8xl">404</p>
+
+    <h1 class="mt-4 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+      That page is not here
+    </h1>
+
+    <p class="mt-5 text-lg leading-relaxed text-ink-soft">
+      It may have moved when a review was retested. The reviews index lists everything we have
+      tested, and the trade board is the fastest way to a ranked list for your work.
+    </p>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/reviews/" class="btn btn-primary">All reviews</a>
+      <a href="/best/" class="btn btn-ghost">Best by trade</a>
+      <a href={CALCULATOR_URL} class="btn btn-ghost">Calculator</a>
+    </div>
+  </div>
+</BaseLayout>
