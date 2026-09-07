@@ -1,0 +1,94 @@
+---
+import { NAV, SITE } from '../lib/site';
+
+const current = Astro.url.pathname;
+const isActive = (href: string) => current === href || (href !== '/' && current.startsWith(href));
+---
+
+<header class="on-ink bg-ink text-white">
+  <div class="wrap flex items-center justify-between gap-4 py-3">
+    <a href="/" class="group flex items-center gap-2.5 no-underline" aria-label={`${SITE.name} home`}>
+      <span
+        class="flex h-9 w-9 flex-none items-center justify-center bg-yellow font-condensed text-xl font-bold leading-none text-ink"
+        aria-hidden="true">S</span
+      >
+      <span class="font-condensed text-2xl font-bold uppercase leading-none tracking-wide text-white">
+        Shop<span class="text-yellow">Owner</span>Stack
+      </span>
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'block px-3 py-2 font-condensed text-lg font-semibold uppercase tracking-wide no-underline transition-colors',
+                  isActive(item.href) ? 'text-yellow' : 'text-white hover:text-yellow',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      id="menu-toggle"
+      class="flex items-center gap-2 border-2 border-white px-3 py-1.5 font-condensed text-base font-bold uppercase tracking-wide lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <span class="sr-only">Toggle navigation</span>
+      <svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true" fill="currentColor">
+        <rect y="0" width="18" height="2.5"></rect>
+        <rect y="5.75" width="18" height="2.5"></rect>
+        <rect y="11.5" width="18" height="2.5"></rect>
+      </svg>
+      Menu
+    </button>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Main" hidden class="border-t border-ink-line lg:hidden">
+    <ul class="wrap flex flex-col py-2">
+      {
+        NAV.map((item) => (
+          <li class="border-b border-ink-line last:border-0">
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'block py-3 font-condensed text-lg font-semibold uppercase tracking-wide no-underline',
+                isActive(item.href) ? 'text-yellow' : 'text-white',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="hazard" aria-hidden="true"></div>
+</header>
+
+<script is:inline>
+  (function () {
+    var toggle = document.getElementById('menu-toggle');
+    var nav = document.getElementById('mobile-nav');
+    if (!toggle || !nav) return;
+
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      nav.hidden = open;
+    });
+  })();
+</script>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  pros: string[];
+  cons: string[];
+}
+
+const { pros, cons } = Astro.props;
+---
+
+<div class="grid gap-5 md:grid-cols-2">
+  <section class="bg-good-wash p-5">
+    <h3 class="font-condensed text-lg font-bold uppercase tracking-[0.1em] text-good">
+      What works
+    </h3>
+    <ul class="mt-3 space-y-2.5 text-[0.98rem] leading-snug">
+      {
+        pros.map((item) => (
+          <li class="border-l-2 border-good pl-3">{item}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="bg-bad-wash p-5">
+    <h3 class="font-condensed text-lg font-bold uppercase tracking-[0.1em] text-bad">
+      What does not
+    </h3>
+    <ul class="mt-3 space-y-2.5 text-[0.98rem] leading-snug">
+      {
+        cons.map((item) => (
+          <li class="border-l-2 border-bad pl-3">{item}</li>
+        ))
+      }
+    </ul>
+  </section>
+</div>

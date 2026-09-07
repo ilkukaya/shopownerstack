@@ -1,0 +1,16 @@
+---
+import { DISCLOSURE } from '../lib/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<p class:list={['text-sm leading-snug text-ink-muted', className]}>
+  {DISCLOSURE}{' '}
+  <a href="/affiliate-disclosure/" class="underline underline-offset-2 hover:text-ink"
+    >Full disclosure</a
+  >.
+</p>

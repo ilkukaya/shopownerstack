@@ -1,0 +1,46 @@
+---
+import { money } from '../lib/format';
+
+interface Props {
+  name: string;
+  pricing: {
+    name: string;
+    users: string;
+    monthly: number;
+    annual: number;
+    forWhom: string;
+  }[];
+}
+
+const { name, pricing } = Astro.props;
+---
+
+<div class="table-scroll board">
+  <table class="w-full min-w-[42rem] border-collapse text-left">
+    <caption class="sr-only">{name} pricing plans</caption>
+    <thead>
+      <tr class="bg-ink text-white">
+        <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Plan</th>
+        <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Users</th>
+        <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Monthly</th>
+        <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Annual (per mo)</th>
+        <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Who it is for</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        pricing.map((plan) => (
+          <tr class="border-t border-line align-top">
+            <th scope="row" class="px-4 py-3 font-condensed text-lg font-bold uppercase">
+              {plan.name}
+            </th>
+            <td class="px-4 py-3 text-sm">{plan.users}</td>
+            <td class="px-4 py-3 font-semibold tabular-nums">{money(plan.monthly)}</td>
+            <td class="px-4 py-3 font-semibold tabular-nums">{money(plan.annual)}</td>
+            <td class="px-4 py-3 text-sm text-ink-soft">{plan.forWhom}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE, GA_ID } from '../lib/site';
+import { graph } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Site-relative path of this page, used for the canonical and og:url. */
+  path: string;
+  /** JSON-LD nodes for the @graph. BreadcrumbList belongs on every page. */
+  jsonLd?: Record<string, unknown>[];
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const { title, description, path, jsonLd = [], ogType = 'website', noindex = false } = Astro.props;
+
+const canonical = new URL(path, Astro.site ?? SITE.url).toString();
+const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#1B2A3A" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    {jsonLd.length > 0 && <script type="application/ld+json" set:html={graph(jsonLd)} />}
+
+    {
+      /* GA4 is only loaded when PUBLIC_GA_ID is set, so local and preview builds
+         ship no analytics JS at all. */
+      GA_ID && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script is:inline define:vars={{ GA_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              window.dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', GA_ID);
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-yellow focus:px-4 focus:py-2 focus:font-condensed focus:font-bold focus:uppercase focus:text-ink"
+      >Skip to content</a
+    >
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline define:vars={{ GA_ID }}>
+      // ---------------------------------------------------------------------
+      // Affiliate click tracking.
+      // Every outbound tool link is a /go/<slug>/ link. We fire the GA4 event
+      // before the browser leaves the page; sendBeacon is used first because a
+      // normal gtag() call can be cancelled by the navigation.
+      // ---------------------------------------------------------------------
+      (function () {
+        if (!GA_ID) return;
+
+        var sent = new WeakSet();
+
+        document.addEventListener(
+          'click',
+          function (event) {
+            var link = event.target instanceof Element ? event.target.closest('a[href*="/go/"]') : null;
+            if (!link) return;
+
+            var path = new URL(link.href, location.origin).pathname;
+            var match = path.match(/^\/go\/([^/]+)\/?$/);
+            if (!match) return;
+            if (sent.has(link)) return;
+            sent.add(link);
+
+            var payload = {
+              tool: match[1],
+              page: location.pathname,
+              transport_type: 'beacon',
+            };
+
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', 'affiliate_click', payload);
+            } else if (navigator.sendBeacon) {
+              // gtag has not finished loading. Post straight to the Measurement
+              // Protocol collector so a fast click is still recorded.
+              try {
+                navigator.sendBeacon(
+                  'https://www.google-analytics.com/g/collect?v=2&tid=' +
+                    encodeURIComponent(GA_ID) +
+                    '&en=affiliate_click&ep.tool=' +
+                    encodeURIComponent(payload.tool) +
+                    '&ep.page=' +
+                    encodeURIComponent(payload.page),
+                );
+              } catch (e) {
+                /* tracking must never block the click */
+              }
+            }
+          },
+          { capture: true },
+        );
+      })();
+    </script>
+  </body>
+</html>

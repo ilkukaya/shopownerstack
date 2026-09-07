@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE, DISCLOSURE, CATEGORY_META } from '../lib/site';
+import { toolUrl, bestUrl, compareUrl } from '../lib/urls';
+
+const tools = (await getCollection('tools')).sort((a, b) => b.data.score - a.data.score).slice(0, 6);
+const trades = (await getCollection('trades')).slice(0, 6);
+const comparisons = (await getCollection('comparisons')).slice(0, 5);
+
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    title: 'Reviews',
+    links: tools.map((t) => ({ href: toolUrl(t.data.slug), label: t.data.name })),
+  },
+  {
+    title: 'By trade',
+    links: trades.map((t) => ({
+      href: bestUrl(t.data.category, t.data.slug),
+      label: `${CATEGORY_META[t.data.category].label.replace(' software', '')} for ${t.data.name.toLowerCase()}`,
+    })),
+  },
+  {
+    title: 'Compare',
+    links: comparisons.map((c) => ({ href: compareUrl(c.data.slug), label: c.data.title })),
+  },
+  {
+    title: 'Site',
+    links: [
+      { href: '/how-we-test/', label: 'How we test' },
+      { href: '/about/', label: 'About' },
+      { href: '/contact/', label: 'Contact' },
+      { href: '/affiliate-disclosure/', label: 'Affiliate disclosure' },
+      { href: '/privacy/', label: 'Privacy' },
+    ],
+  },
+];
+---
+
+<footer class="on-ink mt-20 bg-ink text-white">
+  <div class="hazard" aria-hidden="true"></div>
+
+  <div class="wrap grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      columns.map((col) => (
+        <div>
+          <h2 class="font-condensed text-base font-bold uppercase tracking-[0.14em] text-yellow">
+            {col.title}
+          </h2>
+          <ul class="mt-3 space-y-2 text-[0.95rem]">
+            {col.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-white/80 no-underline transition-colors hover:text-yellow hover:underline"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="border-t border-ink-line">
+    <div class="wrap flex flex-col gap-4 py-7 md:flex-row md:items-start md:justify-between">
+      <p class="max-w-2xl text-sm leading-relaxed text-white/60">
+        {DISCLOSURE} Read the full <a
+          href="/affiliate-disclosure/"
+          class="text-yellow underline">affiliate disclosure</a
+        >.
+      </p>
+      <p class="flex-none text-sm text-white/60">
+        &copy; {year} {SITE.name}
+      </p>
+    </div>
+  </div>
+</footer>

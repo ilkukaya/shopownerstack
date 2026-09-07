@@ -1,0 +1,270 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TradeBoard from '../components/TradeBoard.astro';
+import ToolTeaser from '../components/ToolTeaser.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import LogoMark from '../components/LogoMark.astro';
+import { SITE, TEAM_SIZES, TEAM_SIZE_LABELS } from '../lib/site';
+import { allTools, byScoreDesc } from '../lib/content';
+import { compareUrl, guideUrl, toolUrl, CALCULATOR_URL } from '../lib/urls';
+import { formatDate } from '../lib/format';
+import { organization, website, breadcrumbs } from '../lib/schema';
+
+const tools = await allTools();
+const trades = await getCollection('trades');
+const comparisons = (await getCollection('comparisons')).slice(0, 6);
+const guides = (await getCollection('guides')).sort(
+  (a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime(),
+);
+
+const toolMapById = new Map(tools.map((t) => [t.id, t]));
+
+// Tools tested per trade, shown on the board.
+const toolCounts = Object.fromEntries(
+  trades.map((trade) => [
+    trade.data.slug,
+    tools.filter((t) => t.data.categories.includes(trade.data.category)).length,
+  ]),
+);
+
+// One top pick per team size.
+const picksBySize = TEAM_SIZES.map((size) => {
+  const best = tools.filter((t) => t.data.teamSizes.includes(size)).sort(byScoreDesc)[0];
+  return { size, tool: best };
+}).filter((p) => p.tool);
+
+const lastTest = tools
+  .map((t) => t.data.testDate)
+  .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+
+const description = `${SITE.description} Reviews of ${tools.length} tools across ${trades.length} trades, retested twice a year.`;
+---
+
+<BaseLayout
+  title={`${SITE.name} - software reviews for local service businesses`}
+  description={description}
+  path="/"
+  jsonLd={[organization(), website(), breadcrumbs([{ name: 'Home', path: '/' }])]}
+>
+  <!-- Hero -->
+  <section class="on-ink bg-ink text-white">
+    <div class="wrap grid gap-10 py-14 lg:grid-cols-[1.25fr_1fr] lg:py-20">
+      <div>
+        <p class="eyebrow">Bought, set up, used, scored</p>
+        <h1 class="mt-4 font-condensed text-5xl font-bold uppercase leading-[0.95] sm:text-6xl lg:text-7xl">
+          Software reviews for people who run the shop
+        </h1>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
+          We buy the software, put real jobs through it and time the things that cost you money -
+          how long a quote takes on a phone, how fast a card payment settles, whether the app
+          works in a basement with no signal. Then we tell you who should not buy it.
+        </p>
+
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#trade-board" class="btn btn-primary">Find software for your trade</a>
+          <a href="/how-we-test/" class="btn btn-ghost">How we test</a>
+        </div>
+      </div>
+
+      <dl class="grid grid-cols-2 gap-px self-start border border-ink-line bg-ink-line">
+        <div class="bg-ink p-5">
+          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
+            Tools tested
+          </dt>
+          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{tools.length}</dd>
+        </div>
+        <div class="bg-ink p-5">
+          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
+            Trades covered
+          </dt>
+          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{trades.length}</dd>
+        </div>
+        <div class="bg-ink p-5">
+          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
+            Head-to-heads
+          </dt>
+          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{comparisons.length}</dd>
+        </div>
+        <div class="bg-ink p-5">
+          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
+            Last retest
+          </dt>
+          <dd class="mt-1 font-condensed text-xl font-bold leading-tight">{formatDate(lastTest)}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Trade board -->
+  <section id="trade-board" class="wrap scroll-mt-4 py-14">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">The board</p>
+        <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+          What do you run?
+        </h2>
+      </div>
+      <p class="max-w-md text-ink-soft">
+        Every trade gets its own ranked list, filtered by how many people you have. Pick yours.
+      </p>
+    </div>
+
+    <div class="mt-7">
+      <TradeBoard trades={trades.map((t) => t.data)} toolCounts={toolCounts} />
+    </div>
+  </section>
+
+  <!-- Top picks by size -->
+  <section class="border-y border-line bg-paper-deep/50 py-14">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Top picks</p>
+          <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+            Which one fits a shop your size?
+          </h2>
+        </div>
+        <a href="/reviews/" class="btn btn-ghost">All reviews</a>
+      </div>
+
+      <ul class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          picksBySize.map(({ size, tool }) => (
+            <li class="flex flex-col">
+              <p class="mb-2 font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
+                {TEAM_SIZE_LABELS[size]}
+              </p>
+              <div class="flex-1">
+                <ToolTeaser tool={tool!.data} />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Most-requested comparisons -->
+  <section class="wrap py-14">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Head to head</p>
+        <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+          Most-requested comparisons
+        </h2>
+      </div>
+      <a href="/compare/" class="btn btn-ghost">All comparisons</a>
+    </div>
+
+    <ul class="mt-7 grid gap-px border border-ink bg-ink sm:grid-cols-2 lg:grid-cols-3">
+      {
+        comparisons.map((c) => {
+          const a = toolMapById.get(c.data.toolA.id)!;
+          const b = toolMapById.get(c.data.toolB.id)!;
+          return (
+            <li>
+              <a
+                href={compareUrl(c.data.slug)}
+                class="group flex h-full flex-col gap-3 bg-white p-5 no-underline transition-colors hover:bg-yellow"
+              >
+                <span class="flex items-center gap-2">
+                  <LogoMark text={a.data.logoText} color={a.data.logoColor} size="sm" />
+                  <span class="font-condensed text-lg font-bold uppercase text-ink-muted group-hover:text-ink">
+                    vs
+                  </span>
+                  <LogoMark text={b.data.logoText} color={b.data.logoColor} size="sm" />
+                </span>
+                <span class="font-condensed text-2xl font-bold uppercase leading-none text-ink">
+                  {c.data.title}
+                </span>
+                <span class="text-sm leading-snug text-ink-soft group-hover:text-ink">
+                  {c.data.verdict.split('. ')[0]}.
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+
+  <!-- Guides -->
+  <section class="border-t border-line bg-paper-deep/50 py-14">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">Guides</p>
+          <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+            The money questions
+          </h2>
+        </div>
+        <a href="/guides/" class="btn btn-ghost">All guides</a>
+      </div>
+
+      <ul class="mt-7 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {
+          guides.slice(0, 6).map((guide) => (
+            <li>
+              <a
+                href={guideUrl(guide.data.slug)}
+                class="board flex h-full flex-col p-5 no-underline transition-colors hover:border-ink"
+              >
+                <h3 class="font-condensed text-xl font-bold uppercase leading-tight">
+                  {guide.data.title}
+                </h3>
+                <p class="mt-2 flex-1 text-[0.95rem] leading-snug text-ink-soft">
+                  {guide.data.description}
+                </p>
+                <p class="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                  Updated {formatDate(guide.data.updatedDate)}
+                </p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-7 board flex flex-wrap items-center justify-between gap-4 border-l-[6px] border-l-yellow p-5">
+        <div>
+          <h3 class="font-condensed text-2xl font-bold uppercase leading-none">
+            What should you charge an hour?
+          </h3>
+          <p class="mt-2 max-w-xl text-ink-soft">
+            Put your overhead, billable hours and target income in and get the rate that covers
+            them, with benchmark figures for {trades.length} trades.
+          </p>
+        </div>
+        <a href={CALCULATOR_URL} class="btn btn-primary">Open the calculator</a>
+      </div>
+    </div>
+  </section>
+
+  <NewsletterForm />
+
+  <!-- Latest reviews strip -->
+  <section class="wrap py-14">
+    <p class="eyebrow">Latest</p>
+    <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
+      Recently retested
+    </h2>
+    <ul class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        [...tools]
+          .sort((a, b) => b.data.testDate.getTime() - a.data.testDate.getTime())
+          .slice(0, 6)
+          .map((tool) => (
+            <li>
+              <ToolTeaser
+                tool={tool.data}
+                note={`Retested ${formatDate(tool.data.testDate)}. ${tool.data.bestFor}`}
+              />
+            </li>
+          ))
+      }
+    </ul>
+    <p class="mt-6">
+      <a href="/reviews/" class="btn btn-ghost">See all {tools.length} reviews</a>
+    </p>
+  </section>
+</BaseLayout>

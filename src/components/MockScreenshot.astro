@@ -1,0 +1,73 @@
+---
+interface Props {
+  /** Brand colour of the product being illustrated. */
+  color: string;
+  logoText: string;
+  name: string;
+  /** Which generic screen to draw. */
+  view?: 'dispatch' | 'invoice' | 'booking';
+}
+
+const { color, logoText, name, view = 'dispatch' } = Astro.props;
+
+const captions = {
+  dispatch: 'Illustration of a dispatch board layout',
+  invoice: 'Illustration of an invoice screen layout',
+  booking: 'Illustration of a booking calendar layout',
+};
+
+const rows = [
+  { w: '72%', tint: 0.9 },
+  { w: '46%', tint: 0.55 },
+  { w: '61%', tint: 0.75 },
+  { w: '38%', tint: 0.4 },
+  { w: '55%', tint: 0.62 },
+];
+---
+
+{/* Deliberately not a real screenshot: a CSS-drawn generic application frame.
+    See SAMPLE_DATA.md - it stands in until real captures exist. */}
+<figure class="board overflow-hidden">
+  <div class="flex items-center gap-2 border-b border-line bg-paper-deep px-3 py-2">
+    <span class="flex gap-1.5" aria-hidden="true">
+      <span class="h-2.5 w-2.5 rounded-full bg-line"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-line"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-line"></span>
+    </span>
+    <span
+      class="ml-2 flex h-5 items-center px-1.5 font-condensed text-[0.65rem] font-bold uppercase tracking-wider text-white"
+      style={`background-color:${color}`}
+      aria-hidden="true">{logoText}</span
+    >
+  </div>
+
+  <div class="flex" aria-hidden="true">
+    <div class="hidden w-28 flex-none space-y-2 border-r border-line bg-paper px-3 py-4 sm:block">
+      {
+        [1, 2, 3, 4, 5].map((i) => (
+          <span class="block h-2 bg-line" style={`width:${90 - i * 8}%`} />
+        ))
+      }
+    </div>
+
+    <div class="flex-1 space-y-3 p-4">
+      <div class="flex items-center justify-between">
+        <span class="block h-3 w-24 bg-ink/20"></span>
+        <span class="block h-5 w-16" style={`background-color:${color}`}></span>
+      </div>
+      {
+        rows.map((row) => (
+          <div class="flex items-center gap-3 border border-line bg-white p-2.5">
+            <span class="h-6 w-6 flex-none" style={`background-color:${color};opacity:${row.tint}`} />
+            <span class="block h-2 bg-line" style={`width:${row.w}`} />
+            <span class="ml-auto block h-2 w-10 bg-yellow" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <figcaption class="border-t border-line bg-paper-deep px-3 py-2 text-xs text-ink-muted">
+    {captions[view]} for {name}. Not a screenshot of the product.
+  </figcaption>
+</figure>

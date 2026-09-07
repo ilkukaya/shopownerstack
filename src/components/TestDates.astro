@@ -1,0 +1,53 @@
+---
+import { formatDate } from '../lib/format';
+
+interface Props {
+  /**
+   * Both dates come from the tools collection. Prices are checked as part of a
+   * full retest, so they share `testDate`. On pages covering several tools,
+   * pass the oldest test date of the set.
+   */
+  testDate: Date;
+  nextRetest: Date;
+  planTested?: string;
+  class?: string;
+}
+
+const { testDate, nextRetest, planTested, class: className = '' } = Astro.props;
+
+const items = [
+  { label: 'Last full retest', value: formatDate(testDate), dt: testDate },
+  { label: 'Prices checked', value: formatDate(testDate), dt: testDate },
+  { label: 'Next retest due', value: formatDate(nextRetest), dt: nextRetest },
+];
+---
+
+<dl
+  class:list={[
+    'flex flex-wrap gap-x-8 gap-y-3 border-y border-line bg-paper-deep/60 px-4 py-3 text-sm',
+    className,
+  ]}
+>
+  {
+    items.map((item) => (
+      <div>
+        <dt class="font-condensed text-xs font-bold uppercase tracking-[0.14em] text-ink-muted">
+          {item.label}
+        </dt>
+        <dd class="font-semibold text-ink">
+          <time datetime={item.dt.toISOString().slice(0, 10)}>{item.value}</time>
+        </dd>
+      </div>
+    ))
+  }
+  {
+    planTested && (
+      <div>
+        <dt class="font-condensed text-xs font-bold uppercase tracking-[0.14em] text-ink-muted">
+          Plan tested
+        </dt>
+        <dd class="font-semibold text-ink">{planTested}</dd>
+      </div>
+    )
+  }
+</dl>

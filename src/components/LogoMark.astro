@@ -1,0 +1,26 @@
+---
+interface Props {
+  text: string;
+  color: string;
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { text, color, size = 'md', class: className = '' } = Astro.props;
+
+const sizes = {
+  sm: 'h-9 w-9 text-[0.7rem]',
+  md: 'h-12 w-12 text-[0.85rem]',
+  lg: 'h-16 w-16 text-base',
+};
+---
+
+<span
+  class:list={[
+    'flex flex-none items-center justify-center font-condensed font-bold uppercase leading-none tracking-tight text-white',
+    sizes[size],
+    className,
+  ]}
+  style={`background-color:${color}`}
+  aria-hidden="true">{text}</span
+>

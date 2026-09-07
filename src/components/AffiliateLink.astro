@@ -1,0 +1,32 @@
+---
+import { goUrl } from '../lib/urls';
+
+interface Props {
+  /** Tool slug. The link always goes to /go/<slug>/, never to the affiliate URL. */
+  slug: string;
+  name: string;
+  variant?: 'primary' | 'ghost' | 'plain';
+  label?: string;
+  class?: string;
+}
+
+const { slug, name, variant = 'primary', label, class: className = '' } = Astro.props;
+
+const classes = {
+  primary: 'btn btn-primary',
+  ghost: 'btn btn-ghost',
+  plain:
+    'font-semibold text-ink underline decoration-yellow decoration-[3px] underline-offset-2 hover:bg-yellow-wash',
+};
+---
+
+<a
+  href={goUrl(slug)}
+  target="_blank"
+  rel="sponsored nofollow noopener"
+  data-tool={slug}
+  class:list={[classes[variant], className]}
+>
+  {label ?? `See ${name} pricing`}
+  <span class="sr-only">(opens in a new tab, partner link)</span>
+</a>

@@ -1,0 +1,31 @@
+---
+import { SUBSCORES, SUBSCORE_LABELS, type SubscoreKey } from '../lib/site';
+import { score1 } from '../lib/format';
+
+interface Props {
+  subscores: Record<SubscoreKey, number>;
+}
+
+const { subscores } = Astro.props;
+---
+
+<ul class="space-y-3">
+  {
+    SUBSCORES.map((key) => {
+      const value = subscores[key];
+      return (
+        <li class="grid grid-cols-[7.5rem_1fr_2.5rem] items-center gap-3 sm:grid-cols-[9rem_1fr_2.5rem]">
+          <span class="font-condensed text-base font-semibold uppercase tracking-wide text-ink">
+            {SUBSCORE_LABELS[key]}
+          </span>
+          <span class="h-3 w-full bg-paper-deep" role="img" aria-label={`${SUBSCORE_LABELS[key]}: ${score1(value)} out of 10`}>
+            <span class="block h-full bg-yellow" style={`width:${value * 10}%`} />
+          </span>
+          <span class="text-right font-condensed text-base font-bold tabular-nums text-ink">
+            {score1(value)}
+          </span>
+        </li>
+      );
+    })
+  }
+</ul>
