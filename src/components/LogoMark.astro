@@ -1,4 +1,6 @@
 ---
+import { readableMark } from '../lib/color';
+
 interface Props {
   text: string;
   color: string;
@@ -7,6 +9,10 @@ interface Props {
 }
 
 const { text, color, size = 'md', class: className = '' } = Astro.props;
+
+// Brand colours are picked for recognition, not contrast. This keeps the hue
+// and guarantees the letters on the mark clear AA.
+const { bg, fg } = readableMark(color);
 
 const sizes = {
   sm: 'h-9 w-9 text-[0.7rem]',
@@ -17,10 +23,10 @@ const sizes = {
 
 <span
   class:list={[
-    'flex flex-none items-center justify-center font-condensed font-bold uppercase leading-none tracking-tight text-white',
+    'flex flex-none items-center justify-center font-condensed font-bold uppercase leading-none tracking-tight',
     sizes[size],
     className,
   ]}
-  style={`background-color:${color}`}
+  style={`background-color:${bg};color:${fg}`}
   aria-hidden="true">{text}</span
 >

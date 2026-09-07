@@ -10,6 +10,28 @@
 
 @import 'tailwindcss';
 
+/* Metric-matched fallbacks. Barlow Condensed is far narrower than any system
+   font, so without these the swap re-wraps every heading and costs about
+   0.12 CLS on heading-heavy pages. The size-adjust values were measured in
+   Chrome against Arial at the same size, not guessed. */
+@font-face {
+  font-family: 'Barlow Condensed Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 76.9%;
+  ascent-override: 105%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Barlow Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 97.1%;
+  ascent-override: 101%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+}
+
 /* ---------------------------------------------------------------------------
    Design tokens. Tailwind v4 is configured in CSS, so this @theme block IS the
    Tailwind config: every token below becomes a utility (--color-ink -> bg-ink,
@@ -21,7 +43,9 @@
   --color-ink-deep: #14202c;
   --color-ink-soft: #2b3d50;
   --color-ink-line: #35485d;
-  --color-ink-muted: #5c6f84;
+  /* Darkened from #5C6F84 so muted text clears AA (4.5:1) on paper-deep, the
+     darkest surface it is ever set on - 4.67:1 there, 5.83:1 on white. */
+  --color-ink-muted: #556779;
 
   --color-yellow: #f5c518;
   --color-yellow-deep: #d9ac0b;
@@ -37,8 +61,10 @@
   --color-bad-wash: #fbecea;
 
   /* Type */
-  --font-sans: 'Barlow', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-condensed: 'Barlow Condensed', 'Barlow', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Barlow', 'Barlow Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-condensed: 'Barlow Condensed', 'Barlow Condensed Fallback', ui-sans-serif, system-ui,
+    sans-serif;
 
   /* Rhythm */
   --radius-board: 2px;
@@ -328,14 +354,31 @@
     letter-spacing: 0.05em;
   }
 
-  .prose-shop code {
+  /* Inline code only. Fenced blocks are highlighted by Shiki and bring their
+     own background, so tinting them here would break the syntax contrast. */
+  .prose-shop :not(pre) > code {
     background: var(--color-paper-deep);
     padding: 0.1em 0.35em;
     font-size: 0.92em;
   }
 
-  /* Tables that must stay readable at 360px scroll inside their own box. */
+  .prose-shop pre {
+    border: 1px solid var(--color-line);
+    border-left: 4px solid var(--color-yellow);
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  /* Tables that must stay readable at 360px scroll inside their own box.
+     `position: relative` is load-bearing: sr-only captions and the visually
+     hidden "Winner:" labels in the comparison table are absolutely positioned,
+     and without a positioned ancestor they resolve against the initial
+     containing block, escape this scroll container at their unclipped x
+     position and make the whole page scroll sideways on a phone. */
   .table-scroll {
+    position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }

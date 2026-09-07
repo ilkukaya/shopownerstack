@@ -5,6 +5,12 @@ import Footer from '../components/Footer.astro';
 import { SITE, GA_ID } from '../lib/site';
 import { graph } from '../lib/schema';
 
+// Preloaded so the two faces that carry almost all the visible text arrive
+// before first paint. Without this the swap from the fallback metrics to Barlow
+// Condensed shifts every heading on the page and costs about 0.1 CLS.
+import barlowBody from '@fontsource/barlow/files/barlow-latin-400-normal.woff2?url';
+import barlowHeading from '@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2?url';
+
 interface Props {
   title: string;
   description: string;
@@ -36,6 +42,9 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+    <link rel="preload" href={barlowHeading} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={barlowBody} as="font" type="font/woff2" crossorigin />
+
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={fullTitle} />
@@ -43,7 +52,7 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_US" />
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
 
@@ -90,8 +99,6 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
       (function () {
         if (!GA_ID) return;
 
-        var sent = new WeakSet();
-
         document.addEventListener(
           'click',
           function (event) {
@@ -101,8 +108,6 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
             var path = new URL(link.href, location.origin).pathname;
             var match = path.match(/^\/go\/([^/]+)\/?$/);
             if (!match) return;
-            if (sent.has(link)) return;
-            sent.add(link);
 
             var payload = {
               tool: match[1],

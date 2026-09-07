@@ -1,4 +1,6 @@
 ---
+import { readableMark } from '../lib/color';
+
 interface Props {
   /** Brand colour of the product being illustrated. */
   color: string;
@@ -9,6 +11,9 @@ interface Props {
 }
 
 const { color, logoText, name, view = 'dispatch' } = Astro.props;
+
+// Same AA guarantee as LogoMark for the chip in the mock title bar.
+const chip = readableMark(color);
 
 const captions = {
   dispatch: 'Illustration of a dispatch board layout',
@@ -35,8 +40,8 @@ const rows = [
       <span class="h-2.5 w-2.5 rounded-full bg-line"></span>
     </span>
     <span
-      class="ml-2 flex h-5 items-center px-1.5 font-condensed text-[0.65rem] font-bold uppercase tracking-wider text-white"
-      style={`background-color:${color}`}
+      class="ml-2 flex h-5 items-center px-1.5 font-condensed text-[0.65rem] font-bold uppercase tracking-wider"
+      style={`background-color:${chip.bg};color:${chip.fg}`}
       aria-hidden="true">{logoText}</span
     >
   </div>

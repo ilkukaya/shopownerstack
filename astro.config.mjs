@@ -16,6 +16,11 @@ export default defineConfig({
       filter: (page) => !page.includes('/go/'),
     }),
   ],
+  markdown: {
+    // The site is a light theme; Shiki's default (github-dark) renders pale
+    // syntax colours that fail contrast on our paper surfaces.
+    shikiConfig: { theme: 'github-light', wrap: true },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
