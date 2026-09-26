@@ -3,7 +3,7 @@ import { isoDate } from './format';
 
 type Json = Record<string, unknown>;
 
-const abs = (path: string) => new URL(path, SITE.url).toString();
+export const abs = (path: string) => new URL(path, SITE.url).toString();
 
 export const ORG_ID = `${SITE.url}/#organization`;
 export const SITE_ID = `${SITE.url}/#website`;
@@ -15,12 +15,23 @@ export function organization(): Json {
     name: SITE.name,
     url: SITE.url,
     description: SITE.description,
-    email: SITE.email,
     foundingDate: SITE.founded,
+    logo: {
+      '@type': 'ImageObject',
+      url: abs('/icon-512.png'),
+      width: 512,
+      height: 512,
+    },
+    publishingPrinciples: abs('/how-we-test/'),
+    ethicsPolicy: abs('/affiliate-disclosure/'),
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'editorial',
+      url: abs('/contact/'),
+    },
   };
 }
 
-/** SearchAction is deliberately omitted: the site has no search endpoint. */
 export function website(): Json {
   return {
     '@type': 'WebSite',
@@ -29,7 +40,12 @@ export function website(): Json {
     url: SITE.url,
     description: SITE.description,
     publisher: { '@id': ORG_ID },
-    inLanguage: 'en',
+    inLanguage: 'en-US',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}/search/?q={search_term_string}` },
+      'query-input': 'required name=search_term_string',
+    },
   };
 }
 
@@ -56,60 +72,53 @@ export function faqPage(items: { q: string; a: string }[]): Json {
   };
 }
 
+/**
+ * Editorial review of a software product. Deliberately no AggregateRating: we
+ * publish one editorial rating, and marking that up as an aggregate of user
+ * ratings would misrepresent it.
+ */
 export function productReview(tool: {
   name: string;
   slug: string;
   website: string;
-  priceFrom: number;
+  priceFrom: number | null;
   score: number;
   verdict: string;
-  testDate: Date;
+  updatedDate: Date;
   pros: string[];
   cons: string[];
+  categoryLabel: string;
 }): Json {
+  const list = (items: string[]) => ({
+    '@type': 'ItemList',
+    itemListElement: items.map((name, i) => ({ '@type': 'ListItem', position: i + 1, name })),
+  });
+
   return {
-    '@type': 'Product',
+    '@type': 'SoftwareApplication',
+    '@id': abs(`/reviews/${tool.slug}/#software`),
     name: tool.name,
-    url: abs(`/reviews/${tool.slug}/`),
-    sameAs: tool.website,
-    category: 'BusinessApplication',
-    offers: {
-      '@type': 'Offer',
-      price: tool.priceFrom,
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      url: abs(`/go/${tool.slug}/`),
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: tool.score,
-      bestRating: 10,
-      worstRating: 0,
-      ratingCount: 1,
-      reviewCount: 1,
-    },
+    url: tool.website,
+    applicationCategory: 'BusinessApplication',
+    applicationSubCategory: tool.categoryLabel,
+    operatingSystem: 'Web, iOS, Android',
+    ...(tool.priceFrom !== null && {
+      offers: {
+        '@type': 'Offer',
+        price: tool.priceFrom,
+        priceCurrency: 'USD',
+        url: tool.website,
+      },
+    }),
     review: {
       '@type': 'Review',
       name: `${tool.name} review`,
       url: abs(`/reviews/${tool.slug}/`),
-      datePublished: isoDate(tool.testDate),
+      datePublished: isoDate(tool.updatedDate),
+      dateModified: isoDate(tool.updatedDate),
       reviewBody: tool.verdict,
-      positiveNotes: {
-        '@type': 'ItemList',
-        itemListElement: tool.pros.map((p, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: p,
-        })),
-      },
-      negativeNotes: {
-        '@type': 'ItemList',
-        itemListElement: tool.cons.map((c, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: c,
-        })),
-      },
+      positiveNotes: list(tool.pros),
+      negativeNotes: list(tool.cons),
       reviewRating: {
         '@type': 'Rating',
         ratingValue: tool.score,
@@ -118,6 +127,47 @@ export function productReview(tool: {
       },
       author: { '@id': ORG_ID },
       publisher: { '@id': ORG_ID },
+    },
+  };
+}
+
+/** Ranked list on /best/ pages. */
+export function itemList(name: string, items: { name: string; path: string }[]): Json {
+  return {
+    '@type': 'ItemList',
+    name,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    numberOfItems: items.length,
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      url: abs(item.path),
+    })),
+  };
+}
+
+/** WebPage node with dates and speakable summary for answer engines. */
+export function webPage(p: {
+  path: string;
+  title: string;
+  description: string;
+  dateModified?: Date;
+  type?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ContactPage';
+}): Json {
+  return {
+    '@type': p.type ?? 'WebPage',
+    '@id': abs(`${p.path}#webpage`),
+    url: abs(p.path),
+    name: p.title,
+    description: p.description,
+    isPartOf: { '@id': SITE_ID },
+    publisher: { '@id': ORG_ID },
+    inLanguage: 'en-US',
+    ...(p.dateModified && { dateModified: isoDate(p.dateModified) }),
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '[data-answer]'],
     },
   };
 }
@@ -141,6 +191,7 @@ export function article(a: {
   path: string;
   publishDate: Date;
   updatedDate: Date;
+  image?: string;
 }): Json {
   return {
     '@type': 'Article',
@@ -152,7 +203,8 @@ export function article(a: {
     dateModified: isoDate(a.updatedDate),
     author: { '@id': ORG_ID },
     publisher: { '@id': ORG_ID },
-    inLanguage: 'en',
+    inLanguage: 'en-US',
+    ...(a.image && { image: abs(a.image) }),
   };
 }
 

@@ -1,0 +1,48 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { SITE } from '../lib/site';
+---
+
+<ProseLayout
+  title="Terms of use"
+  kicker="Legal"
+  path="/terms/"
+  updated={new Date('2026-09-26')}
+  description={`The terms that apply when you use ${SITE.name}. In short: the content is general information, check prices with the vendor, and use the site lawfully.`}
+>
+  <h2>Information, not advice</h2>
+  <p>
+    Reviews, ratings, guides and calculator results are general information and our editorial
+    opinion. They are not financial, legal or tax advice. Always confirm pricing, features and
+    contract terms with the vendor before you buy.
+  </p>
+
+  <h2>Accuracy</h2>
+  <p>
+    We work to keep pages accurate and show when each one was last updated, but vendors change
+    products and prices without notice. We cannot guarantee that everything is current, and we are
+    not responsible for decisions made on the basis of out-of-date information.
+  </p>
+
+  <h2>Third-party sites</h2>
+  <p>
+    Links to vendors and other sites are provided for convenience. We do not control those sites
+    and are not responsible for their content, products or privacy practices. Some links are
+    partner links; see our <a href="/affiliate-disclosure/">affiliate disclosure</a>.
+  </p>
+
+  <h2>Trademarks</h2>
+  <p>
+    Product names and trademarks belong to their owners and are used only to identify the products
+    reviewed. Their use does not imply endorsement by or affiliation with those companies.
+  </p>
+
+  <h2>Using our content</h2>
+  <p>
+    You are welcome to quote short passages with a link back to the source page. Please do not
+    republish whole pages without permission.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions about these terms? <a href="/contact/">Contact us</a>.</p>
+</ProseLayout>

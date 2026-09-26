@@ -1,12 +1,15 @@
 ---
 import LogoMark from './LogoMark.astro';
+import ScoreBadge from './ScoreBadge.astro';
 import AffiliateLink from './AffiliateLink.astro';
 import { toolUrl } from '../lib/urls';
-import { money, score1 } from '../lib/format';
+import { priceLabel } from '../lib/format';
 import { TEAM_SIZE_LABELS, type TeamSize } from '../lib/site';
 
 interface Props {
   rank: number;
+  /** Short label such as "Best overall" or "Best for solo operators". */
+  award?: string;
   tool: {
     name: string;
     slug: string;
@@ -14,7 +17,8 @@ interface Props {
     logoColor: string;
     score: number;
     bestFor: string;
-    priceFrom: number;
+    priceFrom: number | null;
+    freeTrial: string;
     teamSizes: TeamSize[];
     pros: string[];
     cons: string[];
@@ -22,62 +26,66 @@ interface Props {
   };
 }
 
-const { rank, tool } = Astro.props;
+const { rank, award, tool } = Astro.props;
 ---
 
 <article
-  class="board p-5 sm:p-6"
+  class:list={['card scroll-mt-24 p-5 sm:p-6', rank === 1 && 'ring-2 ring-brand/70']}
   data-tool-card
   data-sizes={tool.teamSizes.join(' ')}
   id={`pick-${tool.slug}`}
 >
-  <div class="flex flex-wrap items-start gap-4">
-    <span
-      class="flex h-10 w-10 flex-none items-center justify-center bg-ink font-condensed text-xl font-bold leading-none text-yellow"
-      aria-hidden="true">{rank}</span
-    >
-    <LogoMark text={tool.logoText} color={tool.logoColor} size="md" />
+  <div class="flex items-start gap-4">
+    <div class="relative flex-none">
+      <LogoMark text={tool.logoText} color={tool.logoColor} size="md" />
+      <span
+        class="absolute -left-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-night text-xs font-bold text-white ring-2 ring-white"
+        aria-hidden="true">{rank}</span
+      >
+    </div>
 
     <div class="min-w-0 flex-1">
-      <h3 class="font-condensed text-2xl font-bold uppercase leading-none sm:text-3xl">
+      {award && <p class="pill pill-brand mb-1.5">{award}</p>}
+      <h3 class="text-xl leading-tight sm:text-2xl">
         <span class="sr-only">Number {rank}: </span>
-        <a href={toolUrl(tool.slug)} class="no-underline hover:underline">{tool.name}</a>
+        <a href={toolUrl(tool.slug)} class="text-ink no-underline hover:text-brand">{tool.name}</a>
       </h3>
-      <p class="mt-1.5 text-ink-soft">{tool.bestFor}</p>
+      <p class="mt-1 text-[0.95rem] leading-snug text-ink-soft">{tool.bestFor}</p>
     </div>
 
-    <div class="flex flex-none items-baseline gap-1.5 font-condensed leading-none">
-      <span class="text-3xl font-bold">{score1(tool.score)}</span>
-      <span class="text-sm font-semibold text-ink-muted">/ 10</span>
-    </div>
+    <ScoreBadge score={tool.score} />
   </div>
 
-  <dl class="mt-4 flex flex-wrap gap-x-8 gap-y-2 border-y border-line py-3 text-sm">
-    <div class="flex gap-2">
-      <dt class="font-condensed font-bold uppercase tracking-[0.1em] text-ink-muted">From</dt>
-      <dd class="font-semibold">{money(tool.priceFrom)}/mo</dd>
+  <dl class="mt-5 grid grid-cols-2 gap-3 rounded-xl bg-paper p-3 text-sm sm:grid-cols-3">
+    <div>
+      <dt class="text-ink-muted">Price</dt>
+      <dd class="font-semibold text-ink">{priceLabel(tool.priceFrom)}</dd>
     </div>
-    <div class="flex gap-2">
-      <dt class="font-condensed font-bold uppercase tracking-[0.1em] text-ink-muted">Fits</dt>
-      <dd class="font-semibold">{tool.teamSizes.map((s) => TEAM_SIZE_LABELS[s]).join(', ')}</dd>
+    <div>
+      <dt class="text-ink-muted">Free trial</dt>
+      <dd class="font-semibold text-ink">{tool.freeTrial}</dd>
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <dt class="text-ink-muted">Team size</dt>
+      <dd class="font-semibold text-ink">{tool.teamSizes.map((s) => TEAM_SIZE_LABELS[s]).join(', ')}</dd>
     </div>
   </dl>
 
-  <p class="mt-4 leading-relaxed">{tool.verdict}</p>
+  <p class="mt-4 leading-relaxed text-ink-soft">{tool.verdict}</p>
 
-  <div class="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
-    <p class="text-[0.95rem] leading-snug">
-      <span class="font-condensed font-bold uppercase tracking-[0.1em] text-good">Best bit</span>
-      <span class="mt-0.5 block">{tool.pros[0]}</span>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+    <p class="text-[0.95rem] leading-snug text-ink-soft">
+      <span class="block text-sm font-semibold text-good">Standout</span>
+      {tool.pros[0]}
     </p>
-    <p class="text-[0.95rem] leading-snug">
-      <span class="font-condensed font-bold uppercase tracking-[0.1em] text-bad">Worst bit</span>
-      <span class="mt-0.5 block">{tool.cons[0]}</span>
+    <p class="text-[0.95rem] leading-snug text-ink-soft">
+      <span class="block text-sm font-semibold text-bad">Watch out for</span>
+      {tool.cons[0]}
     </p>
   </div>
 
-  <div class="mt-5 flex flex-wrap gap-3">
-    <AffiliateLink slug={tool.slug} name={tool.name} variant="primary" />
-    <a href={toolUrl(tool.slug)} class="btn btn-ghost">Read the {tool.name} review</a>
+  <div class="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+    <AffiliateLink slug={tool.slug} name={tool.name} placement="ranked-list" />
+    <a href={toolUrl(tool.slug)} class="btn btn-secondary">Read full review</a>
   </div>
 </article>

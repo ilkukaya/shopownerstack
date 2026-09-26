@@ -1,13 +1,30 @@
+const siteUrl = (import.meta.env.SITE as string | undefined)?.replace(/\/$/, '') ??
+  'https://shopownerstack.netlify.app';
+
 export const SITE = {
   name: 'ShopOwnerStack',
-  domain: 'shopownerstack.com',
-  url: 'https://shopownerstack.com',
-  tagline: 'Software reviews for people who run the shop',
+  url: siteUrl,
+  tagline: 'Independent software reviews for local service businesses',
   description:
-    'Hands-on reviews and comparisons of the software local service businesses actually run on: scheduling, dispatch, invoicing, payments and phones. Every tool is bought, set up and used before it is scored.',
-  email: 'hello@shopownerstack.com',
-  founded: '2025',
+    'Independent, research-based reviews and comparisons of the software local service businesses run on: scheduling, dispatch, invoicing, payments and phones. Pricing checked against vendor pages, sources cited on every review.',
+  founded: '2026',
 } as const;
+
+/**
+ * Only production builds are indexable. Netlify sets CONTEXT to
+ * `production`, `deploy-preview` or `branch-deploy`; locally it is unset and we
+ * treat the build as production so `pnpm preview` matches the live site.
+ */
+export const IS_INDEXABLE = (process.env.CONTEXT ?? 'production') === 'production';
+
+/** Google AdSense publisher id, e.g. `ca-pub-1234567890123456`. Empty = no ads. */
+export const ADSENSE_CLIENT = (import.meta.env.PUBLIC_ADSENSE_CLIENT ?? '') as string;
+
+/** Optional search-engine verification tokens (meta tag method). */
+export const VERIFY = {
+  google: (import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION ?? '') as string,
+  bing: (import.meta.env.PUBLIC_BING_SITE_VERIFICATION ?? '') as string,
+};
 
 /** Tool category keys. Kept in one place so schema, routes and labels agree. */
 export const CATEGORIES = [
@@ -105,17 +122,16 @@ export const SUBSCORE_LABELS: Record<SubscoreKey, string> = {
 };
 
 export const NAV = [
+  { href: '/best/', label: 'Best software' },
   { href: '/reviews/', label: 'Reviews' },
   { href: '/compare/', label: 'Compare' },
-  { href: '/best/', label: 'Best of' },
   { href: '/guides/', label: 'Guides' },
-  { href: '/tools/job-pricing-calculator/', label: 'Calculator' },
-  { href: '/how-we-test/', label: 'How we test' },
+  { href: '/tools/job-pricing-calculator/', label: 'Rate calculator' },
 ] as const;
 
 /** The one-line disclosure that has to appear anywhere we send affiliate traffic. */
 export const DISCLOSURE =
-  'Some links on this page are partner links. If you buy through them we may earn a commission at no extra cost to you. It never changes a score or a ranking.';
+  'Some links on this page are partner links. If you buy through them we may earn a commission at no extra cost to you. Commissions never change a rating or a ranking.';
 
 /** GA4. Left empty in most environments; nothing is loaded when it is empty. */
-export const GA_ID = import.meta.env.PUBLIC_GA_ID ?? '';
+export const GA_ID = (import.meta.env.PUBLIC_GA_ID ?? '') as string;

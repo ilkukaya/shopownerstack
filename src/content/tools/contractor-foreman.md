@@ -9,125 +9,164 @@ partnerNetwork: partnerstack
 categories:
   - field-service
   - invoicing
-bestFor: Small contractors running multi-week projects who need estimating, change orders and job costing
+bestFor: Small contractors running multi-week projects who need estimating, change orders and job costing at a low price
 teamSizes:
   - 2-5
   - 6-15
   - 16+
 priceFrom: 49
+pricingModel: Tiers by user allowance, billed annually or quarterly (no month-to-month); rate locked at sign-up
+freeTrial: 30 days
+freePlan: false
 pricing:
   - name: Basic
-    users: 3 users
-    monthly: 69
+    users: 1 user
+    monthly: null
     annual: 49
-    forWhom: A small builder who mainly needs estimates, invoices and a project schedule
+    forWhom: A solo contractor who wants estimates, scheduling and invoicing in one place. Annual billing only.
   - name: Standard
-    users: 8 users
-    monthly: 119
-    annual: 99
-    forWhom: The tier where change orders and job costing become usable
-  - name: Pro
-    users: 15 users
-    monthly: 199
+    users: Up to 3 users
+    monthly: null
+    annual: 105
+    forWhom: A small crew starting to track job costs. About $132 a month on quarterly billing.
+  - name: Plus
+    users: Up to 8 users
+    monthly: null
     annual: 166
-    forWhom: Contractors running several projects at once with subcontractor paperwork
-score: 7.7
+    forWhom: Contractors with an office person and several field leads. About $206 a month on quarterly billing.
+  - name: Pro
+    users: Up to 15 users
+    monthly: null
+    annual: 221
+    forWhom: Firms running several projects at once. About $282 a month on quarterly billing.
+  - name: Unlimited
+    users: Unlimited users
+    monthly: null
+    annual: 332
+    forWhom: Larger contractors who want every seat covered. About $415 a month on quarterly billing.
+score: 7.3
 subscores:
   setup: 6.4
-  scheduling: 7.5
-  invoicing: 8.6
-  communication: 7.3
-  reporting: 8.8
-  value: 8.7
-testDate: 2026-07-16
-nextRetest: 2027-01-12
-planTested: Standard, billed annually, six users
-measurements:
-  - test: Signup to first invoice emailed to a customer
-    result: 1 hour 48 minutes
-  - test: Build an estimate from a cost database and convert it to a budget
-    result: 12 min 30 s
-  - test: Raise a change order and get it signed by the client
-    result: 3 min 15 s, e-signature included
-  - test: Produce a job cost report showing committed vs actual
-    result: Available on Standard, 2 clicks
-  - test: Export projects, estimates and invoices
-    result: Self-serve CSV and PDF per module
-  - test: First reply from support, live chat, weekday morning
-    result: 9 minutes
+  scheduling: 7
+  invoicing: 7.5
+  communication: 6.2
+  reporting: 7.8
+  value: 8.3
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $49/month (Basic, 1 user, billed annually)
+  - label: Free trial
+    value: 30 days
+  - label: Pricing model
+    value: Tiers by user count; annual or quarterly billing
+  - label: Price lock
+    value: Rate locked at sign-up, per the vendor
+  - label: Mobile apps
+    value: iOS and Android
+  - label: Best for
+    value: Remodelers, builders and specialty contractors doing project work
+sources:
+  - title: Contractor Foreman homepage and pricing
+    url: https://contractorforeman.com/
+  - title: Contractor Foreman features
+    url: https://contractorforeman.com/features/
+  - title: Contractor Foreman pricing on Capterra
+    url: https://www.capterra.com/p/166113/Contractor-Foreman/pricing/
+  - title: Contractor Foreman reviews on Capterra
+    url: https://www.capterra.com/p/166113/Contractor-Foreman/reviews/
+  - title: Contractor Foreman review 2026, pricing and who it's for (Contractor ToolStack)
+    url: https://contractortoolstack.com/software/contractor-foreman/
 pros:
-  - Real job costing with committed cost, actual cost and margin per project, at a price nothing else matches
-  - Change orders are a first-class object with e-signature, which stops the most common way small contractors lose money
-  - Covers estimating, scheduling, daily logs, safety meetings, submittals and subcontractor documents in one product
-  - Priced by user blocks rather than per seat, so the whole office can have a login
+  - Low entry price for a full construction management suite, starting at $49 a month billed annually
+  - Covers estimates, bids, change orders, job costing, daily logs, time cards and invoicing in one product
+  - Tier pricing by user allowance, not per seat, and the vendor advertises a lifetime price lock
+  - Capterra users rate it about 4.5 out of 5 across more than 800 reviews
 cons:
-  - Setup is genuinely long; nearly two hours to a first invoice and days to configure properly
-  - The interface is dense and dated, with far more menu items than a small shop needs
-  - The mobile app is functional but nobody would call it pleasant
-  - Overkill and actively slower for same-day service work
+  - Large feature set means a real learning curve, especially for field crews new to digital reporting
+  - No month-to-month option; the cheapest plan is annual only and quarterly costs more
+  - Reviewers say the built-in cost database is missing many everyday items
+  - Customer communication tools (texts, online booking, review requests) are weaker than service-focused apps
 getItIf:
-  - Your work is projects measured in weeks, not visits measured in hours
-  - Scope creep and unsigned change orders are costing you money
-  - You need to know committed versus actual cost while a job is still running
-  - You will invest a week in setup to get controls that usually cost five times this
+  - You run projects that last weeks or months and lose money on change orders and cost overruns
+  - You want estimating, job costing and project paperwork in one place for a small monthly cost
+  - You can commit to a year and spend time setting it up properly
 skipItIf:
-  - You run same-day service calls and want a dispatch board
-  - Nobody in the business has time to configure a cost code structure
-  - Your crew will refuse to use anything that looks like enterprise software
-  - You are a solo operator who just needs quotes and invoices
+  - Your work is short service calls where dispatch, texting and quick invoicing matter most
+  - You want to pay month to month
+  - Your crew needs something they can learn in an afternoon
 verdict: >-
-  Contractor Foreman gives a small builder real project cost control - change orders, committed cost,
-  budget versus actual - for roughly a tenth of what construction ERP normally costs. You pay for it
-  in setup time and a dense interface, and it is the wrong tool entirely for same-day service work.
+  Contractor Foreman packs a full construction management toolkit, including estimating, change
+  orders and job costing, into one of the lowest price points in the category. In our assessment it
+  is excellent value for small project-based contractors willing to invest in setup, but it is the
+  wrong tool for service-call businesses and the learning curve is real.
 faq:
   - q: How much does Contractor Foreman cost?
-    a: Basic is $49 a month billed annually for three users, Standard $99 for eight users and Pro $166 for fifteen. Job costing and change orders are usable from Standard, which is the tier most contractors actually need.
-  - q: Is Contractor Foreman good for service work?
-    a: No. It is built for projects that run for weeks and get billed in stages. For same-day service calls the extra structure slows every job down; use Housecall Pro or Jobber instead.
-  - q: How long does setup really take?
-    a: Budget a week of part-time work. Our first invoice took 1 hour 48 minutes, but a usable cost code structure, estimate templates and a populated cost database took several days on top of that.
-  - q: Does it handle subcontractors?
-    a: Yes, including subcontractor agreements, insurance certificate expiry tracking and lien waivers. That paperwork is a large part of why small contractors choose it over cheaper service-focused tools.
+    a: >-
+      Contractor Foreman starts at $49 a month billed annually for one user. 2026 pricing listings
+      show Standard at $105 (3 users), Plus at $166 (8 users), Pro at $221 (15 users) and Unlimited at
+      $332 a month on annual billing, with quarterly billing costing more. Confirm on the vendor's site.
+  - q: Does Contractor Foreman have a free trial?
+    a: Yes, a 30-day free trial. There is no free plan.
+  - q: Can you pay for Contractor Foreman monthly?
+    a: >-
+      Not month to month. Plans are billed annually or quarterly, and the Basic plan is annual only.
+      The vendor says your rate is locked when you sign up.
+  - q: Is Contractor Foreman good for remodelers and general contractors?
+    a: >-
+      That is its target market. It covers bids, estimates, change orders, schedules, daily logs,
+      job costing and invoicing. Service trades doing short same-day jobs are usually better served
+      by Jobber or Housecall Pro.
+  - q: Contractor Foreman vs Tradify, which should I pick?
+    a: >-
+      Pick Contractor Foreman for multi-week projects that need change orders and job costing; pick
+      Tradify for simple quoting, jobs and timesheets on shorter work. See our Tradify vs Contractor
+      Foreman comparison.
 ---
 
-## Who is Contractor Foreman actually for?
+## Is Contractor Foreman worth it?
 
-Small general contractors, remodellers and specialty trades whose jobs run for weeks and
-get billed in stages. If you build things, this is aimed at you. If you fix things and
-leave the same day, it is not, and the extra structure will slow you down on every job.
+For a small contractor running projects that last weeks or months, yes. It offers estimating, change orders, job costing and project paperwork from $49 a month billed annually, a price point well below most construction management software.
 
-We ran the Standard plan with six users for eight weeks on two live remodels and one
-commercial fit-out.
+It is the wrong choice for service-call businesses. If your day is short jobs, dispatch and texting customers, a field service app such as [Jobber](/reviews/jobber/) or [Housecall Pro](/reviews/housecall-pro/) will fit better.
 
-## Is the job costing real?
+## How much does Contractor Foreman cost in 2026?
 
-Yes, and this is the entire reason to buy it. You get an estimate that becomes a budget,
-purchase orders and subcontractor commitments that count as committed cost, actual cost
-from bills and timesheets, and a report showing margin while the job is still running.
+Contractor Foreman's site advertises plans from $49 a month. Pricing listings on Capterra and third-party reviews from 2026 show these annual-billing rates:
 
-That is a control most small contractors simply do not have. They find out a job lost money
-when the last invoice goes out. At $99 a month for eight users, nothing else we tested puts
-that in reach.
+- **Basic:** $49 a month, 1 user, annual only.
+- **Standard:** $105 a month, up to 3 users.
+- **Plus:** $166 a month, up to 8 users.
+- **Pro:** $221 a month, up to 15 users.
+- **Unlimited:** $332 a month, unlimited users.
 
-## What about change orders?
+Quarterly billing costs roughly 25 percent more, and there is no month-to-month option. The vendor advertises a price lock, so the rate you sign up at is the rate you keep. Some older vendor pages show lower figures, so confirm the current price before you buy.
 
-A change order is a proper object here: scope, price, schedule impact, and an e-signature
-from the client. It took 3 minutes 15 seconds end to end.
+## What does Contractor Foreman do well?
 
-Unsigned scope creep is the most common way a small contractor loses a job's profit. Making
-the signed change order the path of least resistance is worth more than most of the feature
-list.
+It covers the project side of contracting that service-focused apps skip. According to the vendor's features pages, that includes bids and estimates, a live cost database, takeoffs, change orders, schedules, daily logs, time cards, purchase orders, job costing and invoicing.
 
-## How bad is the setup?
+Job costing and change orders are the core value. Small contractors often lose margin on extra work that was agreed verbally and never billed, and on jobs where costs drift past the estimate without anyone noticing. A system that ties change orders and actual costs back to the estimate addresses both. Reviewers on Capterra describe quick wins on scheduling, daily reports and job cost tracking.
 
-Bad enough to be a real risk. A first invoice took nearly two hours. Configuring cost codes,
-estimate templates and a cost database properly took several more days spread across a week.
+## What are the common complaints about Contractor Foreman?
 
-If nobody in the business has that week, do not buy this. It will end up used as an
-expensive invoice generator and you will get none of the value.
+The learning curve is the theme that appears most often. The product is large, and reviewers say learning to use it well is largely up to you, with field crews who are new to digital reporting taking longest.
 
-## Should a service business consider it at all?
+Other themes from public reviews:
 
-No. Look at [Housecall Pro](/reviews/housecall-pro/) or [Jobber](/reviews/jobber/) for
-dispatch-driven work, or [Tradify](/reviews/tradify/) if quoting and timesheets are the gap.
-Contractor Foreman only makes sense when a job is a project.
+- **Cost database gaps.** Users say the built-in database is missing many everyday items, so expect to build your own.
+- **Scheduling complexity.** Some find the scheduling tools less intuitive for complex projects.
+- **Customisation and support.** Limited form and workflow customisation, and a few reports of support dropping off after the sale.
+
+## How does Contractor Foreman compare with Tradify?
+
+[Tradify](/reviews/tradify/) is simpler and priced per user, and suits trades doing shorter jobs with quoting and timesheets. Contractor Foreman is built for longer projects with change orders and job costing, and its tier pricing is cheaper for larger crews. See [Tradify vs Contractor Foreman](/compare/tradify-vs-contractor-foreman/).
+
+## Who should choose Contractor Foreman?
+
+Remodelers, small builders and specialty contractors with two to fifteen people who want to know whether each project is making money, and who can commit to a year and a proper setup. Use the 30-day trial to load one real project end to end before you pay. If it is not working out, see our [Contractor Foreman alternatives](/alternatives/contractor-foreman/).
+
+## How we rated Contractor Foreman
+
+This is an editorial rating based on Contractor Foreman's published pricing and feature pages, 2026 pricing listings and themes in public user reviews, weighted using our [how we test](/how-we-test/) rubric. We did not run a paid, hands-on test. Value and reporting score highest; setup and customer communication score lowest.

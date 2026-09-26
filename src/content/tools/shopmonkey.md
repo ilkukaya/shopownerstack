@@ -9,122 +9,191 @@ partnerNetwork: partnerstack
 categories:
   - auto-repair
   - invoicing
-bestFor: Independent repair shops that want estimating, parts ordering and payments in one modern tool
+bestFor: Independent repair shops that want estimates, texting, payments and parts ordering in one cloud tool
 teamSizes:
   - solo
   - 2-5
   - 6-15
   - 16+
-priceFrom: 199
+priceFrom: 215
+pricingModel: Flat monthly fee per shop, three published tiers, Multi-Shop quoted separately
+freeTrial: No free trial advertised - demo on request
+freePlan: false
 pricing:
   - name: Basic
-    users: Up to 2 users
-    monthly: 229
-    annual: 199
-    forWhom: A one or two bay shop replacing paper tickets
-  - name: Clutch
-    users: Up to 6 users
-    monthly: 429
-    annual: 379
-    forWhom: The tier with digital vehicle inspections and labour guide integration
-  - name: Elite
-    users: Unlimited users
-    monthly: 699
-    annual: 599
-    forWhom: Multi-bay shops needing profitability reporting and inventory control
-score: 8.3
+    users: 1 shop
+    monthly: 239
+    annual: 215
+    forWhom: A shop moving off paper or older desktop software that needs estimates, invoices, texting and payments
+  - name: Clever
+    users: 1 shop
+    monthly: 399
+    annual: 359
+    forWhom: Shops that want labor guides, inventory, a time clock and the built-in QuickBooks Online sync
+  - name: Genius
+    users: 1 shop
+    monthly: 499
+    annual: 449
+    forWhom: Established shops that want the full feature set and deeper reporting
+  - name: Multi-Shop
+    users: 2+ locations
+    monthly: null
+    annual: null
+    forWhom: Quote-based. Groups running several locations from one account
+score: 7.9
 subscores:
-  setup: 8.1
-  scheduling: 8
-  invoicing: 8.9
-  communication: 8.8
-  reporting: 8.2
-  value: 7.5
-testDate: 2026-08-13
-nextRetest: 2027-02-09
-planTested: Clutch, billed annually, five users
-measurements:
-  - test: Vehicle in to estimate sent to the customer's phone
-    result: 9 min 40 s including a photo inspection
-  - test: Customer approves an estimate line by line from their phone
-    result: Supported; partial approval preserved as a declined-work record
-  - test: Order a part from an integrated supplier without leaving the ticket
-    result: 4 suppliers connected, 1 min 20 s per line
-  - test: Take payment via a texted link
-    result: 38 seconds from send to paid
-  - test: Export customers, vehicles, orders and invoices
-    result: Self-serve CSV per object
-  - test: First reply from support, live chat, weekday morning
-    result: 8 minutes
+  setup: 8
+  scheduling: 7.8
+  invoicing: 8.6
+  communication: 8.5
+  reporting: 7.6
+  value: 7.2
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $215/mo billed annually ($239 month to month)
+  - label: Pricing model
+    value: Flat fee per shop, three tiers plus quoted Multi-Shop
+  - label: Free trial
+    value: None advertised, demo on request
+  - label: Mobile apps
+    value: iOS and Android
+  - label: Founded
+    value: 2016, California
+  - label: Best for
+    value: Independent general repair shops
+sources:
+  - title: Shopmonkey pricing page
+    url: https://www.shopmonkey.io/pricing
+  - title: Shopmonkey pricing on G2
+    url: https://www.g2.com/products/shopmonkey/pricing
+  - title: Shopmonkey reviews on Capterra
+    url: https://www.capterra.com/p/169022/Shopmonkey/reviews/
+  - title: Shopmonkey vs Tekmetric on Capterra
+    url: https://www.capterra.com/compare/169022-190952/Shopmonkey-vs-Tekmetric
+  - title: Shopmonkey review (ShopTechScore)
+    url: https://shoptechscore.com/shopmonkey-review/
+  - title: Shopmonkey company profile on Crunchbase
+    url: https://www.crunchbase.com/organization/shopmonkey-io
 pros:
-  - Digital vehicle inspections with photos are the single best tool for justifying work to a sceptical customer
-  - Line-by-line estimate approval from the customer's phone raises approved ticket value and records declined work
-  - Parts ordering from inside the ticket removes the tab-switching that eats a service writer's day
-  - Declined work becomes a follow-up list, which is the cheapest revenue in a repair shop
+  - Published, flat per-shop pricing, so you can budget without a sales call
+  - Estimates, digital inspections, texting, e-signatures and integrated payments are all in one cloud tool
+  - Capterra reviewers frequently praise the modern interface and how quickly staff pick it up
+  - Many reviewers single out fast, responsive support
 cons:
-  - Expensive at the tier where inspections live, and Basic is too thin for most shops
-  - Accounting integration is competent but shallower than a dedicated shop management veteran
-  - Tyre and fleet-specific workflows need workarounds
-  - Labour guide access is a separate subscription with the provider
+  - More expensive at every tier than Tekmetric's published pricing
+  - Labor guides, inventory and the QuickBooks Online integration sit on Clever and above
+  - Some long-time users in public reviews say major updates made common tasks take more clicks
+  - A few reviewers mention cancellation notice terms and pricing as sore points
 getItIf:
-  - You want customers to approve work from photos rather than a phone call they distrust
-  - Your service writers are losing time switching between the ticket and supplier catalogues
-  - Declined work is currently forgotten rather than followed up
-  - You are replacing paper tickets or software from before smartphones
+  - You want customers to see photos and approve work from their phone
+  - You value a clean, modern interface your service writers can learn quickly
+  - You prefer published pricing and a month-to-month option
+  - You are replacing paper tickets or an older desktop system
 skipItIf:
-  - You are a one-bay shop and the Clutch price is a real share of monthly profit
-  - Your work is mostly tyres or fleet contracts
-  - You need deep accounting and inventory more than customer-facing polish
-  - You already run a shop management system your team knows and reporting is your only gripe
+  - Price is the deciding factor and Tekmetric's lower tiers cover what you need
+  - You need labor guides and inventory but cannot justify the Clever tier
+  - Your work is mostly heavy-duty or fleet, where specialist tools fit better
+  - Your team is settled on a system and the only gripe is reporting
 verdict: >-
-  Shopmonkey is the best modern shop management system for an independent repair shop, mainly because
-  digital inspections and phone approval change the conversation about what work gets authorised. It
-  is priced for a shop with several bays, and the entry plan is too thin to bother with.
+  Shopmonkey is a strong, modern shop management system with published pricing and well-reviewed
+  support. In our assessment it earns its place on the customer-facing side, with inspections, texting
+  and payments in one flow, but it costs more than Tekmetric at comparable tiers, and several features
+  most shops want sit on the $359 Clever plan.
 faq:
   - q: How much does Shopmonkey cost?
-    a: Basic is $199 a month billed annually for up to two users, Clutch $379 for up to six and Elite $599 for unlimited. Digital vehicle inspections, which are the reason most shops buy it, start on Clutch.
-  - q: Does Shopmonkey include a labour guide?
-    a: It integrates with the major labour guide providers but the guide itself is a separate subscription with that provider. Budget for it; comparisons that leave it out understate the real monthly cost.
-  - q: Do digital vehicle inspections actually increase approvals?
-    a: In our test, showing a customer a photo of the worn component alongside the line item made partial approvals far more common than a phone call did. It also creates a record of declined work you can follow up, which is the cheaper half of the benefit.
+    a: >-
+      Shopmonkey's published plans are Basic at $215 a month billed annually ($239 month to month),
+      Clever at $359 ($399) and Genius at $449 ($499). Multi-Shop pricing is quote-based. Prices change,
+      so confirm on Shopmonkey's pricing page.
+  - q: Does Shopmonkey have a free trial?
+    a: >-
+      No free trial is advertised. Shopmonkey offers a demo, and the month-to-month option means you are
+      not locked into an annual contract if you want to try it.
+  - q: Which Shopmonkey plan includes digital vehicle inspections?
+    a: >-
+      Third-party summaries of Shopmonkey's plans disagree on this, so check the feature table on the
+      pricing page for the tier you are considering before you sign. Labor guides, inventory and the
+      QuickBooks Online integration are listed on Clever and above.
+  - q: Is Shopmonkey good for a small one or two bay shop?
+    a: >-
+      It can be, since pricing is per shop rather than per user. The question is whether Basic covers what
+      you need. If you need labor guides and inventory, the Clever plan is a meaningful monthly cost for a
+      small shop, and Tekmetric's Start plan is cheaper.
   - q: Shopmonkey or Tekmetric?
-    a: Shopmonkey has the better customer-facing experience and a cleaner interface. Tekmetric has stronger profitability reporting and parts matrix control. Choose on whether your problem is approvals or margin.
+    a: >-
+      Tekmetric is cheaper on published pricing and all plans include unlimited users. Shopmonkey is often
+      praised for its interface and support. See our Shopmonkey vs Tekmetric comparison for a side-by-side.
 ---
 
-## What changes when you buy Shopmonkey?
+## What is Shopmonkey?
 
-The conversation with the customer. A digital vehicle inspection with photos, sent to their
-phone, with each recommended item approvable on its own, is a fundamentally different sale
-from a service writer ringing to say the brakes need doing.
+Shopmonkey is cloud-based shop management software for independent auto repair shops. It covers
+estimates, repair orders, digital vehicle inspections, customer texting, integrated payments and parts
+ordering, and it runs in a browser with iOS and Android apps.
 
-We ran the Clutch plan on a five-bay independent shop for six weeks and put 63 repair
-orders through it.
+The company was founded in 2016 and is based in California. It is one of the better known modern
+alternatives to older desktop shop systems, and it competes most directly with
+[Tekmetric](/reviews/tekmetric/).
 
-## How fast is the estimate?
+## How much does Shopmonkey cost?
 
-Vehicle in to estimate on the customer's phone took 9 minutes 40 seconds including a photo
-inspection. That is fast enough to do on every car rather than only on the ones you expect
-to be expensive.
+Shopmonkey starts at $215 a month billed annually, or $239 month to month, for the Basic plan. Clever
+is $359 ($399 monthly) and Genius is $449 ($499 monthly), based on the vendor's published pricing
+checked on 2026-09-26. Multi-Shop is quote-based.
 
-Line-by-line approval matters more than the speed. Customers who would decline a whole
-estimate will approve half of it, and the declined half becomes a follow-up list rather than
-a lost conversation.
+Pricing is per shop rather than per user, which helps if you have several service writers and
+technicians. The catch is that some features most shops want sit on Clever: labor guides, parts lookup
+with labor, inventory management, a time clock and the built-in QuickBooks Online integration.
+Third-party summaries also disagree about which tier includes digital inspections, so confirm that on
+the pricing page. Prices change, so always check the vendor site before you commit.
 
-## Is parts ordering worth the tier?
+## What do users like about Shopmonkey?
 
-Yes. Four suppliers connected, roughly 80 seconds per line ordered from inside the ticket.
-The alternative is a service writer with six browser tabs, which is where their day goes.
+The most common praise in public reviews is ease of use and support. Shopmonkey holds a rating of
+about 4.6 out of 5 on Capterra from more than 250 reviews at the time of writing, with ease of use and
+value for money both scored around 4.5 to 4.6.
 
-## What is weak?
+Reviewers frequently mention:
 
-Accounting depth and inventory. Both work, neither is deep, and a shop that manages a large
-parts inventory closely will find it thin. [Tekmetric](/reviews/tekmetric/) is stronger on
-parts matrix and margin control.
+- A clean, modern interface that new staff learn quickly
+- Fast responses from support, sometimes within minutes
+- Being able to text estimates and inspection photos to customers and collect payment by link
+- Having estimates, invoices and payments in one place rather than across several tools
 
-Tyre-heavy and fleet-contract shops will also be building workarounds.
+## What are the common complaints?
 
-## Who is it wrong for?
+The complaints that come up most in public reviews are price, changes after major updates and
+contract terms. Some reviewers call the pricing high for a small shop. A few long-time users say a
+major version update made everyday tasks take more clicks, and a handful mention cancellation notice
+periods.
 
-A one-bay shop. Basic is too limited to be worth buying and Clutch is a serious monthly
-number against one bay's profit. Below about three bays, stay on paper a while longer or
-look at [Tekmetric](/reviews/tekmetric/)'s entry pricing.
+We weight price heavily for this category because a repair shop's software bill competes directly
+with a technician's hours. At $359 a month for the tier with labor guides and inventory, Shopmonkey
+costs more than Tekmetric's comparable plan.
+
+## How does Shopmonkey compare with Tekmetric?
+
+Tekmetric is cheaper on published pricing and includes unlimited users on every plan. Its Start plan
+is $179 a month billed annually against Shopmonkey's $215. Shopmonkey's case rests on its interface
+and support, which reviewers rate highly.
+
+In our assessment, a shop that mainly wants cost control and reporting should look hard at
+[Tekmetric](/reviews/tekmetric/), and a shop that wants a clean customer-facing workflow and is happy
+to pay for it will be comfortable on Shopmonkey. The full breakdown is in
+[Shopmonkey vs Tekmetric](/compare/shopmonkey-vs-tekmetric/).
+
+## Who should skip Shopmonkey?
+
+Shops that are very price-sensitive, and shops whose work is mostly heavy-duty, fleet or tire-focused.
+For a one or two bay shop that needs labor guides, the Clever plan is a real share of monthly profit,
+and the cheaper options are worth a demo first.
+
+## How we scored Shopmonkey
+
+Our score is an editorial rating based on the vendor's published pricing and documentation and on
+themes in public user reviews on Capterra and G2, using the rubric on our
+[how we test](/how-we-test/) page. We did not run timed tests on Shopmonkey. It scores well on
+invoicing and communication, where reviewers are consistently positive, and lower on value because of
+where key features sit in the tier structure.

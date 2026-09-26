@@ -1,0 +1,20 @@
+---
+import { score1 } from '../lib/format';
+
+interface Props {
+  score: number;
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const { score, size = 'md', class: className = '' } = Astro.props;
+---
+
+<span
+  class:list={['score', size === 'lg' && 'score-lg', className]}
+  role="img"
+  aria-label={`Rated ${score1(score)} out of 10`}
+>
+  <span aria-hidden="true">{score1(score)}</span>
+  <small aria-hidden="true">/ 10</small>
+</span>

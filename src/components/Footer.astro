@@ -1,60 +1,63 @@
 ---
 import { getCollection } from 'astro:content';
+import SiteLogo from './SiteLogo.astro';
 import { SITE, DISCLOSURE, CATEGORY_META } from '../lib/site';
-import { toolUrl, bestUrl, compareUrl } from '../lib/urls';
+import { toolUrl, bestUrl, compareUrl, CALCULATOR_URL } from '../lib/urls';
 
 const tools = (await getCollection('tools')).sort((a, b) => b.data.score - a.data.score).slice(0, 6);
-const trades = (await getCollection('trades')).slice(0, 6);
-const comparisons = (await getCollection('comparisons')).slice(0, 5);
+const trades = await getCollection('trades');
+const comparisons = (await getCollection('comparisons')).slice(0, 6);
 
 const year = new Date().getFullYear();
 
 const columns = [
   {
-    title: 'Reviews',
-    links: tools.map((t) => ({ href: toolUrl(t.data.slug), label: t.data.name })),
-  },
-  {
-    title: 'By trade',
+    title: 'Best software for',
     links: trades.map((t) => ({
       href: bestUrl(t.data.category, t.data.slug),
-      label: `${CATEGORY_META[t.data.category].label.replace(' software', '')} for ${t.data.name.toLowerCase()}`,
+      label: t.data.name,
     })),
   },
   {
-    title: 'Compare',
+    title: 'Top reviews',
+    links: tools.map((t) => ({ href: toolUrl(t.data.slug), label: `${t.data.name} review` })),
+  },
+  {
+    title: 'Comparisons',
     links: comparisons.map((c) => ({ href: compareUrl(c.data.slug), label: c.data.title })),
   },
   {
-    title: 'Site',
+    title: 'Company',
     links: [
-      { href: '/how-we-test/', label: 'How we test' },
-      { href: '/about/', label: 'About' },
+      { href: '/about/', label: 'About us' },
+      { href: '/how-we-test/', label: 'How we review' },
+      { href: CALCULATOR_URL, label: 'Rate calculator' },
+      { href: '/guides/', label: 'Guides' },
       { href: '/contact/', label: 'Contact' },
       { href: '/affiliate-disclosure/', label: 'Affiliate disclosure' },
-      { href: '/privacy/', label: 'Privacy' },
+      { href: '/privacy/', label: 'Privacy policy' },
+      { href: '/terms/', label: 'Terms of use' },
     ],
   },
 ];
 ---
 
-<footer class="on-ink mt-20 bg-ink text-white">
-  <div class="hazard" aria-hidden="true"></div>
-
-  <div class="wrap grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+<footer class="on-dark mt-20 bg-night text-white">
+  <div class="wrap grid gap-10 py-14 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
+    <div class="max-w-xs">
+      <a href="/" class="inline-block no-underline" aria-label={`${SITE.name} home`}>
+        <SiteLogo dark />
+      </a>
+      <p class="mt-4 text-sm leading-relaxed text-white/65">{SITE.tagline}. {CATEGORY_META['field-service'].label}, salon, fitness and auto repair tools, compared in plain English.</p>
+    </div>
     {
       columns.map((col) => (
         <div>
-          <h2 class="font-condensed text-base font-bold uppercase tracking-[0.14em] text-yellow">
-            {col.title}
-          </h2>
-          <ul class="mt-3 space-y-2 text-[0.95rem]">
+          <h2 class="font-sans text-sm font-semibold tracking-wide text-white">{col.title}</h2>
+          <ul class="mt-4 space-y-2.5 text-[0.925rem]">
             {col.links.map((link) => (
               <li>
-                <a
-                  href={link.href}
-                  class="text-white/80 no-underline transition-colors hover:text-yellow hover:underline"
-                >
+                <a href={link.href} class="text-white/65 no-underline transition-colors hover:text-white">
                   {link.label}
                 </a>
               </li>
@@ -65,17 +68,12 @@ const columns = [
     }
   </div>
 
-  <div class="border-t border-ink-line">
-    <div class="wrap flex flex-col gap-4 py-7 md:flex-row md:items-start md:justify-between">
-      <p class="max-w-2xl text-sm leading-relaxed text-white/60">
-        {DISCLOSURE} Read the full <a
-          href="/affiliate-disclosure/"
-          class="text-yellow underline">affiliate disclosure</a
-        >.
+  <div class="border-t border-white/10">
+    <div class="wrap flex flex-col gap-3 py-7 text-sm text-white/55 md:flex-row md:items-start md:justify-between">
+      <p class="max-w-3xl leading-relaxed">
+        {DISCLOSURE} Read our <a href="/affiliate-disclosure/" class="text-white underline underline-offset-2">affiliate disclosure</a>.
       </p>
-      <p class="flex-none text-sm text-white/60">
-        &copy; {year} {SITE.name}
-      </p>
+      <p class="flex-none">&copy; {year} {SITE.name}</p>
     </div>
   </div>
 </footer>

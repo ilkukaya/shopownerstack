@@ -1,74 +1,75 @@
-/* Self-hosted Barlow / Barlow Condensed (Google Fonts, packaged by Fontsource).
-   Self-hosting keeps the render-blocking third-party request out of the critical
-   path, which is what gets us to the 95+ mobile Lighthouse target. */
-@import '@fontsource/barlow/latin-400.css';
-@import '@fontsource/barlow/latin-500.css';
-@import '@fontsource/barlow/latin-600.css';
-@import '@fontsource/barlow/latin-700.css';
-@import '@fontsource/barlow-condensed/latin-600.css';
-@import '@fontsource/barlow-condensed/latin-700.css';
+/* Self-hosted variable fonts (Fontsource). Inter for UI and body copy,
+   Source Serif 4 for editorial headings. Each file carries unicode-range, so a
+   browser only downloads the Latin subset for this English site. */
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/source-serif-4/wght.css';
 
 @import 'tailwindcss';
 
-/* Metric-matched fallbacks. Barlow Condensed is far narrower than any system
-   font, so without these the swap re-wraps every heading and costs about
-   0.12 CLS on heading-heavy pages. The size-adjust values were measured in
-   Chrome against Arial at the same size, not guessed. */
+/* Metric-matched fallbacks so the swap from system fonts does not reflow
+   headings (CLS). Values follow the published Inter/Arial and
+   Source Serif/Georgia metric overrides. */
 @font-face {
-  font-family: 'Barlow Condensed Fallback';
+  font-family: 'Inter Fallback';
   src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 76.9%;
-  ascent-override: 105%;
-  descent-override: 27%;
+  size-adjust: 107%;
+  ascent-override: 90.5%;
+  descent-override: 22.5%;
   line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: 'Barlow Fallback';
-  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
-  size-adjust: 97.1%;
-  ascent-override: 101%;
-  descent-override: 26%;
+  font-family: 'Serif Fallback';
+  src: local('Georgia'), local('Times New Roman'), local('Liberation Serif');
+  size-adjust: 98%;
+  ascent-override: 93%;
+  descent-override: 30%;
   line-gap-override: 0%;
 }
 
 /* ---------------------------------------------------------------------------
-   Design tokens. Tailwind v4 is configured in CSS, so this @theme block IS the
-   Tailwind config: every token below becomes a utility (--color-ink -> bg-ink,
-   text-ink, border-ink; --font-condensed -> font-condensed; and so on).
+   Design tokens. Tailwind v4 is configured in CSS: this @theme block IS the
+   Tailwind config. --color-brand -> bg-brand, text-brand, border-brand, etc.
    --------------------------------------------------------------------------- */
 @theme {
-  /* Core palette */
-  --color-ink: #1b2a3a;
-  --color-ink-deep: #14202c;
-  --color-ink-soft: #2b3d50;
-  --color-ink-line: #35485d;
-  /* Darkened from #5C6F84 so muted text clears AA (4.5:1) on paper-deep, the
-     darkest surface it is ever set on - 4.67:1 there, 5.83:1 on white. */
-  --color-ink-muted: #556779;
+  /* Text */
+  --color-ink: #151a23;
+  --color-ink-soft: #384150;
+  /* 5.9:1 on white, 5.3:1 on paper-deep - clears AA for body text. */
+  --color-ink-muted: #5a6374;
 
-  --color-yellow: #f5c518;
-  --color-yellow-deep: #d9ac0b;
-  --color-yellow-wash: #fdf4d2;
+  /* Brand: a deep "money" green. Primary actions, links, active states. */
+  --color-brand: #0b6b4f;
+  --color-brand-deep: #08523c;
+  --color-brand-soft: #d8efe5;
+  --color-brand-wash: #eef7f2;
 
-  --color-paper: #f4f2ec;
-  --color-paper-deep: #e9e6dc;
-  --color-line: #dcd8ce;
+  /* Accent: warm amber, used sparingly for ratings and highlights. */
+  --color-accent: #f2a900;
+  --color-accent-deep: #8a5a00;
+  --color-accent-wash: #fff6dc;
 
-  --color-good: #1e7a4b;
-  --color-good-wash: #e8f4ed;
-  --color-bad: #b4331f;
-  --color-bad-wash: #fbecea;
+  /* Surfaces */
+  --color-paper: #fbfaf7;
+  --color-paper-deep: #f2f0ea;
+  --color-line: #e4e1d8;
+  --color-line-strong: #cfcbc0;
+  --color-night: #10151d;
+
+  /* Status */
+  --color-good: #17754a;
+  --color-good-wash: #e9f5ee;
+  --color-bad: #b3321f;
+  --color-bad-wash: #fcefec;
 
   /* Type */
-  --font-sans: 'Barlow', 'Barlow Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
-    sans-serif;
-  --font-condensed: 'Barlow Condensed', 'Barlow Condensed Fallback', ui-sans-serif, system-ui,
-    sans-serif;
+  --font-sans: 'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', 'Serif Fallback', ui-serif, Georgia, serif;
 
-  /* Rhythm */
-  --radius-board: 2px;
-  --spacing-gutter: 1.25rem;
+  --radius-card: 14px;
+  --shadow-card: 0 1px 2px rgb(16 21 29 / 0.04), 0 2px 8px rgb(16 21 29 / 0.04);
+  --shadow-lift: 0 2px 4px rgb(16 21 29 / 0.05), 0 12px 28px rgb(16 21 29 / 0.08);
 }
 
 /* ---------------------------------------------------------------------------
@@ -78,6 +79,7 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
   }
 
   body {
@@ -86,34 +88,40 @@
     font-family: var(--font-sans);
     font-size: 1.0625rem;
     line-height: 1.65;
-    text-rendering: optimizeLegibility;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-family: var(--font-condensed);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: 0.005em;
+    font-family: var(--font-serif);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.012em;
     text-wrap: balance;
+    color: var(--color-ink);
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   /* One visible focus treatment for the whole site. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 3px solid var(--color-yellow);
+    outline: 3px solid var(--color-brand);
     outline-offset: 2px;
-    border-radius: 1px;
+    border-radius: 6px;
   }
 
-  /* Dark surfaces need a focus ring that is not yellow-on-yellow. */
-  .on-ink :where(a, button, input, select, summary):focus-visible {
+  .on-dark :where(a, button, input, select, summary):focus-visible {
     outline-color: #ffffff;
   }
 
   ::selection {
-    background: var(--color-yellow);
+    background: var(--color-brand-soft);
     color: var(--color-ink);
   }
 
@@ -141,71 +149,84 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Components. Plain CSS on top of the tokens, so there is no component library
-   and no utility soup in the markup for the recurring pieces.
+   Components. Plain CSS on top of the tokens for the recurring pieces.
    --------------------------------------------------------------------------- */
 @layer components {
   .wrap {
     width: 100%;
-    max-width: 74rem;
+    max-width: 76rem;
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    padding-inline: 1rem;
   }
 
   .wrap-narrow {
     width: 100%;
-    max-width: 48rem;
+    max-width: 46rem;
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    padding-inline: 1rem;
   }
 
-  /* Section eyebrow: small condensed all-caps label with a yellow rule. */
-  .eyebrow {
-    font-family: var(--font-condensed);
-    font-weight: 700;
-    font-size: 0.875rem;
-    letter-spacing: 0.14em;
+  @media (min-width: 640px) {
+    .wrap,
+    .wrap-narrow {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  /* Small label above a section heading. */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-ink-muted);
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
+    color: var(--color-brand);
   }
 
-  .eyebrow::before {
-    content: '';
-    width: 1.75rem;
-    height: 3px;
-    background: var(--color-yellow);
-    flex: none;
+  .on-dark .kicker {
+    color: #8fdcbc;
   }
 
-  .on-ink .eyebrow {
-    color: var(--color-yellow);
+  .section-title {
+    font-size: clamp(1.75rem, 3.6vw, 2.5rem);
   }
 
-  /* Hazard stripe used as a section divider, echoing the trade-board look. */
-  .hazard {
-    height: 8px;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--color-yellow) 0 12px,
-      var(--color-ink) 12px 24px
-    );
-  }
-
-  /* Card: the flat "board" surface used across the site. */
-  .board {
+  .card {
     background: #ffffff;
     border: 1px solid var(--color-line);
-    border-radius: var(--radius-board);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
   }
 
-  .board-ink {
-    background: var(--color-ink);
-    border: 1px solid var(--color-ink-line);
-    border-radius: var(--radius-board);
-    color: #ffffff;
+  .card-link {
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .card-link:hover {
+    border-color: var(--color-line-strong);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-1px);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    background: var(--color-paper-deep);
+    color: var(--color-ink-soft);
+  }
+
+  .pill-brand {
+    background: var(--color-brand-wash);
+    color: var(--color-brand-deep);
   }
 
   /* Buttons */
@@ -214,82 +235,146 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-family: var(--font-condensed);
-    font-weight: 700;
-    font-size: 1.0625rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.7rem 1.35rem;
-    border-radius: var(--radius-board);
-    border: 2px solid transparent;
+    min-height: 2.75rem;
+    font-family: var(--font-sans);
+    font-weight: 650;
+    font-size: 0.975rem;
+    line-height: 1.2;
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
     text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
   }
 
   .btn-primary {
-    background: var(--color-yellow);
-    color: var(--color-ink);
-    border-color: var(--color-yellow);
+    background: var(--color-brand);
+    color: #ffffff;
+    box-shadow: 0 1px 0 rgb(0 0 0 / 0.08), inset 0 1px 0 rgb(255 255 255 / 0.12);
   }
 
   .btn-primary:hover {
-    background: var(--color-yellow-deep);
-    border-color: var(--color-yellow-deep);
+    background: var(--color-brand-deep);
+  }
+
+  .btn-secondary {
+    background: #ffffff;
+    color: var(--color-ink);
+    border-color: var(--color-line-strong);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-ink);
   }
 
   .btn-ghost {
     background: transparent;
-    color: var(--color-ink);
-    border-color: var(--color-ink);
+    color: var(--color-brand);
+    padding-inline: 0.25rem;
   }
 
   .btn-ghost:hover {
-    background: var(--color-ink);
-    color: #ffffff;
+    color: var(--color-brand-deep);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
-  .on-ink .btn-ghost {
+  .on-dark .btn-secondary {
+    background: transparent;
     color: #ffffff;
+    border-color: rgb(255 255 255 / 0.4);
+  }
+
+  .on-dark .btn-secondary:hover {
     border-color: #ffffff;
   }
 
-  .on-ink .btn-ghost:hover {
-    background: #ffffff;
-    color: var(--color-ink);
+  .btn-lg {
+    min-height: 3.1rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  /* Score badge */
+  .score {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 12px;
+    background: var(--color-night);
+    color: #ffffff;
+    font-weight: 750;
+    font-size: 1.25rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .score small {
+    font-size: 0.625rem;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-top: 0.15rem;
+    letter-spacing: 0.02em;
+  }
+
+  .score-lg {
+    min-width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.75rem;
+    border-radius: 16px;
   }
 
   /* Long-form prose. Scoped so it never leaks into UI chrome. */
   .prose-shop {
     font-size: 1.0625rem;
-    line-height: 1.7;
+    line-height: 1.75;
+    color: var(--color-ink-soft);
   }
 
   .prose-shop > * + * {
     margin-top: 1.1em;
   }
 
+  .prose-shop :where(strong) {
+    color: var(--color-ink);
+  }
+
   .prose-shop h2 {
-    font-size: clamp(1.55rem, 3.4vw, 2rem);
-    margin-top: 2.2rem;
-    text-transform: uppercase;
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    margin-top: 2.4rem;
+    color: var(--color-ink);
   }
 
   .prose-shop h3 {
-    font-size: clamp(1.25rem, 2.6vw, 1.5rem);
-    margin-top: 1.75rem;
-    text-transform: uppercase;
+    font-size: clamp(1.2rem, 2.4vw, 1.4rem);
+    margin-top: 1.9rem;
+    color: var(--color-ink);
   }
 
   .prose-shop a {
-    color: var(--color-ink);
+    overflow-wrap: anywhere;
+    color: var(--color-brand);
+    font-weight: 550;
     text-decoration: underline;
-    text-decoration-color: var(--color-yellow);
-    text-decoration-thickness: 3px;
+    text-decoration-color: color-mix(in srgb, var(--color-brand) 35%, transparent);
+    text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
 
   .prose-shop a:hover {
-    background: var(--color-yellow-wash);
+    text-decoration-color: var(--color-brand);
   }
 
   .prose-shop ul,
@@ -304,18 +389,19 @@
 
   .prose-shop ul li {
     position: relative;
-    padding-left: 1.35rem;
-    margin-top: 0.4em;
+    padding-left: 1.4rem;
+    margin-top: 0.45em;
   }
 
   .prose-shop ul li::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0.62em;
-    width: 8px;
-    height: 8px;
-    background: var(--color-yellow);
+    left: 0.2rem;
+    top: 0.68em;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--color-brand);
   }
 
   .prose-shop ol {
@@ -323,63 +409,112 @@
   }
 
   .prose-shop ol li {
-    margin-top: 0.4em;
+    margin-top: 0.45em;
     padding-left: 0.25rem;
   }
 
+  .prose-shop ol li::marker {
+    color: var(--color-brand);
+    font-weight: 700;
+  }
+
   .prose-shop blockquote {
-    border-left: 4px solid var(--color-yellow);
-    padding-left: 1rem;
-    font-style: italic;
-    color: var(--color-ink-soft);
+    border-left: 3px solid var(--color-brand);
+    padding: 0.25rem 0 0.25rem 1rem;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1.15em;
   }
 
   .prose-shop table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
+    display: block;
+    overflow-x: auto;
   }
 
   .prose-shop th,
   .prose-shop td {
-    border: 1px solid var(--color-line);
-    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.6rem 0.75rem;
     text-align: left;
   }
 
   .prose-shop th {
+    font-weight: 650;
+    color: var(--color-ink);
     background: var(--color-paper-deep);
-    font-family: var(--font-condensed);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
-  /* Inline code only. Fenced blocks are highlighted by Shiki and bring their
-     own background, so tinting them here would break the syntax contrast. */
   .prose-shop :not(pre) > code {
     background: var(--color-paper-deep);
     padding: 0.1em 0.35em;
-    font-size: 0.92em;
+    border-radius: 5px;
+    font-size: 0.9em;
   }
 
   .prose-shop pre {
     border: 1px solid var(--color-line);
-    border-left: 4px solid var(--color-yellow);
+    border-radius: 10px;
     padding: 0.9rem 1rem;
     overflow-x: auto;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.55;
   }
 
   /* Tables that must stay readable at 360px scroll inside their own box.
-     `position: relative` is load-bearing: sr-only captions and the visually
-     hidden "Winner:" labels in the comparison table are absolutely positioned,
-     and without a positioned ancestor they resolve against the initial
-     containing block, escape this scroll container at their unclipped x
-     position and make the whole page scroll sideways on a phone. */
+     `position: relative` is load-bearing: sr-only captions and hidden labels are
+     absolutely positioned and would otherwise escape and cause page-level
+     horizontal scroll on phones. */
   .table-scroll {
     position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .data-table thead th {
+    background: var(--color-paper-deep);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    color: var(--color-ink-soft);
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+  }
+
+  .data-table tbody th,
+  .data-table tbody td,
+  .data-table tfoot th,
+  .data-table tfoot td {
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--color-line);
+    vertical-align: top;
+  }
+
+  /* Ad slot. Reserves height so an ad loading late does not shift content. */
+  .ad-slot {
+    display: block;
+    min-height: 280px;
+    border-radius: 12px;
+    background: var(--color-paper-deep);
+    position: relative;
+  }
+
+  .ad-slot::before {
+    content: 'Advertisement';
+    position: absolute;
+    top: 0.4rem;
+    left: 0.75rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
   }
 }

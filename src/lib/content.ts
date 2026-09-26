@@ -55,17 +55,19 @@ export function alternativesFor(
 }
 
 /**
- * On a page covering several tools, report the oldest test date of the set.
- * Claiming the newest would overstate how fresh the page is.
+ * On a page covering several tools, report the oldest review and price-check
+ * dates of the set. Claiming the newest would overstate how fresh the page is.
  */
-export function oldestTest(tools: Tool[]): { testDate: Date; nextRetest: Date } {
-  const testDate = tools
-    .map((t) => t.data.testDate)
-    .reduce((a, b) => (a < b ? a : b), tools[0].data.testDate);
-  const nextRetest = tools
-    .map((t) => t.data.nextRetest)
-    .reduce((a, b) => (a < b ? a : b), tools[0].data.nextRetest);
-  return { testDate, nextRetest };
+export function oldestUpdate(tools: Tool[]): { updatedDate: Date; pricesChecked: Date } {
+  const min = (dates: Date[]) => dates.reduce((a, b) => (a < b ? a : b));
+  return {
+    updatedDate: min(tools.map((t) => t.data.updatedDate)),
+    pricesChecked: min(tools.map((t) => t.data.pricesChecked)),
+  };
+}
+
+export function newestUpdate(tools: Tool[]): Date {
+  return tools.map((t) => t.data.updatedDate).reduce((a, b) => (a > b ? a : b));
 }
 
 /** Loser of a comparison, by score. Used to link to their alternatives page. */

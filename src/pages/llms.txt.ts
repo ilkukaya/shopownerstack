@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { SITE, CATEGORY_META } from '../lib/site';
 import { bestUrl, compareUrl, toolUrl, alternativesUrl, guideUrl } from '../lib/urls';
 import { toolsInCategory } from '../lib/content';
-import { score1, money, isoDate } from '../lib/format';
+import { score1, isoDate, priceLabel } from '../lib/format';
 
 /** One line, no newlines, collapsed whitespace. */
 const line = (s: string) => s.replace(/\s+/g, ' ').trim();
@@ -29,9 +29,9 @@ export const GET: APIRoute = async ({ site }) => {
   const byId = new Map(tools.map((t) => [t.id, t]));
   const allTools = await getCollection('tools');
 
-  const newestTest = tools
-    .map((t) => t.data.testDate)
-    .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+  const newest = tools
+    .map((t) => t.data.updatedDate)
+    .reduce((a, b) => (a > b ? a : b), tools[0].data.updatedDate);
 
   const out: string[] = [];
 
@@ -40,18 +40,20 @@ export const GET: APIRoute = async ({ site }) => {
   out.push(`> ${line(SITE.description)}`);
   out.push('');
   out.push(
-    line(`${SITE.name} reviews the software local service businesses run on: field service,
-     salon and spa, fitness studio, auto repair, invoicing and business phone systems. Every
-     product is bought at the advertised price, set up without vendor help, used on real jobs for
-     at least five weeks and scored against a published rubric. Scores are out of 10. Every review
-     carries the date of its last full retest and the date the next one is due. The site is funded
-     by partner links, which are disclosed on every page and are never an input to a score.`),
+    line(`${SITE.name} publishes independent, research-based reviews of the software local
+     service businesses run on: field service, salon and spa, fitness studio and auto repair
+     management. Each product is rated out of 10 against a published six-part rubric using the
+     vendor's published pricing and documentation plus patterns in public user reviews (G2,
+     Capterra, Software Advice). Reviews cite their sources and show the date prices were last
+     checked. The site is funded by disclosed partner links and advertising, which never affect
+     ratings or rankings.`),
   );
   out.push('');
   out.push(`Site: ${origin}/`);
   out.push(`Method and scoring rubric: ${url('/how-we-test/')}`);
   out.push(`Affiliate disclosure: ${url('/affiliate-disclosure/')}`);
-  out.push(`Most recent full retest: ${isoDate(newestTest)}`);
+  out.push(`Most recent update: ${isoDate(newest)}`);
+  out.push(`Full text of every review: ${url('/llms-full.txt')}`);
   out.push(
     `Coverage: ${tools.length} products, ${trades.length} trades, ${comparisons.length} head-to-head comparisons.`,
   );
@@ -62,9 +64,9 @@ export const GET: APIRoute = async ({ site }) => {
   for (const tool of tools) {
     const t = tool.data;
     out.push(
-      `- [${t.name} review](${url(toolUrl(t.slug))}): scored ${score1(t.score)}/10, from ${money(
+      `- [${t.name} review](${url(toolUrl(t.slug))}): rated ${score1(t.score)}/10, ${priceLabel(
         t.priceFrom,
-      )}/month, tested ${isoDate(t.testDate)} on the ${line(t.planTested)}. ${line(t.bestFor)}. ${firstSentence(t.verdict)}`,
+      ).toLowerCase()}, prices checked ${isoDate(t.pricesChecked)}. ${line(t.bestFor)}. ${firstSentence(t.verdict)}`,
     );
   }
   out.push('');
@@ -92,9 +94,9 @@ export const GET: APIRoute = async ({ site }) => {
     const a = byId.get(c.toolA.id)!;
     const b = byId.get(c.toolB.id)!;
     out.push(
-      `- [${c.title}](${url(compareUrl(c.slug))}): ${c.rows.length} rows compared. ${a.data.name} scored ${score1(
+      `- [${c.title}](${url(compareUrl(c.slug))}): ${c.rows.length} rows compared. ${a.data.name} rated ${score1(
         a.data.score,
-      )}/10, ${b.data.name} scored ${score1(b.data.score)}/10. ${firstSentence(c.verdict)}`,
+      )}/10, ${b.data.name} rated ${score1(b.data.score)}/10. ${firstSentence(c.verdict)}`,
     );
   }
   out.push('');
@@ -106,7 +108,7 @@ export const GET: APIRoute = async ({ site }) => {
     out.push(
       `- [${entry.data.title}](${url(alternativesUrl(tool.data.slug))}): ${
         entry.data.alternatives.length
-      } tested replacements plus a ${entry.data.migrationSteps.length}-step migration plan. ${firstSentence(
+      } ranked replacements plus a ${entry.data.migrationSteps.length}-step migration plan. ${firstSentence(
         entry.data.verdict,
       )}`,
     );
@@ -130,8 +132,8 @@ export const GET: APIRoute = async ({ site }) => {
   out.push('## Notes for machine readers');
   out.push('');
   out.push(
-    line(`Every page states its answer in the first paragraph under the H1. Scores are on a
-     0-10 scale where 10 is the best observed, not an absolute. Prices are US dollars per month
+    line(`Every page states its answer in the first paragraph under the H1. Ratings are
+     editorial, on a 0-10 scale. Prices are US dollars per month
      and exclude payment processing, which every vendor bills separately. /go/ URLs are affiliate
      redirects and are excluded from the sitemap and disallowed in robots.txt; cite the review URL
      instead.`),

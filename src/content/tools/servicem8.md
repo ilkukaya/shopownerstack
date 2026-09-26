@@ -9,130 +9,164 @@ partnerNetwork: direct
 categories:
   - field-service
   - invoicing
-bestFor: Solo trades and two-van shops that want to pay for jobs completed, not for seats
+bestFor: Solo trades and small teams that want to pay for jobs created, not for seats, and whose field staff use iPhones
 teamSizes:
   - solo
   - 2-5
   - 6-15
 priceFrom: 29
+pricingModel: Priced by number of new jobs per month, not per user; month to month, no contract
+freeTrial: 14 days, full features, no payment details needed to start
+freePlan: true
 pricing:
+  - name: Free
+    users: 1 user, 30 jobs per month
+    monthly: 0
+    annual: null
+    forWhom: Trying the app on real work, or a very low-volume side business
   - name: Starter
-    users: Unlimited staff, 50 jobs per month
+    users: No per-user fee, 50 jobs per month
     monthly: 29
-    annual: 29
-    forWhom: A solo trade doing roughly two jobs a working day
+    annual: null
+    forWhom: A solo operator doing a couple of jobs a day
   - name: Growing
-    users: Unlimited staff, 150 jobs per month
+    users: No per-user fee, 150 jobs per month
     monthly: 79
-    annual: 79
-    forWhom: Two or three vans where job volume, not headcount, is the real number
+    annual: null
+    forWhom: A small team that wants forms, asset management and proposals
   - name: Premium
-    users: Unlimited staff, 500 jobs per month
+    users: No per-user fee, 500 jobs per month
     monthly: 149
-    annual: 149
-    forWhom: A shop past 300 jobs a month that still wants unlimited logins
-score: 8.1
+    annual: null
+    forWhom: Busier teams that want job costing and markup billing
+  - name: Premium Plus
+    users: No per-user fee, 1,500+ jobs per month
+    monthly: 349
+    annual: null
+    forWhom: High-volume service businesses
+score: 7.8
 subscores:
-  setup: 7.6
-  scheduling: 8.2
-  invoicing: 8.4
-  communication: 8.1
-  reporting: 7
-  value: 9.2
-testDate: 2026-05-28
-nextRetest: 2026-11-24
-planTested: Growing, monthly, five staff logins
-measurements:
-  - test: Signup to first invoice emailed to a customer
-    result: 41 minutes
-  - test: Build and send a quote from the phone app, on site
-    result: 2 min 45 s
-  - test: Attach a signed job form and photos to a completed job
-    result: 8 taps, stored on the job record
-  - test: Card payment settled into the connected bank account
-    result: 3 business days
-  - test: Export clients and job history
-    result: Self-serve CSV, attachments require a separate bulk download
-  - test: First reply from email support, weekday morning
-    result: 4 hours 20 minutes
+  setup: 8
+  scheduling: 7.6
+  invoicing: 8
+  communication: 7.6
+  reporting: 6.6
+  value: 8.5
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $29/month (Starter, 50 jobs); free plan for 30 jobs
+  - label: Free trial
+    value: 14 days, all features
+  - label: Pricing model
+    value: Per job volume, no per-user fees
+  - label: Mobile apps
+    value: Full app on iPhone/iPad; lighter Android app
+  - label: Best for
+    value: Solo operators and small crews on iOS
+  - label: Founded / HQ
+    value: 2009, Darwin, Australia
+sources:
+  - title: ServiceM8 US pricing page
+    url: https://www.servicem8.com/us/pricing
+  - title: ServiceM8 Help, What does ServiceM8 cost?
+    url: https://support.servicem8.com/hc/en-us/articles/115005699046-What-does-ServiceM8-Cost
+  - title: ServiceM8 free plan
+    url: https://www.servicem8.com/free-plan
+  - title: ServiceM8 reviews on Capterra
+    url: https://capterra.com/p/110711/ServiceM8/reviews/
+  - title: ServiceM8 pricing 2026, per-job cost breakdown (Tooled Up Pro)
+    url: https://tooleduppro.com/guides/servicem8-pricing/
 pros:
-  - Charges by jobs per month with unlimited staff logins, which is the cheapest structure in this category for a small team
-  - The iOS app is the best field app we tested, and it works properly with no signal
-  - Job diary, forms, photos and signatures all attach to the one job record, so nothing is lost
-  - Xero and QuickBooks sync is clean and itemised
+  - No per-user fees on any plan, so adding a technician does not raise the bill by itself
+  - Genuine free plan (30 jobs a month) plus a 14-day full-feature trial
+  - Month-to-month with no contract or setup fees, per ServiceM8's help centre
+  - Users on Capterra (about 4.5 out of 5) frequently praise the field app for iPhone-based teams
 cons:
-  - Android app is clearly the second-class citizen and lags the iOS release
-  - The interface looks and feels a decade old, and new staff need to be shown around
-  - Job caps mean a busy month can force an unplanned upgrade
-  - Reporting is minimal and there is no real job costing
+  - The full field app is iOS only; Android users get a lighter version, according to user reviews
+  - Job-credit pricing can get expensive for high-volume, low-ticket work
+  - Reporting and analytics are thinner than larger platforms, a common theme in reviews
+  - Some reviewers complain about price increases on add-on services such as phone plans
 getItIf:
-  - You are one to three vans and every per-seat price you have looked at feels like a tax on hiring
-  - Your crew is on iPhones and works in basements, plant rooms and rural properties with no signal
-  - You want photos, forms and signatures attached to the job without a second app
-  - You would rather have a plain tool that works than a polished one you are still paying for in three years
+  - You are a solo operator or small team and your techs already carry iPhones
+  - You would rather pay per job than per user
+  - You want to start free and upgrade only as volume grows
 skipItIf:
-  - Your team is on Android
-  - Job volume swings hard month to month and a cap would keep tripping
-  - You need reporting or job costing to run the business
-  - A dated interface will stop your crew from adopting it
+  - Your field staff use Android phones
+  - You run many small, quick jobs a day and job credits would add up
+  - You need deep reporting or a large-team dispatch board
 verdict: >-
-  ServiceM8 is the value pick for a one-to-three van operation, because it charges for jobs completed
-  rather than seats and its offline field app is the best we tested. The interface is dated and
-  Android users get the weaker app, but nothing else costs this little per person.
+  ServiceM8 is one of the best-value options for a solo operator or small iPhone-based team, thanks
+  to job-volume pricing with no per-user fees and a real free plan. In our assessment the iOS-first
+  field app and basic reporting are the main limits, and high-volume shops should model the
+  job-credit cost carefully.
 faq:
   - q: How much does ServiceM8 cost?
-    a: $29 a month for 50 jobs, $79 for 150 jobs and $149 for 500 jobs, with unlimited staff logins on every plan. There is no annual discount. You pay for job volume, not headcount.
-  - q: What happens if I go over my job limit?
-    a: New jobs are blocked until you upgrade or the month rolls over. In practice you upgrade mid-month, which is why a business with swinging volume should size the plan for its busiest month rather than its average.
+    a: >-
+      ServiceM8's US pricing lists a free plan (30 jobs a month), Starter at $29 a month (50 jobs),
+      Growing at $79 (150 jobs), Premium at $149 (500 jobs) and Premium Plus at $349 (1,500+ jobs).
+      There are no per-user fees. Confirm current prices on ServiceM8's site.
+  - q: Does ServiceM8 have a free trial?
+    a: >-
+      Yes. ServiceM8 offers a 14-day free trial with full access to features, and you only enter
+      payment details if you choose to subscribe. There is also a permanent free plan capped at 30
+      jobs a month.
   - q: Does ServiceM8 work on Android?
-    a: Yes, but the Android app trails the iOS one on features and stability. If your crew is on Android, weight that heavily; it is the single biggest reason we score setup lower than the price would suggest.
-  - q: Does ServiceM8 work offline?
-    a: Better than anything else we tested. The iOS app holds the full job record locally, so notes, photos, forms and signatures all work with no signal and sync when the phone reconnects.
+    a: >-
+      There is an Android app, but reviewers describe it as a lighter version. The full field app is
+      built for iPhone and iPad, so check this before choosing it for an Android crew.
+  - q: What counts as a job in ServiceM8?
+    a: >-
+      A job credit is used each time a new job card is created. ServiceM8's help centre says an
+      accepted quote converted to a work order does not use a second credit.
+  - q: ServiceM8 vs Jobber, which is cheaper?
+    a: >-
+      For a small team doing a moderate number of jobs, ServiceM8 is usually cheaper because it does
+      not charge per user. For high job volumes Jobber can work out cheaper. See our Jobber vs
+      ServiceM8 comparison.
 ---
 
-## Why is ServiceM8 priced so differently?
+## Is ServiceM8 worth it?
 
-Every other product in this category charges per seat, so hiring a fourth technician
-increases your software bill. ServiceM8 charges for jobs completed per month and gives you
-unlimited staff logins. For a shop where the owner, two technicians, a spouse doing the
-books and an apprentice all need access, that difference is several hundred dollars a month.
+For a solo operator or a small team whose technicians use iPhones, ServiceM8 is one of the best-value field service apps available. It charges by the number of jobs you create each month, not by user, and it has a genuine free plan.
 
-The trade-off is that a busy month can hit the cap. We tripped the 150-job Growing limit in
-week five of our test and had to upgrade mid-month to keep working.
+It is a weaker fit for Android crews, since reviewers describe the Android app as a lighter version, and for businesses that run many small jobs a day, where job credits add up.
 
-## Is the field app really that good?
+## How much does ServiceM8 cost in 2026?
 
-Yes, and it is the main reason to choose it. We ran a full job in airplane mode: opened the
-diary, read the client history, added notes, took nine photos, filled in a gas safety form
-and captured a signature. All of it held locally and synced the moment the phone had signal
-again. Nothing else we tested handled that cleanly.
+ServiceM8's US pricing lists five plans: Free (30 jobs a month), Starter at $29 a month (50 jobs), Growing at $79 (150 jobs), Premium at $149 (500 jobs) and Premium Plus at $349 (1,500+ jobs).
 
-That matters more than it sounds. Plant rooms, basements and rural properties are exactly
-where a technician loses signal, and an app that stalls there means paperwork gets done
-badly in a van two hours later.
+ServiceM8's help centre says there are no contracts, setup fees or per-user fees, and you can upgrade, downgrade or cancel at any time. Higher plans add SMS credits and features such as forms, asset management, proposals, job costing and markup billing. Prices change, so check ServiceM8's site before you sign up.
 
-## What is the catch?
+## How does job-based pricing work?
 
-Two things.
+A job credit is used every time you create a new job card. Moving an accepted quote to a work order does not use another credit, according to ServiceM8's help centre.
 
-The interface is old. Not broken, but visibly a generation behind
-[Jobber](/reviews/jobber/) and [Housecall Pro](/reviews/housecall-pro/). A new hire needs
-someone to walk them through it, where the others are close to self-explanatory.
+To see what that means for you, count the new jobs you created last month. A hypothetical example: a two-person electrical business creating 120 jobs a month would need the Growing plan at $79, with no charge for the second person. On per-user software, the same team could pay for two seats. The reverse is also true: a pressure-washing business creating 600 small jobs a month would need Premium Plus, which may cost more than a per-user plan.
 
-And Android is a real weakness. The Android app exists and works, but it lags the iOS one
-on both features and polish. If your crew is on Android, this changes from the value pick
-to a compromise.
+## What does ServiceM8 do well?
 
-## How is invoicing and accounting?
+The field app. Reviewers on Capterra frequently mention that technicians pick it up quickly, and it covers quotes, job cards, photos, forms, signatures, invoicing and payment on site. Accounting integrations, including Xero and QuickBooks, are a long-standing part of the product.
 
-Quietly excellent for the price. Quotes convert to invoices, card payments work, and the
-Xero and QuickBooks sync posts itemised entries rather than summary lines, which is better
-than what Housecall Pro produced in the same test. Settlement took three business days,
-one slower than the others.
+The free plan and no-card trial also lower the risk of trying it. You can run real jobs before paying anything.
 
-## Who should buy ServiceM8?
+Because there are no per-user fees, you can give an apprentice, a part-time office helper or a subcontractor a login without thinking about the bill. On per-seat software, owners often share one login to save money, which muddles time records and job history. ServiceM8's model removes that temptation.
 
-A one to three van operation on iPhones, where the owner is still on the tools and the
-software bill is a number they think about. If you are past five vans and reporting matters
-more than cost, look at [Jobber](/reviews/jobber/) or
-[Contractor Foreman](/reviews/contractor-foreman/) instead.
+## What are the common complaints about ServiceM8?
+
+The most consistent limit is the iOS-first design. Beyond that, public reviews mention:
+
+- **Reporting.** Analytics and reporting are basic compared with larger platforms.
+- **Price changes on extras.** Some reviewers complain about increases to add-on services such as phone plans.
+- **Support and business practices.** A minority of Capterra reviewers report frustrating billing or support experiences.
+
+## How does ServiceM8 compare with Jobber and Tradify?
+
+[Jobber](/reviews/jobber/) charges by plan and user and has a more developed quoting and client portal; ServiceM8 is usually cheaper for small teams. [Tradify](/reviews/tradify/) charges per user and is popular with electricians and plumbers who want simple quoting and timesheets. See [Jobber vs ServiceM8](/compare/jobber-vs-servicem8/) and [ServiceM8 vs Tradify](/compare/servicem8-vs-tradify/).
+
+If you are leaving ServiceM8, see our [ServiceM8 alternatives](/alternatives/servicem8/).
+
+## How we rated ServiceM8
+
+This is an editorial rating based on ServiceM8's published pricing and help centre and on themes in public user reviews, weighted using our [how we test](/how-we-test/) rubric. We did not run a paid, hands-on test. Value scores highest because of job-based pricing and the free plan; reporting scores lowest.

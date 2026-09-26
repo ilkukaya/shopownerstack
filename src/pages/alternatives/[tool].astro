@@ -3,15 +3,17 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import VerdictBox from '../../components/VerdictBox.astro';
-import TestDates from '../../components/TestDates.astro';
+import UpdatedMeta from '../../components/UpdatedMeta.astro';
 import RankedTool from '../../components/RankedTool.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import LogoMark from '../../components/LogoMark.astro';
+import Sources from '../../components/Sources.astro';
+import AdSlot from '../../components/AdSlot.astro';
 import NewsletterForm from '../../components/NewsletterForm.astro';
 import { alternativesUrl, toolUrl, compareUrl } from '../../lib/urls';
 import { score1 } from '../../lib/format';
-import { breadcrumbs, howTo } from '../../lib/schema';
-import { oldestTest, comparisonFor, type Tool, type Alternative } from '../../lib/content';
+import { breadcrumbs, howTo, itemList, article } from '../../lib/schema';
+import { comparisonFor, type Tool, type Alternative } from '../../lib/content';
 
 export async function getStaticPaths() {
   const alternatives = await getCollection('alternatives');
@@ -41,171 +43,160 @@ const { Content } = await render(entry);
 const comparisons = await getCollection('comparisons');
 const comparison = comparisonFor(tool, comparisons);
 
-const dates = oldestTest([tool, ...options]);
+const year = a.updatedDate.getUTCFullYear();
 const path = alternativesUrl(tool.data.slug);
+const name = tool.data.name;
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Reviews', path: '/reviews/' },
-  { name: tool.data.name, path: toolUrl(tool.data.slug) },
+  { name, path: toolUrl(tool.data.slug) },
   { name: 'Alternatives', path },
 ];
 
-const description = `${options.length} tested alternatives to ${tool.data.name}, ranked, with a step-by-step migration plan. ${tool.data.name} scored ${score1(tool.data.score)}/10 in our own testing.`;
+const h1 = `${options.length} best ${name} alternatives in ${year}`;
+const title = `${options.length} Best ${name} Alternatives (${year}), Ranked`;
+const description = `The best ${name} alternatives for ${year}: ${options
+  .map((o) => o.data.name)
+  .join(', ')}. Why owners switch, what to use instead, and a step-by-step plan to move your data.`.slice(0, 300);
 
-const migrationName = `How to move off ${tool.data.name}`;
+const migrationName = `How to switch from ${name}`;
 ---
 
 <BaseLayout
-  title={a.title}
+  title={title}
   description={description}
   path={path}
   ogType="article"
-  jsonLd={[breadcrumbs(crumbs), howTo(migrationName, a.migrationSteps)]}
+  ogImage={`/og/alternatives/${tool.data.slug}.png`}
+  ads
+  modified={a.updatedDate}
+  jsonLd={[
+    breadcrumbs(crumbs),
+    article({ title: h1, description, path, publishDate: a.updatedDate, updatedDate: a.updatedDate, image: `/og/alternatives/${tool.data.slug}.png` }),
+    itemList(h1, options.map((o) => ({ name: o.data.name, path: toolUrl(o.data.slug) }))),
+    howTo(migrationName, a.migrationSteps),
+  ]}
 >
   <Breadcrumbs items={crumbs} />
 
   <article>
-    <header class="wrap pt-8">
-      <div class="flex flex-wrap items-center gap-4">
+    <header class="wrap pt-6 sm:pt-8">
+      <div class="max-w-3xl">
         <LogoMark text={tool.data.logoText} color={tool.data.logoColor} size="lg" />
-        <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
-          {a.title}
-        </h1>
+        <h1 class="mt-5 text-[2.1rem] leading-[1.1] sm:text-5xl">{h1}</h1>
+        <UpdatedMeta updatedDate={a.updatedDate} class="mt-5" />
       </div>
-
-      <!-- Verdict is the first paragraph after the H1. -->
-      <VerdictBox class="mt-6">
-        <p>{a.verdict}</p>
-      </VerdictBox>
-
-      <TestDates testDate={dates.testDate} nextRetest={dates.nextRetest} class="mt-5" />
-      <Disclosure class="mt-4 max-w-3xl" />
     </header>
 
-    <!-- Why people leave -->
+    <div class="wrap mt-8">
+      <VerdictBox label="Short answer" class="max-w-4xl">
+        <p>{a.verdict}</p>
+      </VerdictBox>
+      <Disclosure class="mt-4 max-w-3xl" />
+
+      <ul class="mt-6 flex flex-wrap gap-2" aria-label="Alternatives on this page">
+        {options.map((o, i) => (
+          <li>
+            <a href={`#pick-${o.data.slug}`} class="pill !py-1.5 no-underline hover:bg-brand-wash hover:text-brand-deep">
+              {i + 1}. {o.data.name} <span class="text-ink-muted">{score1(o.data.score)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
     <section class="wrap mt-14" aria-labelledby="why-heading">
-      <h2 id="why-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
-        Why do shops leave {tool.data.name}?
-      </h2>
+      <h2 id="why-heading" class="section-title">Why do businesses switch from {name}?</h2>
+      <p class="mt-2 max-w-3xl text-ink-soft">The complaints that come up most often in public user reviews:</p>
       <ul class="mt-5 grid gap-3 sm:grid-cols-2">
         {
           a.whyPeopleLeave.map((reason) => (
-            <li class="board border-l-4 border-l-bad p-4 leading-snug">{reason}</li>
+            <li class="card flex gap-3 p-4 leading-snug text-ink-soft">
+              <span class="mt-1 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-bad-wash text-bad" aria-hidden="true">
+                <svg class="h-3 w-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 4v5M8 12h.01" /></svg>
+              </span>
+              {reason}
+            </li>
           ))
         }
       </ul>
-      <p class="mt-4 text-ink-soft">
-        None of that makes it a bad product - it scored {score1(tool.data.score)} out of 10 in our
-        testing. Read the
-        <a
-          href={toolUrl(tool.data.slug)}
-          class="underline decoration-yellow decoration-[3px] underline-offset-2"
-          >{tool.data.name} review</a
-        >
-        before you decide the problem is the software.
+      <p class="mt-4 max-w-3xl text-ink-soft">
+        None of that makes {name} a bad product: we rate it {score1(tool.data.score)} out of 10. Read the
+        <a href={toolUrl(tool.data.slug)} class="font-medium text-brand underline underline-offset-2">{name} review</a>
+        before deciding the software is the problem.
       </p>
     </section>
 
-    <!-- Ranked alternatives -->
     <section class="wrap mt-14" aria-labelledby="options-heading">
-      <h2 id="options-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
-        What should you use instead?
-      </h2>
+      <h2 id="options-heading" class="section-title">What should you use instead of {name}?</h2>
       <p class="mt-2 max-w-3xl text-ink-soft">
-        Ranked in the order we would consider them for someone leaving {tool.data.name}, not by raw
-        score. The best replacement depends on which of the reasons above is yours.
+        Ordered by how well each one fixes the reasons above, not by raw rating. The right replacement
+        depends on which problem is yours.
       </p>
-      <ol class="mt-6 space-y-6">
+      <ol class="mt-6 space-y-5">
         {options.map((option, i) => <li><RankedTool rank={i + 1} tool={option.data} /></li>)}
       </ol>
     </section>
 
-    <!-- Migration steps -->
-    <section class="wrap mt-14" aria-labelledby="migration-heading">
-      <h2 id="migration-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
-        {migrationName}
-      </h2>
+    <div class="wrap"><AdSlot /></div>
+
+    <section class="wrap mt-4" aria-labelledby="migration-heading">
+      <h2 id="migration-heading" class="section-title">{migrationName}</h2>
       <p class="mt-2 max-w-3xl text-ink-soft">
-        In this order. The expensive mistakes in a migration are almost always things left behind
-        rather than things imported wrongly.
+        In this order. The expensive mistakes in a migration are usually things left behind, not things
+        imported wrongly.
       </p>
-      <ol class="mt-6 space-y-4">
+      <ol class="mt-6 grid gap-3 md:grid-cols-2">
         {
           a.migrationSteps.map((step, i) => (
-            <li class="board flex gap-4 p-5">
-              <span
-                class="flex h-9 w-9 flex-none items-center justify-center bg-yellow font-condensed text-lg font-bold leading-none text-ink"
-                aria-hidden="true"
-              >
+            <li class="card flex gap-4 p-5">
+              <span class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-brand text-sm font-bold text-white" aria-hidden="true">
                 {i + 1}
               </span>
               <div class="min-w-0">
-                <h3 class="font-condensed text-xl font-bold uppercase leading-tight">{step.name}</h3>
-                <p class="mt-1.5 leading-relaxed text-ink-soft">{step.text}</p>
+                <h3 class="font-sans text-base font-semibold leading-snug">{step.name}</h3>
+                <p class="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">{step.text}</p>
               </div>
             </li>
           ))
         }
       </ol>
       <p class="mt-4 text-sm text-ink-muted">
-        The general version of this plan, including the four things that go wrong in most
-        migrations, is in
-        <a
-          href="/guides/how-to-switch-field-service-software/"
-          class="underline decoration-yellow decoration-[3px] underline-offset-2"
-          >how to switch field service software</a
-        >.
+        The general version of this plan is in our guide:
+        <a href="/guides/how-to-switch-field-service-software/" class="font-medium text-brand underline underline-offset-2">how to switch field service software</a>.
       </p>
     </section>
 
-    <div class="wrap-narrow prose-shop mt-14">
-      <Content />
+    <div class="wrap-narrow">
+      <div class="prose-shop mt-14">
+        <Content />
+      </div>
+      <Sources sources={a.sources} />
     </div>
 
     <section class="wrap mt-14" aria-labelledby="next-heading">
-      <h2 id="next-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
-        Read further
-      </h2>
+      <h2 id="next-heading" class="section-title">Keep researching</h2>
       <ul class="mt-5 grid gap-3 sm:grid-cols-3">
-        <li>
-          <a href={toolUrl(tool.data.slug)} class="board flex h-full flex-col p-4 no-underline hover:border-ink">
-            <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
-              Full review
-            </span>
-            <span class="mt-1 font-condensed text-xl font-bold uppercase">{tool.data.name}</span>
-          </a>
-        </li>
         {
-          comparison && (
-            <li>
-              <a
-                href={compareUrl(comparison.data.slug)}
-                class="board flex h-full flex-col p-4 no-underline hover:border-ink"
-              >
-                <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
-                  Head to head
-                </span>
-                <span class="mt-1 font-condensed text-xl font-bold uppercase">
-                  {comparison.data.title}
-                </span>
-              </a>
-            </li>
-          )
+          [
+            { href: toolUrl(tool.data.slug), kicker: 'Full review', text: `${name} review` },
+            comparison && { href: compareUrl(comparison.data.slug), kicker: 'Head to head', text: comparison.data.title },
+            { href: '/guides/how-to-switch-field-service-software/', kicker: 'Guide', text: 'Switching software without losing money' },
+          ]
+            .filter(Boolean)
+            .map((l) => (
+              <li>
+                <a href={l!.href} class="card card-link flex h-full items-center justify-between gap-3 p-4 no-underline">
+                  <span>
+                    <span class="block text-xs font-semibold uppercase tracking-wide text-ink-muted">{l!.kicker}</span>
+                    <span class="mt-0.5 block font-semibold text-ink">{l!.text}</span>
+                  </span>
+                  <span class="text-brand" aria-hidden="true">&rarr;</span>
+                </a>
+              </li>
+            ))
         }
-        <li>
-          <a
-            href="/guides/how-to-switch-field-service-software/"
-            class="board flex h-full flex-col p-4 no-underline hover:border-ink"
-          >
-            <span class="font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
-              Guide
-            </span>
-            <span class="mt-1 font-condensed text-xl font-bold uppercase">
-              Switching without losing money
-            </span>
-          </a>
-        </li>
       </ul>
     </section>
   </article>

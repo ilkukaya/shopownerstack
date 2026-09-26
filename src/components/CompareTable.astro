@@ -11,29 +11,27 @@ const { a, b, rows } = Astro.props;
 
 const winCount = (side: 'a' | 'b') => rows.filter((r) => r.winner === side).length;
 const ties = rows.filter((r) => r.winner === 'tie').length;
+const win = 'bg-brand-wash font-medium text-ink shadow-[inset_3px_0_0_0_var(--color-brand)]';
 ---
 
-<div class="table-scroll board">
-  <table class="w-full min-w-[44rem] border-collapse text-left">
+<div class="table-scroll card">
+  <table class="data-table min-w-[40rem]">
     <caption class="sr-only">
-      {a.name} compared with {b.name}, feature by feature. Winning cells are highlighted and
-      labelled.
+      {a.name} compared with {b.name}, feature by feature. Stronger cells are highlighted and labelled.
     </caption>
     <thead>
-      <tr class="bg-ink text-white">
-        <th scope="col" class="w-1/4 px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">
-          Feature
-        </th>
-        <th scope="col" class="px-4 py-3">
-          <span class="flex items-center gap-2">
-            <LogoMark text={a.logoText} color={a.logoColor} size="sm" class="h-7 w-7 text-[0.6rem]" />
-            <span class="font-condensed text-lg font-bold uppercase">{a.name}</span>
+      <tr>
+        <th scope="col" class="w-[28%]">Feature</th>
+        <th scope="col">
+          <span class="flex items-center gap-2 text-sm text-ink">
+            <LogoMark text={a.logoText} color={a.logoColor} size="xs" />
+            {a.name}
           </span>
         </th>
-        <th scope="col" class="px-4 py-3">
-          <span class="flex items-center gap-2">
-            <LogoMark text={b.logoText} color={b.logoColor} size="sm" class="h-7 w-7 text-[0.6rem]" />
-            <span class="font-condensed text-lg font-bold uppercase">{b.name}</span>
+        <th scope="col">
+          <span class="flex items-center gap-2 text-sm text-ink">
+            <LogoMark text={b.logoText} color={b.logoColor} size="xs" />
+            {b.name}
           </span>
         </th>
       </tr>
@@ -41,26 +39,14 @@ const ties = rows.filter((r) => r.winner === 'tie').length;
     <tbody>
       {
         rows.map((row) => (
-          <tr class="border-t border-line align-top">
-            <th scope="row" class="px-4 py-3 font-condensed text-base font-semibold uppercase tracking-wide">
-              {row.feature}
-            </th>
-            <td
-              class:list={[
-                'px-4 py-3 text-[0.95rem] leading-snug',
-                row.winner === 'a' && 'bg-yellow-wash font-semibold shadow-[inset_4px_0_0_0_var(--color-yellow)]',
-              ]}
-            >
-              {row.winner === 'a' && <span class="sr-only">Winner: </span>}
+          <tr>
+            <th scope="row" class="text-[0.95rem] font-semibold text-ink">{row.feature}</th>
+            <td class:list={['text-[0.95rem] leading-snug text-ink-soft', row.winner === 'a' && win]}>
+              {row.winner === 'a' && <span class="sr-only">Stronger: </span>}
               {row.a}
             </td>
-            <td
-              class:list={[
-                'px-4 py-3 text-[0.95rem] leading-snug',
-                row.winner === 'b' && 'bg-yellow-wash font-semibold shadow-[inset_4px_0_0_0_var(--color-yellow)]',
-              ]}
-            >
-              {row.winner === 'b' && <span class="sr-only">Winner: </span>}
+            <td class:list={['text-[0.95rem] leading-snug text-ink-soft', row.winner === 'b' && win]}>
+              {row.winner === 'b' && <span class="sr-only">Stronger: </span>}
               {row.b}
             </td>
           </tr>
@@ -68,18 +54,16 @@ const ties = rows.filter((r) => r.winner === 'tie').length;
       }
     </tbody>
     <tfoot>
-      <tr class="border-t-2 border-ink bg-paper-deep">
-        <th scope="row" class="px-4 py-3 font-condensed text-base font-bold uppercase tracking-[0.1em]">
-          Rows won
-        </th>
-        <td class="px-4 py-3 font-condensed text-xl font-bold">{winCount('a')}</td>
-        <td class="px-4 py-3 font-condensed text-xl font-bold">{winCount('b')}</td>
+      <tr class="bg-paper">
+        <th scope="row" class="text-sm font-semibold">Rows where stronger</th>
+        <td class="text-lg font-bold tabular-nums">{winCount('a')}</td>
+        <td class="text-lg font-bold tabular-nums">{winCount('b')}</td>
       </tr>
     </tfoot>
   </table>
 </div>
 
 <p class="mt-2 text-sm text-ink-muted">
-  {ties} row{ties === 1 ? '' : 's'} scored as a tie. Highlighted cells are the winner of that row.
-  Rows won is a tally, not the verdict - one row can matter more than the other nine.
+  {ties} row{ties === 1 ? '' : 's'} called even. Highlighted cells mark the stronger product on that row,
+  in our judgement. The tally is not the verdict: one row can matter more than the rest combined.
 </p>

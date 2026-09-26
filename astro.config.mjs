@@ -6,14 +6,28 @@ import affiliateRedirects from './src/integrations/affiliate-redirects.mjs';
 
 // `site` must always be set: canonical URLs, Open Graph tags, the sitemap and
 // llms.txt are all built from it.
+//
+// Resolution order:
+//   1. SITE_URL - set this in Netlify once a custom domain is live
+//      (e.g. https://www.shopownerstack.com).
+//   2. URL - injected by Netlify on every build: the site's primary URL.
+//   3. The Netlify subdomain the site currently lives on.
+const SITE_URL = (process.env.SITE_URL || process.env.URL || 'https://shopownerstack.netlify.app')
+  .replace(/^http:\/\//, 'https://')
+  .replace(/\/$/, '');
+
 export default defineConfig({
-  site: 'https://shopownerstack.com',
+  site: SITE_URL,
+  trailingSlash: 'always',
   output: 'static',
   integrations: [
     affiliateRedirects(),
     sitemap({
-      // /go/ pages are affiliate redirects, never index them.
-      filter: (page) => !page.includes('/go/'),
+      // /go/ pages are affiliate redirects, /thanks/ and /search/ are utility
+      // pages - none of them belong in the index.
+      filter: (page) => !/\/(go|thanks|search)\//.test(page),
+      changefreq: 'weekly',
+      lastmod: new Date(),
     }),
   ],
   markdown: {

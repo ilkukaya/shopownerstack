@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Search"
+  description="Search every review, comparison and guide on ShopOwnerStack."
+  path="/search/"
+  noindex
+>
+  <div class="wrap-narrow pt-10">
+    <h1 class="text-[2.1rem] sm:text-5xl">Search</h1>
+    <p class="mt-3 text-ink-soft">Search every review, comparison and guide.</p>
+    <div id="search" class="mt-8"></div>
+    <noscript><p class="mt-6 text-ink-muted">Search needs JavaScript. Browse <a href="/reviews/" class="underline">all reviews</a> instead.</p></noscript>
+  </div>
+</BaseLayout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<style is:global>
+  #search {
+    --pagefind-ui-primary: #0b6b4f;
+    --pagefind-ui-text: #151a23;
+    --pagefind-ui-border: #e4e1d8;
+    --pagefind-ui-border-radius: 10px;
+    --pagefind-ui-font: inherit;
+  }
+</style>
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof PagefindUI === 'undefined') return;
+    var ui = new PagefindUI({ element: '#search', showSubResults: true, showImages: false, autofocus: true });
+    var q = new URLSearchParams(location.search).get('q');
+    if (q) ui.triggerSearch(q);
+  });
+</script>

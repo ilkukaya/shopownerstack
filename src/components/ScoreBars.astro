@@ -9,21 +9,21 @@ interface Props {
 const { subscores } = Astro.props;
 ---
 
-<ul class="space-y-3">
+<ul class="space-y-3.5">
   {
     SUBSCORES.map((key) => {
       const value = subscores[key];
       return (
-        <li class="grid grid-cols-[7.5rem_1fr_2.5rem] items-center gap-3 sm:grid-cols-[9rem_1fr_2.5rem]">
-          <span class="font-condensed text-base font-semibold uppercase tracking-wide text-ink">
-            {SUBSCORE_LABELS[key]}
+        <li class="grid grid-cols-[7rem_1fr_2.25rem] items-center gap-3 sm:grid-cols-[8.5rem_1fr_2.5rem]">
+          <span class="text-[0.95rem] font-medium text-ink-soft">{SUBSCORE_LABELS[key]}</span>
+          <span
+            class="h-2 w-full overflow-hidden rounded-full bg-paper-deep"
+            role="img"
+            aria-label={`${SUBSCORE_LABELS[key]}: ${score1(value)} out of 10`}
+          >
+            <span class="block h-full rounded-full bg-brand" style={`width:${value * 10}%`} />
           </span>
-          <span class="h-3 w-full bg-paper-deep" role="img" aria-label={`${SUBSCORE_LABELS[key]}: ${score1(value)} out of 10`}>
-            <span class="block h-full bg-yellow" style={`width:${value * 10}%`} />
-          </span>
-          <span class="text-right font-condensed text-base font-bold tabular-nums text-ink">
-            {score1(value)}
-          </span>
+          <span class="text-right text-[0.95rem] font-semibold tabular-nums text-ink">{score1(value)}</span>
         </li>
       );
     })

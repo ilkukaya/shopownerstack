@@ -6,22 +6,18 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="border-b border-line bg-paper-deep/50">
-  <ol class="wrap flex flex-wrap items-center gap-x-2 gap-y-1 py-2.5 text-sm">
+<nav aria-label="Breadcrumb" class="wrap pt-5">
+  <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[0.8125rem]">
     {
       items.map((item, i) => (
-        <li class="flex items-center gap-2">
+        <li class="flex items-center gap-1.5">
           {i > 0 && (
-            <span class="text-ink-muted" aria-hidden="true">
-              /
-            </span>
+            <svg class="h-3 w-3 text-ink-muted/60" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg>
           )}
           {i === items.length - 1 ? (
-            <span class="font-semibold text-ink" aria-current="page">
-              {item.name}
-            </span>
+            <span class="font-medium text-ink-soft" aria-current="page">{item.name}</span>
           ) : (
-            <a href={item.path} class="text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+            <a href={item.path} class="text-ink-muted no-underline hover:text-brand hover:underline">
               {item.name}
             </a>
           )}

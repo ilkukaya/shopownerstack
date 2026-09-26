@@ -8,20 +8,22 @@ and lead forms.
 Astro 5, static output, Tailwind CSS v4, TypeScript, deployed on Netlify. No CMS, no component
 library, and no client-side framework.
 
-> **Everything in `src/content/` is placeholder data.** Read [SAMPLE_DATA.md](./SAMPLE_DATA.md)
-> before publishing anything. Scores, prices, measurements and quotes are all invented to
-> demonstrate the layouts.
+Reviews are **research-based**: pricing and features come from vendor pages, documentation and
+public user reviews, and every review lists its sources. Never add claims of hands-on testing
+that did not happen. The launch checklist (in Turkish) is in
+[docs/YAYIN-PLANI.md](./docs/YAYIN-PLANI.md); affiliate programme research is in
+[docs/affiliate-programs.md](./docs/affiliate-programs.md).
 
 ---
 
 ## Running it
 
-Requires **Node 20+** and **pnpm**.
+Requires **Node 20+** (22 on Netlify) and **pnpm**.
 
 ```bash
 pnpm install
 pnpm dev        # http://localhost:4321
-pnpm build      # static site into dist/
+pnpm build      # static site into dist/, then the Pagefind search index
 pnpm preview    # serve dist/ locally
 pnpm check      # astro check - types, unused imports, a11y hints
 ```
@@ -32,8 +34,20 @@ expected, not a bug.
 
 ### Environment variables
 
-| Variable | Required | What it does |
-| --- | --- | --- |
+All optional. Set them under Site configuration → Environment variables on Netlify.
+
+| Variable | What it does |
+| --- | --- |
+| `SITE_URL` | Canonical origin, e.g. `https://www.shopownerstack.com`. Falls back to Netlify's `URL`, then `https://shopownerstack.netlify.app`. |
+| `PUBLIC_GA_ID` | GA4 measurement ID. When empty no analytics JavaScript is loaded and no `affiliate_click` events fire. |
+| `PUBLIC_ADSENSE_CLIENT` | AdSense publisher id `ca-pub-…`. Loads AdSense on content pages and writes `/ads.txt`. |
+| `PUBLIC_ADSENSE_SLOT_INARTICLE` | AdSense ad unit id for the in-article `AdSlot`. Without it, only auto ads run. |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` / `PUBLIC_BING_SITE_VERIFICATION` | Meta-tag verification tokens for Search Console / Bing Webmaster Tools. |
+
+Only production builds (`CONTEXT=production`) are indexable; branch deploys and deploy previews
+get `noindex` and a `Disallow: /` robots.txt.
+
+--- | --- | --- |
 | `PUBLIC_GA_ID` | No | GA4 measurement ID, e.g. `G-XXXXXXXXXX`. When empty **no analytics JavaScript is loaded at all** and no `affiliate_click` events fire. Leave it unset locally. |
 
 Set it in `.env` for local work and under Site configuration → Environment variables on Netlify.
@@ -67,9 +81,10 @@ Tailwind v4 is configured in CSS, not in a JS file. The `@theme` block at the to
 `bg-ink`, `text-ink` and `border-ink` exist. There is no `tailwind.config.js` and adding one will
 not do anything.
 
-Fonts are self-hosted through Fontsource (`@fontsource/barlow`, `@fontsource/barlow-condensed`)
-rather than loaded from Google's CDN, which keeps a render-blocking third-party request off the
-critical path.
+Fonts are self-hosted variable fonts from Fontsource (Inter for UI and body, Source Serif 4 for
+headings), which keeps a render-blocking third-party request off the critical path. Social cards
+are rendered at build time by `src/pages/og/[...slug].png.ts` (satori + resvg) using the static
+`@fontsource/*` WOFF files.
 
 ---
 
@@ -85,9 +100,10 @@ critical path.
    | `categories` | One or more of the keys in `CATEGORIES` (`src/lib/site.ts`). This is what puts the tool on a `/best/` page. |
    | `teamSizes` | Drives the size filter on `/best/` pages. |
    | `affiliateUrl` | Leave as `''` until the partner programme is approved. `/go/` falls back to `website`. |
-   | `score`, `subscores` | 0-10, one decimal. Never write these before the test is done. |
-   | `testDate`, `nextRetest` | Rendered as the visible "last full retest" and "next retest due" dates. |
-   | `measurements` | The timed results table. Same tasks on every product. |
+   | `score`, `subscores` | 0-10, one decimal, from the rubric on `/how-we-test/`. |
+   | `priceFrom`, `pricing` | USD. `null` when the vendor does not publish a price. |
+   | `updatedDate`, `pricesChecked` | Rendered as the visible "Updated" and "Prices checked" dates. |
+   | `sources` | Public pages the facts were checked against. Required. |
 
 3. Write the review body in Markdown below the frontmatter. Phrase H2s as the question a shop
    owner would type.
@@ -207,7 +223,7 @@ Deliberately almost none. The only scripts on the site are the mobile menu, the 
 2. Build settings:
    - Build command: `pnpm build`
    - Publish directory: `dist`
-   - Node version: 20 (already set in `netlify.toml` and `.nvmrc`)
+   - Node version: 22 (already set in `netlify.toml` and `.nvmrc`)
 3. Add `PUBLIC_GA_ID` under Site configuration → Environment variables if analytics should run.
 4. Deploy. `netlify.toml` in the repo root already carries the build settings and security headers,
    so the UI fields only need to match it.
@@ -220,14 +236,14 @@ Deliberately almost none. The only scripts on the site are the mobile menu, the 
 - `https://<site>/llms.txt` renders
 - A test submission appears under Forms in the Netlify dashboard
 
-**Custom domain:** point `shopownerstack.com` at the site in Netlify's domain settings. `site` in
-`astro.config.mjs` is already set to the production domain, so no code change is needed.
+**Custom domain:** add it in Netlify's domain settings, then set `SITE_URL` to the new origin and
+redeploy so canonicals, the sitemap, `robots.txt` and `llms.txt` switch over.
 
 ---
 
 ## Quality bar
 
-- Responsive to 360px, verified across all 18 page types - no page scrolls horizontally.
+- Responsive to 360px, verified on every page in the sitemap - no page scrolls horizontally.
   Wide tables scroll inside their own container.
 - Visible focus states on everything focusable, with a white ring on dark surfaces.
 - `prefers-reduced-motion` respected.
@@ -238,25 +254,20 @@ Deliberately almost none. The only scripts on the site are the mobile menu, the 
 
 ### Lighthouse
 
-Mobile, Lighthouse 12.8.2, against `pnpm preview`:
+Mobile, Lighthouse 12, against `pnpm preview` (September 2026 redesign):
 
 | Page | Perf | A11y | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| `/` | 100 | 100 | 100 | 100 |
+| `/` | 99 | 100 | 100 | 100 |
 | `/reviews/jobber/` | 100 | 100 | 100 | 100 |
 | `/best/field-service-software-for-plumbers/` | 100 | 100 | 100 | 100 |
-| `/compare/housecall-pro-vs-jobber/` | 100 | 100 | 100 | 100 |
-| `/alternatives/jobber/` | 100 | 100 | 100 | 100 |
-| `/guides/how-to-price-a-service-job/` | 100 | 100 | 100 | 100 |
-| `/tools/job-pricing-calculator/` | 100 | 100 | 100 | 100 |
-| `/how-we-test/` | 100 | 100 | 100 | 100 |
 
 Two things are load-bearing for those numbers and should not be removed casually:
 
-- **Metric-matched font fallbacks** at the top of `global.css`. The `size-adjust` values were
-  measured in Chrome against Arial, not guessed. Without them the swap to Barlow Condensed
-  re-wraps every heading and costs about 0.12 CLS on heading-heavy pages.
-- **`position: relative` on `.table-scroll`.** Visually hidden captions and the "Winner:" labels
+- **Metric-matched font fallbacks** at the top of `global.css` (Inter over Arial, Source Serif
+  over Georgia) plus the two preloaded Latin font files in `BaseLayout.astro`. Without them the
+  webfont swap re-wraps headings and costs CLS.
+- **`position: relative` on `.table-scroll`.** Visually hidden captions and the "Stronger:" labels
   in the comparison table are absolutely positioned; with no positioned ancestor they resolve
   against the initial containing block, escape the scroll container and make the whole page
   scroll sideways on a phone.
@@ -265,31 +276,8 @@ Two things are load-bearing for those numbers and should not be removed casually
 
 ## Known gaps
 
-Things a reader of this repo should not assume are done:
-
-1. **All content is placeholder data.** See [SAMPLE_DATA.md](./SAMPLE_DATA.md). This is the big
-   one - nothing here should be published as a review.
-2. **The original design demo was never available.** `shopownerstack-demo-v2.html` was not in the
-   working folder or the repository, so the visual language was rebuilt from the written brief
-   (ink `#1B2A3A`, safety yellow `#F5C518`, Barlow and Barlow Condensed, trade board, verdict box,
-   get-it-if / skip-it-if, score bars, winner-highlighted comparison tables, demo form). Expect
-   differences from the demo, and reconcile against it if it turns up.
-3. **`astro:assets` is not wired in**, because there is not a single raster image in the site
-   yet - product shots are the CSS-drawn `MockScreenshot`, and icons and the logo are inline SVG.
-   Add the `<Image>` component and explicit dimensions at the same time as the first real
-   screenshot.
-4. **No Open Graph image.** `twitter:card` is `summary` rather than `summary_large_image` because
-   there is no artwork to point at. Add `og:image` and switch the card type when brand assets
-   exist.
-5. **Prices-checked date shares `testDate`.** The tools schema has only `testDate` and
-   `nextRetest`, so "prices checked" is rendered from `testDate` - true today, since prices are
-   checked during a full retest. If prices start being checked between retests, that needs its own
-   schema field.
-6. **`/go/` links cannot be exercised locally.** They are edge redirects, so verifying them needs
-   a Netlify deploy or `netlify dev`.
-7. **`affiliateUrl` is empty on every tool**, so every `/go/` link currently falls back to the
-   vendor's own site. Nothing earns until the partner programmes are approved and those fields
-   are filled in.
-8. **No analytics have been verified end to end.** The `affiliate_click` event fires against a
-   real GA4 property only once `PUBLIC_GA_ID` is set; the sendBeacon fallback path in particular
-   has not been observed against a live property.
+1. **`affiliateUrl` is empty on every tool** until partner programmes approve the site, so `/go/`
+   links fall back to the vendor's own site. See `docs/affiliate-programs.md`.
+2. **No product screenshots.** Add real captures (with `astro:assets`) only from accounts we
+   actually used.
+3. **Custom domain not connected yet.** Set `SITE_URL` once it is.
