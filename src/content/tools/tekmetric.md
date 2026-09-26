@@ -9,125 +9,185 @@ partnerNetwork: direct
 categories:
   - auto-repair
   - invoicing
-bestFor: Repair shops that manage gross profit line by line and want the parts matrix under control
+bestFor: Repair shops that want unlimited users, published flat pricing and strong reporting on the higher tiers
 teamSizes:
   - 2-5
   - 6-15
   - 16+
 priceFrom: 179
+pricingModel: Flat monthly fee per shop with unlimited users, three published tiers plus paid add-ons
+freeTrial: No free trial - personalized demo on request
+freePlan: false
 pricing:
-  - name: Core
-    users: Unlimited users, 1 location
+  - name: Start
+    users: Unlimited users, 1 shop
     monthly: 199
     annual: 179
-    forWhom: A shop replacing paper that still wants real margin reporting from day one
-  - name: Plus
-    users: Unlimited users, 1 location
-    monthly: 399
-    annual: 349
-    forWhom: Shops using inspections, texting and integrated parts ordering daily
-  - name: Pro
-    users: Unlimited users, multi-location
-    monthly: 649
-    annual: 559
-    forWhom: Groups comparing technician efficiency and margin across sites
+    forWhom: Shops that need repair orders, inspections, appointments, inventory and digital authorizations
+  - name: Grow
+    users: Unlimited users, 1 shop
+    monthly: 349
+    annual: 309
+    forWhom: Shops that want integrated parts ordering, a labor guide, time and job clocks and more reports
+  - name: Scale
+    users: Unlimited users, 1 shop
+    monthly: 439
+    annual: 409
+    forWhom: Busier shops that want two-way texting, a real-time dashboard and technician performance data
 score: 8.1
 subscores:
-  setup: 7.7
-  scheduling: 7.9
+  setup: 7.4
+  scheduling: 7.8
   invoicing: 8.5
-  communication: 8.2
-  reporting: 9.1
-  value: 8.3
-testDate: 2026-08-20
-nextRetest: 2027-02-16
-planTested: Plus, billed annually, four users
-measurements:
-  - test: Vehicle in to estimate sent to the customer's phone
-    result: 11 min 05 s including a photo inspection
-  - test: See gross profit on a repair order while it is still open
-    result: Live on the ticket, per line
-  - test: Configure a parts pricing matrix by cost band
-    result: 14 minutes, 6 bands
-  - test: Technician efficiency report for the week
-    result: Built in, billed vs clocked hours per technician
-  - test: Export customers, vehicles, repair orders and payments
-    result: Self-serve CSV per object
-  - test: First reply from support, phone, weekday morning
-    result: 4 minutes
+  communication: 7.9
+  reporting: 8.6
+  value: 8.2
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $179/mo billed annually ($199 month to month)
+  - label: Pricing model
+    value: Flat fee per shop, unlimited users on every plan
+  - label: Free trial
+    value: None, demo on request
+  - label: Add-ons
+    value: Multi-shop, tire suite and marketing sold separately
+  - label: Founded
+    value: 2016, Houston, Texas
+  - label: Best for
+    value: Independent shops watching margin and technician productivity
+sources:
+  - title: Tekmetric pricing page
+    url: https://www.tekmetric.com/pricing
+  - title: Tekmetric pricing on G2
+    url: https://www.g2.com/products/tekmetric/pricing
+  - title: Tekmetric reviews on Capterra
+    url: https://www.capterra.com/p/190952/Tekmetric/reviews/
+  - title: Tekmetric pricing on Capterra
+    url: https://www.capterra.com/p/190952/Tekmetric/pricing/
+  - title: About Tekmetric
+    url: https://www.tekmetric.com/about
 pros:
-  - Live gross profit per line on an open repair order, which is the number that runs a repair shop
-  - Parts pricing matrix by cost band is properly configurable and stops margin leaking on cheap parts
-  - Unlimited users on every plan, so advisors, technicians and the bookkeeper all get logins
-  - Technician efficiency reporting - billed against clocked hours - is built in rather than exported
+  - Unlimited users on every plan, so adding technicians or advisors does not raise the bill
+  - Cheaper than Shopmonkey at each published tier
+  - Digital vehicle inspections are included from the entry Start plan
+  - Reviewers frequently praise customer support and parts catalog integrations
 cons:
-  - The interface is functional rather than pleasant, and it shows next to Shopmonkey
-  - Customer-facing inspection presentation is good but a step behind Shopmonkey's
-  - Setup of the matrix and labour rates takes real thought before the numbers are trustworthy
-  - Scheduling is the weakest module and most shops end up managing the board loosely
+  - Two-way texting sits on the top Scale plan; Start and Grow list one-way messaging
+  - Integrated parts ordering and the labor guide start on Grow
+  - Some reviewers describe a learning curve and say new staff need training
+  - Cloud-only, so a lost internet connection stops the shop system
 getItIf:
-  - You manage the shop by gross profit and want it visible before the car leaves
-  - Cheap parts are quietly destroying your margin and you need a proper matrix
-  - You want every advisor and technician to have a login without per-seat costs
-  - You measure technician efficiency and want it produced automatically
+  - You have several advisors and technicians and per-user pricing elsewhere adds up
+  - You want inspections included without paying for the top tier
+  - Margin and technician productivity reporting matter to you
+  - You prefer published pricing with a month-to-month option
 skipItIf:
-  - The customer experience is what you are trying to improve
-  - Nobody in the shop will set up a pricing matrix carefully
-  - You need strong appointment scheduling
-  - You want the most modern-feeling product regardless of reporting depth
+  - You need two-way texting but cannot justify the Scale plan
+  - Your shop has unreliable internet
+  - You want the simplest possible interface and will pay more for it
+  - You run a multi-location group and want one quoted price, since multi-shop is an add-on
 verdict: >-
-  Tekmetric is the repair shop system to buy when you manage by gross profit, because margin is live
-  on the ticket and the parts matrix is genuinely controllable. Shopmonkey feels better and sells
-  better to customers; Tekmetric tells you the truth about the money sooner.
+  Tekmetric is our pick for value among modern auto repair shop systems. Unlimited users and
+  inspections on every plan make the $179 Start tier good value, and the upper tiers add the reporting
+  that margin-focused owners want. Watch which tier holds two-way texting and parts ordering before you
+  choose.
 faq:
   - q: How much does Tekmetric cost?
-    a: Core is $179 a month billed annually, Plus $349 and Pro $559, all with unlimited users. Unlimited seats on every plan is the main pricing difference from tiered competitors.
+    a: >-
+      Tekmetric's published plans are Start at $179 a month billed annually ($199 month to month), Grow
+      at $309 ($349) and Scale at $409 ($439). All include unlimited users. Add-ons such as multi-shop
+      management, a tire suite and marketing cost extra. Confirm current prices on Tekmetric's site.
+  - q: Does Tekmetric have a free trial?
+    a: >-
+      No. Tekmetric offers a personalized demo instead of a free trial. The month-to-month option lets
+      you avoid an annual commitment.
+  - q: Does Tekmetric include digital vehicle inspections?
+    a: >-
+      Yes. Tekmetric lists unlimited digital vehicle inspections on every plan, including Start.
+  - q: Does Tekmetric charge per user?
+    a: >-
+      No. Every plan includes unlimited users and unlimited repair orders, which is one of its main
+      advantages over per-seat pricing.
   - q: Tekmetric or Shopmonkey?
-    a: Tekmetric for margin control, parts matrix and technician efficiency reporting. Shopmonkey for the customer-facing experience and a nicer interface. Shops with an approval problem should pick Shopmonkey; shops with a margin problem should pick Tekmetric.
-  - q: Does Tekmetric do digital vehicle inspections?
-    a: Yes, from the Plus plan, with photos and customer approval by text. They work well, but the presentation to the customer is a step behind Shopmonkey's.
-  - q: Is the parts matrix worth the setup time?
-    a: Yes. It took 14 minutes to configure six cost bands and it is the single feature most likely to change your gross profit within a month. A shop that does not set it up carefully gets much less out of the product.
+    a: >-
+      Tekmetric is cheaper at each published tier and includes unlimited users. Shopmonkey is often
+      praised for its interface and responsive support. See our Shopmonkey vs Tekmetric comparison.
 ---
 
-## Why do shops choose Tekmetric?
+## What is Tekmetric?
 
-Because gross profit is live on the ticket. Every line on an open repair order shows what it
-cost and what it makes, and the shop can see the margin before the car leaves rather than at
-month end.
+Tekmetric is cloud-based shop management software for auto repair shops. It handles repair orders,
+estimates, digital vehicle inspections, appointments, inventory, payments and reporting in a browser.
 
-That is a management tool rather than a sales tool, and it is the clean split against
-[Shopmonkey](/reviews/shopmonkey/).
+The company was founded in 2016 in Houston, Texas, and says it is used by more than 15,000 shops. Its
+closest competitor on this site is [Shopmonkey](/reviews/shopmonkey/).
 
-We ran the Plus plan on a four-bay shop for six weeks, 58 repair orders.
+## How much does Tekmetric cost?
 
-## What does the parts matrix do?
+Tekmetric starts at $179 a month billed annually, or $199 month to month, for the Start plan. Grow is
+$309 ($349 monthly) and Scale is $409 ($439 monthly), based on published pricing checked on
+2026-09-26.
 
-It sets your selling price as a function of part cost, in bands. Cheap parts get a higher
-markup, expensive parts a lower one, and nobody has to remember the rule.
+Every plan includes unlimited users and unlimited repair orders. That matters more than the headline
+price for a shop with several advisors and technicians. Add-ons are sold separately, including
+multi-shop management, a tire suite and a marketing package, so the real bill can be higher than the
+plan price. Prices change, so confirm on Tekmetric's pricing page.
 
-Fourteen minutes to configure six bands. Most shops we have spoken to are losing several
-points of gross on low-cost parts because the markup is applied by habit rather than by
-rule, and this fixes it in an afternoon.
+## What do you get on each plan?
 
-## Is the technician efficiency reporting useful?
+Start covers the core shop workflow: repair orders, canned jobs, digital authorizations and invoicing,
+digital vehicle inspections, calendar and appointments, inventory and vendor management, and one-way
+messaging. Grow adds integrated parts ordering, a labor guide and maintenance schedules, time and job
+clocks, and parts, inventory and marketing reports. Scale adds two-way texting, a real-time shop
+dashboard, a technician board and employee performance analytics.
 
-Yes, and it is built in rather than something you export. Billed hours against clocked
-hours, per technician, per week. If you pay flat rate that number is your business, and
-producing it manually is a job nobody does consistently.
+The practical point is that two-way texting with customers is a Scale feature. If your advisors
+already text customers all day, budget for the top plan.
 
-## Where does it lose to Shopmonkey?
+## What do users like about Tekmetric?
 
-Presentation. The interface is functional and dated by comparison, and the customer-facing
-inspection, while good, is a step behind. If your problem is customers declining work
-because they do not trust the recommendation,
-[Shopmonkey](/reviews/shopmonkey/) sells better.
+Tekmetric holds about 4.7 out of 5 on Capterra and about 4.9 out of 5 on G2 at the time of writing.
+Themes that come up frequently in reviews:
 
-Scheduling is also weak here. Most shops end up running the board loosely rather than
-fighting it.
+- Responsive, transparent customer support
+- Photo and video inspections that help customers understand recommended work
+- Good parts catalog integrations
+- Clear visibility into what is happening in the bays and in the office
 
-## Who should buy Tekmetric?
+## What are the common complaints?
 
-A shop with two or more bays whose owner already looks at gross profit percentage every
-month and wants it sooner and per line. Also any shop where per-seat pricing has been
-stopping advisors and technicians from having their own login.
+The common complaints in public reviews are a learning curve and speed of day-to-day tasks. Some
+reviewers say building estimates and updating repair orders takes more steps than it should, that new
+staff need real training, and that the system goes down with the internet connection since it is
+cloud-only.
+
+## Tekmetric or Shopmonkey?
+
+In our assessment, Tekmetric is the better value and Shopmonkey is the more polished customer-facing
+tool. Tekmetric is cheaper at each tier, includes unlimited users and inspections from Start, and its
+upper tiers are built around margin and technician productivity reporting. Shopmonkey reviewers tend
+to praise its interface and support.
+
+See [Shopmonkey vs Tekmetric](/compare/shopmonkey-vs-tekmetric/) for a side-by-side, or
+[Tekmetric alternatives](/alternatives/tekmetric/) if it is not the right fit.
+
+## What should you check before signing up?
+
+Confirm the tier that matches how your shop actually works, then add the add-ons you need to get the
+real monthly figure. Questions worth asking in the demo:
+
+- Which plan includes two-way texting, integrated parts ordering and the labor guide you use today?
+- Which add-ons would you need (multi-shop, tire suite, marketing), and what do they cost?
+- What payment processing rates apply if you use Tekmetric's integrated payments?
+- How is data migrated from your current system, and who does it?
+- What training is included for advisors and technicians, given the learning curve reviewers mention?
+
+Get the answers in writing. A shop that needs Scale plus two add-ons is paying well above the $179
+headline figure, and that is the number to compare against other systems.
+
+This is an editorial rating based on Tekmetric's published pricing and plan details and on themes in
+public reviews on Capterra and G2, using the rubric on our [how we test](/how-we-test/) page. We did
+not run timed tests. Tekmetric scores highest on value and reporting, and loses points on setup
+because of the learning curve reviewers describe.

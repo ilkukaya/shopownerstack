@@ -1,0 +1,43 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import UpdatedMeta from '../components/UpdatedMeta.astro';
+import { breadcrumbs, webPage } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  kicker?: string;
+  h1?: string;
+  updated?: Date;
+  type?: 'WebPage' | 'AboutPage' | 'ContactPage';
+  noindex?: boolean;
+}
+
+const { title, description, path, kicker, h1, updated, type = 'WebPage', noindex } = Astro.props;
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: title, path },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  noindex={noindex}
+  jsonLd={[webPage({ path, title, description, dateModified: updated, type }), breadcrumbs(crumbs)]}
+>
+  <Breadcrumbs items={crumbs} />
+  <article class="wrap-narrow pt-6 sm:pt-8">
+    {kicker && <p class="kicker">{kicker}</p>}
+    <h1 class="mt-3 text-[2.1rem] leading-[1.1] sm:text-5xl">{h1 ?? title}</h1>
+    <p class="mt-4 text-lg leading-relaxed text-ink-soft" data-answer>{description}</p>
+    {updated && <UpdatedMeta updatedDate={updated} class="mt-5" />}
+    <div class="prose-shop mt-10">
+      <slot />
+    </div>
+    <slot name="after" />
+  </article>
+</BaseLayout>

@@ -5,22 +5,22 @@ import TradeBoard from '../components/TradeBoard.astro';
 import ToolTeaser from '../components/ToolTeaser.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import LogoMark from '../components/LogoMark.astro';
+import TradeIcon from '../components/TradeIcon.astro';
 import { SITE, TEAM_SIZES, TEAM_SIZE_LABELS } from '../lib/site';
-import { allTools, byScoreDesc } from '../lib/content';
-import { compareUrl, guideUrl, CALCULATOR_URL } from '../lib/urls';
-import { formatDate } from '../lib/format';
-import { organization, website, breadcrumbs } from '../lib/schema';
+import { allTools, byScoreDesc, newestUpdate } from '../lib/content';
+import { compareUrl, guideUrl, bestUrl, toolUrl, CALCULATOR_URL } from '../lib/urls';
+import { formatDate, priceLabel, score1 } from '../lib/format';
+import { organization, website, breadcrumbs, webPage } from '../lib/schema';
 
 const tools = await allTools();
 const trades = await getCollection('trades');
-const comparisons = (await getCollection('comparisons')).slice(0, 6);
+const comparisons = await getCollection('comparisons');
 const guides = (await getCollection('guides')).sort(
   (a, b) => b.data.updatedDate.getTime() - a.data.updatedDate.getTime(),
 );
 
 const toolMapById = new Map(tools.map((t) => [t.id, t]));
 
-// Tools tested per trade, shown on the board.
 const toolCounts = Object.fromEntries(
   trades.map((trade) => [
     trade.data.slug,
@@ -29,115 +29,152 @@ const toolCounts = Object.fromEntries(
 );
 
 // One top pick per team size.
+// Field service is the biggest audience, so picks come from there first, and
+// each tool appears only once so the row shows four different options.
+const used = new Set<string>();
 const picksBySize = TEAM_SIZES.map((size) => {
-  const best = tools.filter((t) => t.data.teamSizes.includes(size)).sort(byScoreDesc)[0];
+  const fits = tools
+    .filter((t) => t.data.teamSizes.includes(size) && t.data.categories.includes('field-service'))
+    .sort(byScoreDesc);
+  const best = fits.find((t) => !used.has(t.id)) ?? fits[0];
+  if (best) used.add(best.id);
   return { size, tool: best };
 }).filter((p) => p.tool);
 
-const lastTest = tools
-  .map((t) => t.data.testDate)
-  .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+const lastUpdate = newestUpdate(tools);
+const sourceCount = tools.reduce((n, t) => n + t.data.sources.length, 0);
 
-const description = `${SITE.description} Reviews of ${tools.length} tools across ${trades.length} trades, retested twice a year.`;
+const title = `${SITE.name}: Independent Software Reviews for Service Businesses`;
+const description = `Find the right scheduling, invoicing and job management software for your service business. Independent reviews of ${tools.length} tools across ${trades.length} trades, with prices checked and sources cited.`;
 ---
 
 <BaseLayout
-  title={`${SITE.name} - software reviews for local service businesses`}
+  title={title}
   description={description}
   path="/"
-  jsonLd={[organization(), website(), breadcrumbs([{ name: 'Home', path: '/' }])]}
+  jsonLd={[
+    organization(),
+    website(),
+    webPage({ path: '/', title, description, dateModified: lastUpdate }),
+    breadcrumbs([{ name: 'Home', path: '/' }]),
+  ]}
 >
   <!-- Hero -->
-  <section class="on-ink bg-ink text-white">
-    <div class="wrap grid gap-10 py-14 lg:grid-cols-[1.25fr_1fr] lg:py-20">
+  <section class="relative overflow-hidden border-b border-line bg-white">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_85%_-10%,var(--color-brand-wash),transparent_70%)]" aria-hidden="true"></div>
+    <div class="wrap relative grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:py-20">
       <div>
-        <p class="eyebrow">Bought, set up, used, scored</p>
-        <h1 class="mt-4 font-condensed text-5xl font-bold uppercase leading-[0.95] sm:text-6xl lg:text-7xl">
-          Software reviews for people who run the shop
+        <p class="pill pill-brand">
+          <span class="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true"></span>
+          Updated {formatDate(lastUpdate)}
+        </p>
+        <h1 class="mt-5 text-[2.5rem] leading-[1.05] tracking-[-0.02em] sm:text-6xl">
+          The right software for the business you actually run.
         </h1>
-        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
-          We buy the software, put real jobs through it and time the things that cost you money -
-          how long a quote takes on a phone, how fast a card payment settles, whether the app
-          works in a basement with no signal. Then we tell you who should not buy it.
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-ink-soft" data-answer>
+          Independent reviews of scheduling, dispatch, invoicing and booking software for plumbers,
+          HVAC techs, electricians, cleaners, salons, gyms and auto shops. Real prices, honest
+          downsides, and who should skip each tool.
         </p>
 
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a href="#trade-board" class="btn btn-primary">Find software for your trade</a>
-          <a href="/how-we-test/" class="btn btn-ghost">How we test</a>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a href="#trades" class="btn btn-primary btn-lg">Find software for my trade</a>
+          <a href="/compare/" class="btn btn-secondary btn-lg">Compare two tools</a>
         </div>
+
+        <ul class="mt-8 grid max-w-lg grid-cols-3 gap-4 text-sm">
+          <li>
+            <span class="block text-2xl font-bold text-ink">{tools.length}</span>
+            <span class="text-ink-muted">tools reviewed</span>
+          </li>
+          <li>
+            <span class="block text-2xl font-bold text-ink">{sourceCount}+</span>
+            <span class="text-ink-muted">sources cited</span>
+          </li>
+          <li>
+            <span class="block text-2xl font-bold text-ink">0</span>
+            <span class="text-ink-muted">paid rankings</span>
+          </li>
+        </ul>
       </div>
 
-      <dl class="grid grid-cols-2 gap-px self-start border border-ink-line bg-ink-line">
-        <div class="bg-ink p-5">
-          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
-            Tools tested
-          </dt>
-          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{tools.length}</dd>
+      <!-- Top-rated snapshot -->
+      <div class="card p-2 shadow-[var(--shadow-lift)]">
+        <div class="flex items-center justify-between px-4 pb-2 pt-3">
+          <p class="text-sm font-semibold text-ink">Highest rated right now</p>
+          <a href="/reviews/" class="text-sm font-medium text-brand no-underline hover:underline">All reviews</a>
         </div>
-        <div class="bg-ink p-5">
-          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
-            Trades covered
-          </dt>
-          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{trades.length}</dd>
-        </div>
-        <div class="bg-ink p-5">
-          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
-            Head-to-heads
-          </dt>
-          <dd class="mt-1 font-condensed text-4xl font-bold leading-none">{comparisons.length}</dd>
-        </div>
-        <div class="bg-ink p-5">
-          <dt class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-yellow">
-            Last retest
-          </dt>
-          <dd class="mt-1 font-condensed text-xl font-bold leading-tight">{formatDate(lastTest)}</dd>
-        </div>
-      </dl>
+        <ol class="divide-y divide-line">
+          {
+            tools.slice(0, 5).map((tool, i) => (
+              <li>
+                <a href={toolUrl(tool.data.slug)} class="flex items-center gap-3 rounded-xl px-4 py-3 no-underline transition-colors hover:bg-paper">
+                  <span class="w-4 text-sm font-semibold text-ink-muted">{i + 1}</span>
+                  <LogoMark text={tool.data.logoText} color={tool.data.logoColor} size="sm" />
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-semibold leading-tight text-ink">{tool.data.name}</span>
+                    <span class="block truncate text-sm text-ink-muted">{priceLabel(tool.data.priceFrom)}</span>
+                  </span>
+                  <span class="text-lg font-bold tabular-nums text-ink">{score1(tool.data.score)}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
     </div>
   </section>
 
-  <!-- Trade board -->
-  <section id="trade-board" class="wrap scroll-mt-4 py-14">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <p class="eyebrow">The board</p>
-        <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
-          What do you run?
-        </h2>
-      </div>
-      <p class="max-w-md text-ink-soft">
-        Every trade gets its own ranked list, filtered by how many people you have. Pick yours.
-      </p>
-    </div>
+  <!-- Trust strip -->
+  <section class="border-b border-line bg-paper">
+    <ul class="wrap grid gap-4 py-6 text-sm sm:grid-cols-3">
+      {
+        [
+          ['Prices checked', 'Against each vendor’s public pricing, with the date shown on every review.'],
+          ['Sources cited', 'Every review links the pages its facts came from, so you can check us.'],
+          ['Rankings are not for sale', 'Partner commissions never change a rating or the order of a list.'],
+        ].map(([h, p]) => (
+          <li class="flex gap-3">
+            <span class="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-brand text-white" aria-hidden="true">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 8.5 6.5 12 13 4.5" /></svg>
+            </span>
+            <span><strong class="font-semibold text-ink">{h}.</strong> <span class="text-ink-soft">{p}</span></span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 
-    <div class="mt-7">
+  <!-- Trade board -->
+  <section id="trades" class="wrap scroll-mt-20 py-14 sm:py-20">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="kicker">Start here</p>
+        <h2 class="section-title mt-2">What kind of business do you run?</h2>
+      </div>
+      <p class="max-w-md text-ink-soft">Each trade has its own ranked list you can filter by team size.</p>
+    </div>
+    <div class="mt-8">
       <TradeBoard trades={trades.map((t) => t.data)} toolCounts={toolCounts} />
     </div>
   </section>
 
   <!-- Top picks by size -->
-  <section class="border-y border-line bg-paper-deep/50 py-14">
+  <section class="border-y border-line bg-white py-14 sm:py-20">
     <div class="wrap">
-      <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p class="eyebrow">Top picks</p>
-          <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
-            Which one fits a shop your size?
-          </h2>
+          <p class="kicker">Top picks</p>
+          <h2 class="section-title mt-2">Best pick for a team your size</h2>
         </div>
-        <a href="/reviews/" class="btn btn-ghost">All reviews</a>
+        <a href="/reviews/" class="btn btn-ghost">All reviews <span aria-hidden="true">&rarr;</span></a>
       </div>
 
-      <ul class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {
           picksBySize.map(({ size, tool }) => (
-            <li class="flex flex-col">
-              <p class="mb-2 font-condensed text-sm font-bold uppercase tracking-[0.14em] text-ink-muted">
-                {TEAM_SIZE_LABELS[size]}
-              </p>
-              <div class="flex-1">
-                <ToolTeaser tool={tool!.data} />
-              </div>
+            <li>
+              <ToolTeaser tool={tool!.data} label={TEAM_SIZE_LABELS[size]} />
             </li>
           ))
         }
@@ -145,42 +182,31 @@ const description = `${SITE.description} Reviews of ${tools.length} tools across
     </div>
   </section>
 
-  <!-- Most-requested comparisons -->
-  <section class="wrap py-14">
-    <div class="flex flex-wrap items-end justify-between gap-4">
+  <!-- Comparisons -->
+  <section class="wrap py-14 sm:py-20">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="eyebrow">Head to head</p>
-        <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
-          Most-requested comparisons
-        </h2>
+        <p class="kicker">Head to head</p>
+        <h2 class="section-title mt-2">Popular comparisons</h2>
       </div>
-      <a href="/compare/" class="btn btn-ghost">All comparisons</a>
+      <a href="/compare/" class="btn btn-ghost">All comparisons <span aria-hidden="true">&rarr;</span></a>
     </div>
 
-    <ul class="mt-7 grid gap-px border border-ink bg-ink sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
-        comparisons.map((c) => {
+        comparisons.slice(0, 6).map((c) => {
           const a = toolMapById.get(c.data.toolA.id)!;
           const b = toolMapById.get(c.data.toolB.id)!;
           return (
             <li>
-              <a
-                href={compareUrl(c.data.slug)}
-                class="group flex h-full flex-col gap-3 bg-white p-5 no-underline transition-colors hover:bg-yellow"
-              >
+              <a href={compareUrl(c.data.slug)} class="card card-link flex h-full flex-col p-5 no-underline">
                 <span class="flex items-center gap-2">
                   <LogoMark text={a.data.logoText} color={a.data.logoColor} size="sm" />
-                  <span class="font-condensed text-lg font-bold uppercase text-ink-muted group-hover:text-ink">
-                    vs
-                  </span>
+                  <span class="text-xs font-semibold uppercase text-ink-muted">vs</span>
                   <LogoMark text={b.data.logoText} color={b.data.logoColor} size="sm" />
                 </span>
-                <span class="font-condensed text-2xl font-bold uppercase leading-none text-ink">
-                  {c.data.title}
-                </span>
-                <span class="text-sm leading-snug text-ink-soft group-hover:text-ink">
-                  {c.data.verdict.split('. ')[0]}.
-                </span>
+                <span class="mt-4 font-serif text-xl font-semibold leading-tight text-ink">{c.data.title}</span>
+                <span class="mt-2 flex-1 text-[0.95rem] leading-snug text-ink-soft">{c.data.verdict.split('. ')[0]}.</span>
               </a>
             </li>
           );
@@ -189,82 +215,70 @@ const description = `${SITE.description} Reviews of ${tools.length} tools across
     </ul>
   </section>
 
-  <!-- Guides -->
-  <section class="border-t border-line bg-paper-deep/50 py-14">
-    <div class="wrap">
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p class="eyebrow">Guides</p>
-          <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
-            The money questions
-          </h2>
-        </div>
-        <a href="/guides/" class="btn btn-ghost">All guides</a>
+  <!-- Calculator promo -->
+  <section class="wrap">
+    <div class="on-dark grid gap-6 overflow-hidden rounded-[20px] bg-night p-6 text-white sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
+      <div>
+        <p class="kicker">Free tool</p>
+        <h2 class="section-title mt-2 !text-white">What should you charge per hour?</h2>
+        <p class="mt-3 max-w-xl text-white/75">
+          Put in your overhead, the income you need and your real billable hours. Get the rate that
+          covers all of it, and see how it compares with typical rates for {trades.length} trades.
+        </p>
+        <a href={CALCULATOR_URL} class="btn btn-lg mt-6 bg-white text-ink hover:bg-brand-wash">Open the calculator</a>
       </div>
-
-      <ul class="mt-7 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {
-          guides.slice(0, 6).map((guide) => (
-            <li>
-              <a
-                href={guideUrl(guide.data.slug)}
-                class="board flex h-full flex-col p-5 no-underline transition-colors hover:border-ink"
-              >
-                <h3 class="font-condensed text-xl font-bold uppercase leading-tight">
-                  {guide.data.title}
-                </h3>
-                <p class="mt-2 flex-1 text-[0.95rem] leading-snug text-ink-soft">
-                  {guide.data.description}
-                </p>
-                <p class="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
-                  Updated {formatDate(guide.data.updatedDate)}
-                </p>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="mt-7 board flex flex-wrap items-center justify-between gap-4 border-l-[6px] border-l-yellow p-5">
-        <div>
-          <h3 class="font-condensed text-2xl font-bold uppercase leading-none">
-            What should you charge an hour?
-          </h3>
-          <p class="mt-2 max-w-xl text-ink-soft">
-            Put your overhead, billable hours and target income in and get the rate that covers
-            them, with benchmark figures for {trades.length} trades.
-          </p>
-        </div>
-        <a href={CALCULATOR_URL} class="btn btn-primary">Open the calculator</a>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+        <p class="text-sm text-white/60">Example result</p>
+        <p class="mt-1 text-5xl font-bold tracking-tight">$112<span class="text-lg font-medium text-white/60">/hr</span></p>
+        <dl class="mt-4 space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-white/60">Billable hours / year</dt><dd class="font-semibold">1,296</dd></div>
+          <div class="flex justify-between"><dt class="text-white/60">Break-even rate</dt><dd class="font-semibold">$101</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
-  <NewsletterForm />
+  <!-- Guides -->
+  <section class="wrap py-14 sm:py-20">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="kicker">Guides</p>
+        <h2 class="section-title mt-2">The money questions, answered</h2>
+      </div>
+      <a href="/guides/" class="btn btn-ghost">All guides <span aria-hidden="true">&rarr;</span></a>
+    </div>
 
-  <!-- Latest reviews strip -->
-  <section class="wrap py-14">
-    <p class="eyebrow">Latest</p>
-    <h2 class="mt-3 font-condensed text-4xl font-bold uppercase leading-none sm:text-5xl">
-      Recently retested
-    </h2>
-    <ul class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {
-        [...tools]
-          .sort((a, b) => b.data.testDate.getTime() - a.data.testDate.getTime())
-          .slice(0, 6)
-          .map((tool) => (
-            <li>
-              <ToolTeaser
-                tool={tool.data}
-                note={`Retested ${formatDate(tool.data.testDate)}. ${tool.data.bestFor}`}
-              />
-            </li>
-          ))
+        guides.slice(0, 6).map((guide) => (
+          <li>
+            <a href={guideUrl(guide.data.slug)} class="card card-link flex h-full flex-col p-5 no-underline">
+              <h3 class="text-lg leading-snug text-ink">{guide.data.title}</h3>
+              <p class="mt-2 flex-1 text-[0.95rem] leading-snug text-ink-soft">{guide.data.description}</p>
+              <p class="mt-4 text-sm text-ink-muted">Updated {formatDate(guide.data.updatedDate)}</p>
+            </a>
+          </li>
+        ))
       }
     </ul>
-    <p class="mt-6">
-      <a href="/reviews/" class="btn btn-ghost">See all {tools.length} reviews</a>
-    </p>
+  </section>
+
+  <NewsletterForm />
+
+  <!-- All trades, for crawl depth -->
+  <section class="wrap pt-14 sm:pt-20">
+    <h2 class="section-title">Browse best-of lists</h2>
+    <ul class="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        trades.map((t) => (
+          <li>
+            <a href={bestUrl(t.data.category, t.data.slug)} class="flex items-center gap-2.5 rounded-lg px-2 py-2 text-ink-soft no-underline hover:bg-white hover:text-brand">
+              <TradeIcon name={t.data.icon} class="h-5 w-5 text-brand" />
+              Best software for {t.data.name.toLowerCase()}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 </BaseLayout>

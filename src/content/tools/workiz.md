@@ -10,126 +10,163 @@ categories:
   - field-service
   - phone-system
   - invoicing
-bestFor: Phone-driven trades - locksmiths, garage doors, junk removal - where a missed call is a lost job
+bestFor: Phone-driven trades such as locksmiths, garage doors, appliance repair and junk removal, where a missed call is a lost job
 teamSizes:
   - 2-5
   - 6-15
   - 16+
-priceFrom: 45
+priceFrom: null
+pricingModel: Not fully published; tiered plans that include a set number of users, with phone system and AI answering as add-ons
+freeTrial: Free trial available; confirm length with Workiz
+freePlan: false
 pricing:
-  - name: Lite
-    users: Up to 2 users
-    monthly: 55
-    annual: 45
-    forWhom: A two-person shop testing whether call tracking changes anything
+  - name: Kickstart
+    users: Small team (confirm with Workiz)
+    monthly: null
+    annual: null
+    forWhom: >-
+      Entry paid tier for small teams. Third-party trackers in 2026 report roughly $187-$225 a
+      month; Workiz does not consistently publish the figure.
   - name: Standard
-    users: Up to 5 users
-    monthly: 155
-    annual: 129
-    forWhom: The tier with the built-in phone system, recordings and call attribution
+    users: Up to 5 users (reported)
+    monthly: null
+    annual: null
+    forWhom: >-
+      Teams that want automations, online booking and fuller payments features. Reported at roughly
+      $229-$275 a month in 2026 pricing guides.
+  - name: Pro
+    users: Up to 5 users (reported), extra users charged
+    monthly: null
+    annual: null
+    forWhom: >-
+      Busier shops wanting advanced reporting and integrations. Reported at roughly $270-$325 a
+      month in 2026 pricing guides.
   - name: Ultimate
-    users: Up to 15 users
-    monthly: 299
-    annual: 249
-    forWhom: Shops buying leads or running paid ads that need cost per booked job
-score: 8
+    users: Custom
+    monthly: null
+    annual: null
+    forWhom: Larger operations; quote-based
+score: 7.5
 subscores:
-  setup: 7.8
-  scheduling: 8.6
-  invoicing: 8
-  communication: 9.3
-  reporting: 8.2
-  value: 7.4
-testDate: 2026-07-30
-nextRetest: 2027-01-26
-planTested: Standard, billed annually, five users
-measurements:
-  - test: Signup to first invoice emailed to a customer
-    result: 46 minutes
-  - test: Inbound call to a job created with the caller attached
-    result: 22 seconds, caller history shown on the screen pop
-  - test: Missed call to automatic text-back received
-    result: 14 seconds
-  - test: Attribute a booked job to the ad source that produced the call
-    result: Automatic on Standard, per-number tracking
-  - test: Export clients, jobs and invoices
-    result: Self-serve CSV; call recordings export separately
-  - test: First reply from support, live chat, weekday morning
-    result: 5 minutes
+  setup: 7.6
+  scheduling: 8
+  invoicing: 7.6
+  communication: 8.5
+  reporting: 7
+  value: 6.8
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: Not fully published (reported from about $187/month)
+  - label: Free trial
+    value: Yes; confirm length with Workiz
+  - label: Pricing model
+    value: Tiered plans; phone system and Genius Answering AI are add-ons
+  - label: Mobile apps
+    value: iOS and Android
+  - label: Best for
+    value: Call-driven, on-demand service trades
+  - label: Founded / HQ
+    value: 2015, San Diego, California
+sources:
+  - title: Workiz pricing and plans page
+    url: https://www.workiz.com/pricing-plans/
+  - title: Workiz phone system features
+    url: https://www.workiz.com/features/phone-system/
+  - title: Workiz Genius Answering
+    url: https://www.workiz.com/features/genius-answering/
+  - title: Workiz reviews on Capterra
+    url: https://www.capterra.com/p/147525/Workiz/reviews/
+  - title: Workiz pricing 2026, add-ons included (Tooled Up Pro)
+    url: https://tooleduppro.com/guides/workiz-pricing/
+  - title: Workiz on Wikipedia
+    url: https://en.wikipedia.org/wiki/Workiz
 pros:
-  - The only product here with a real phone system built in - screen pops, recordings, missed-call text-back
-  - Call-to-job attribution tells you which ad number actually produced booked revenue, not just calls
-  - Dispatch board is close to Housecall Pro's and better than Jobber's calendar
-  - Call recordings make training a new phone handler enormously easier
+  - Built-in business phone system with call tracking, recording and caller lookup against customer records
+  - Genius Answering AI can answer missed calls and book jobs around the clock (paid add-on)
+  - Designed for on-demand dispatch, which reviewers say suits fast-turnaround trades
+  - Founded by former locksmiths, and the product shows it in call-first workflows
 cons:
-  - The phone features that justify the price only start on the Standard plan
-  - Value is poor if you do not need the phone system; you are paying for the thing you will not use
-  - Invoicing is competent but plainer than Jobber's or Housecall Pro's
-  - Number porting took eleven days in our test and needed two support follow-ups
+  - Pricing is not clearly published, and third-party trackers report conflicting numbers
+  - Phone system and AI answering are add-ons that can push the total well above the plan price
+  - Users on G2, Capterra and app stores report the mobile app freezing mid-job
+  - Reporting is a common complaint in public reviews
 getItIf:
-  - Most of your work arrives by phone and you suspect you are missing calls
-  - You buy leads or run paid ads and cannot tell which source produces booked jobs
-  - You want new phone staff trained against real recordings
-  - You dispatch daily and want a board rather than a calendar
+  - Most of your work starts with an inbound phone call and you lose jobs to missed calls
+  - You want call recordings and ad-source tracking tied to the job record
+  - You dispatch same-day work to a small team of technicians
 skipItIf:
-  - Your work arrives by email, referral or repeat contract rather than by phone
-  - You already have a phone system you are happy with
-  - You are a solo operator - the Lite plan is missing the point of the product
-  - Invoicing depth matters more to you than call handling
+  - Your work is mostly quoted in advance or recurring, where Jobber or Housecall Pro fit better
+  - You want transparent, published pricing before you talk to sales
+  - You are a solo operator watching every dollar
 verdict: >-
-  Workiz is the field service product to buy when the phone is your business. Nothing else here has a
-  real phone system with screen pops, recordings and call-to-job attribution built in. If you do not
-  need that, you are paying a premium for a feature set you will never open.
+  Workiz is the most phone-centred of the mainstream field service tools, and its call tracking and
+  AI answering are the reason to choose it. In our assessment it is a good fit for call-driven
+  trades with a few technicians, but unclear pricing, paid add-ons for the phone features and user
+  reports of app instability hold its score back.
 faq:
   - q: How much does Workiz cost?
-    a: Lite is $45 a month billed annually for up to two users, Standard $129 for up to five and Ultimate $249 for up to fifteen. The phone system, which is the reason to buy Workiz, starts on Standard.
-  - q: Does Workiz replace my phone system?
-    a: Yes, for most small trade businesses. You get numbers, routing, recordings, missed-call text-back and a screen pop showing the caller's history. In our test the automatic text-back after a missed call went out in 14 seconds.
-  - q: How long does number porting take?
-    a: Ours took eleven days and needed two follow-ups with support. Plan for two to three weeks and keep the old line live until the port completes.
-  - q: Is Workiz better than Housecall Pro?
-    a: For call handling and lead attribution, clearly. For invoicing depth, customer-facing polish and marketing features, Housecall Pro is ahead. Choose Workiz if the phone is where you lose money.
+    a: >-
+      Workiz does not consistently publish its prices. 2026 pricing guides report paid plans from
+      roughly $187 to $325 a month for small teams depending on tier and billing, with Ultimate
+      quote-based, and the phone system and Genius Answering AI as extra-cost add-ons. Ask Workiz for
+      a written quote.
+  - q: Does Workiz have a free plan?
+    a: >-
+      Workiz has historically offered a limited free Lite tier (reported at about 20 jobs a month),
+      but 2026 reports say it is no longer consistently listed. Check the pricing page or ask sales.
+  - q: Is the Workiz phone system included?
+    a: >-
+      The phone system features, including call tracking, recording and masking, are sold as an
+      add-on according to 2026 pricing breakdowns, and Genius Answering (the AI receptionist) is a
+      separate add-on on top.
+  - q: Is Workiz good for locksmiths and garage door companies?
+    a: >-
+      Yes, this is its core market. The founders were locksmiths, and the product is built around
+      answering calls fast and dispatching same-day work.
+  - q: Workiz vs Jobber, which should I choose?
+    a: >-
+      Choose Workiz if inbound phone calls drive your business; choose Jobber if quoting and
+      recurring work do. See our Jobber vs Workiz comparison.
 ---
 
-## Why would you pay extra for Workiz?
+## Is Workiz worth it?
 
-Because of the phone. Every other product in this category treats a phone call as something
-that happens somewhere else and results in a job being typed in. Workiz treats the call as
-the start of the job: the number rings inside the software, the screen pops with the
-caller's history, the call is recorded, and if nobody answers a text goes out automatically.
+Workiz is worth a look if your business runs on the phone. Its built-in phone system, call tracking and AI answering are the reason to pick it over quote-first tools like [Jobber](/reviews/jobber/).
 
-For a locksmith, garage door company or junk removal outfit, that is the whole business.
+If most of your jobs are quoted days in advance or recur on a schedule, you will pay for phone features you do not need. Users rate Workiz well overall (around 4.4-4.6 out of 5 on Capterra and G2 in 2026), but reviews also flag app stability and reporting.
 
-We ran the Standard plan with five users for six weeks, ported a real number in, and
-tracked 140 inbound calls.
+## How much does Workiz cost in 2026?
 
-## Does the missed-call text-back work?
+Workiz does not publish a complete price list, so treat any figure as indicative. Pricing guides from 2026 report paid plans of roughly $187 to $325 a month for teams of up to about five users depending on tier and billing term, with an Ultimate tier priced by quote.
 
-Yes, and it is the single feature most likely to pay for the subscription. Fourteen seconds
-from a missed call to a text landing on the caller's phone. A caller who gets a text in
-fourteen seconds is often still deciding who to ring next.
+The phone system and Genius Answering are reported as add-ons, around $100 and $200 a month respectively in third-party breakdowns. Extra users are also charged. The Lite free tier that Workiz used to offer is reported as no longer consistently listed. Get a written quote that includes every add-on and seat you need, and confirm the trial length when you sign up.
 
-## Can it really tell you which ads work?
+## Does the Workiz phone system work well?
 
-On the Standard plan you get tracking numbers per source. A call arrives on the number
-attached to a specific ad, the job is created from that call, and the revenue on that job
-is attributed back. That gives you cost per booked job rather than cost per click or cost
-per call.
+It is the most complete phone integration among the mainstream tools we cover. Workiz's feature pages describe call tracking, recording, number masking and automated messaging inside the same app as your jobs, and incoming calls pull up the existing customer record.
 
-If you are buying leads, that number is the difference between scaling and quietly losing
-money.
+Genius Answering, sold under the name Jessica, is Workiz's AI receptionist. According to Workiz it answers missed calls, books appointments and screens spam around the clock. For a locksmith or garage door company where the first business to answer wins the job, that matters. See our guide on [what a missed call costs](/guides/what-a-missed-call-costs/) to estimate whether it pays for itself.
 
-## Where does Workiz fall behind?
+Not every review is positive. Some users report phone issues such as dropped or silent calls and slow resolution from support.
 
-Invoicing. It is fine and it works, but it is plainer than [Jobber](/reviews/jobber/) and
-has less depth than [Housecall Pro](/reviews/housecall-pro/). Estimates are functional
-rather than persuasive, and there is nothing like Jobber's optional line items.
+## What are the common complaints about Workiz?
 
-Porting was also slow. Eleven days and two chases.
+The themes that come up repeatedly in public reviews on Capterra, G2 and the app stores are:
 
-## Who should not buy it?
+- **App stability.** Users report the mobile app freezing mid-job and needing a force close.
+- **Reporting.** Reports are described as limited for owners who want job profitability and technician performance detail.
+- **Pricing transparency.** Buyers and pricing trackers alike note that the full cost is hard to see before talking to sales.
 
-Anyone whose work arrives by referral, email or repeat contract. You would be paying the
-Workiz premium for a phone system you do not need. In that case
-[Housecall Pro](/reviews/housecall-pro/) or [Jobber](/reviews/jobber/) does the rest of the
-job better for less.
+## How does Workiz compare with Jobber and Housecall Pro?
+
+Workiz leads on phone handling; [Jobber](/reviews/jobber/) leads on quoting and simplicity; [Housecall Pro](/reviews/housecall-pro/) sits between them with strong dispatch and marketing and its own phone add-on. See [Jobber vs Workiz](/compare/jobber-vs-workiz/) and [Housecall Pro vs Workiz](/compare/housecall-pro-vs-workiz/).
+
+## Who should not buy Workiz?
+
+A solo operator on a tight budget, a business that quotes most work in advance, or anyone who wants published pricing. For those, Jobber or [ServiceM8](/reviews/servicem8/) are simpler starting points. If you are already on Workiz and want out, see our [Workiz alternatives](/alternatives/workiz/).
+
+## How we rated Workiz
+
+This is an editorial rating based on Workiz's published documentation, 2026 third-party pricing breakdowns and themes in public user reviews, weighted using our [how we test](/how-we-test/) rubric. We did not run a paid, hands-on test. Communication scores highest because of the phone system; value scores lowest because pricing is unclear and the phone features cost extra.

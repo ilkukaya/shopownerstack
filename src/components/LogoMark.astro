@@ -4,7 +4,7 @@ import { readableMark } from '../lib/color';
 interface Props {
   text: string;
   color: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   class?: string;
 }
 
@@ -15,15 +15,16 @@ const { text, color, size = 'md', class: className = '' } = Astro.props;
 const { bg, fg } = readableMark(color);
 
 const sizes = {
-  sm: 'h-9 w-9 text-[0.7rem]',
-  md: 'h-12 w-12 text-[0.85rem]',
-  lg: 'h-16 w-16 text-base',
+  xs: 'h-7 w-7 rounded-md text-[0.55rem]',
+  sm: 'h-10 w-10 rounded-[10px] text-[0.68rem]',
+  md: 'h-12 w-12 rounded-xl text-[0.8rem]',
+  lg: 'h-16 w-16 rounded-2xl text-base',
 };
 ---
 
 <span
   class:list={[
-    'flex flex-none items-center justify-center font-condensed font-bold uppercase leading-none tracking-tight',
+    'flex flex-none items-center justify-center font-sans font-bold uppercase leading-none tracking-tight',
     sizes[size],
     className,
   ]}

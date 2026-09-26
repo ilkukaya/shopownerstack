@@ -5,18 +5,19 @@ interface Props {
   /** Tool slug. The link always goes to /go/<slug>/, never to the affiliate URL. */
   slug: string;
   name: string;
-  variant?: 'primary' | 'ghost' | 'plain';
+  variant?: 'primary' | 'secondary' | 'plain';
   label?: string;
+  /** Where on the page this sits; sent with the GA4 click event. */
+  placement?: string;
   class?: string;
 }
 
-const { slug, name, variant = 'primary', label, class: className = '' } = Astro.props;
+const { slug, name, variant = 'primary', label, placement = 'inline', class: className = '' } = Astro.props;
 
 const classes = {
   primary: 'btn btn-primary',
-  ghost: 'btn btn-ghost',
-  plain:
-    'font-semibold text-ink underline decoration-yellow decoration-[3px] underline-offset-2 hover:bg-yellow-wash',
+  secondary: 'btn btn-secondary',
+  plain: 'font-semibold text-brand underline decoration-2 underline-offset-2 hover:text-brand-deep',
 };
 ---
 
@@ -25,8 +26,16 @@ const classes = {
   target="_blank"
   rel="sponsored nofollow noopener"
   data-tool={slug}
+  data-placement={placement}
   class:list={[classes[variant], className]}
 >
-  {label ?? `See ${name} pricing`}
+  {label ?? `Visit ${name}`}
+  {
+    variant !== 'plain' && (
+      <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 3h7v7M13 3 4 12" />
+      </svg>
+    )
+  }
   <span class="sr-only">(opens in a new tab, partner link)</span>
 </a>

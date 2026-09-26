@@ -17,25 +17,22 @@ interface Props {
 const { trades, toolCounts } = Astro.props;
 ---
 
-<ul class="grid grid-cols-1 gap-px border border-ink bg-ink sm:grid-cols-2 lg:grid-cols-4">
+<ul class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
   {
     trades.map((trade) => (
       <li>
         <a
           href={bestUrl(trade.category, trade.slug)}
-          class="group flex h-full flex-col gap-3 bg-white p-5 no-underline transition-colors hover:bg-yellow"
+          class="card card-link group flex h-full flex-col gap-3 p-4 no-underline sm:p-5"
         >
-          <span class="flex items-center justify-between">
-            <TradeIcon name={trade.icon} class="h-8 w-8 text-ink" />
-            <span class="font-condensed text-sm font-bold uppercase tracking-[0.12em] text-ink-muted group-hover:text-ink">
-              {toolCounts[trade.slug] ?? 0} tested
+          <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-wash text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+            <TradeIcon name={trade.icon} class="h-6 w-6" />
+          </span>
+          <span>
+            <span class="block text-[1.05rem] font-semibold leading-tight text-ink">{trade.name}</span>
+            <span class="mt-1 block text-sm leading-snug text-ink-muted">
+              {toolCounts[trade.slug] ?? 0} {CATEGORY_META[trade.category].label.toLowerCase().replace(' software', '')} tools compared
             </span>
-          </span>
-          <span class="font-condensed text-2xl font-bold uppercase leading-none text-ink">
-            {trade.name}
-          </span>
-          <span class="text-sm leading-snug text-ink-soft group-hover:text-ink">
-            Best {CATEGORY_META[trade.category].label.toLowerCase()}
           </span>
         </a>
       </li>

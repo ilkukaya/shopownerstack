@@ -1,82 +1,70 @@
 ---
 interface Props {
-  variant?: 'ink' | 'paper';
+  variant?: 'dark' | 'card';
   class?: string;
 }
 
-const { variant = 'ink', class: className = '' } = Astro.props;
-const onInk = variant === 'ink';
+const { variant = 'dark', class: className = '' } = Astro.props;
+const dark = variant === 'dark';
 ---
 
 <!--
-  KIT (CONVERTKIT) SLOT
-  =====================
-  Posts to Netlify Forms for now so nothing is lost before the mailing list
-  exists. To move to Kit:
-
-    1. Replace action="/thanks/" with the Kit form action URL,
-       e.g. https://app.kit.com/forms/<form-id>/subscriptions
-    2. Remove data-netlify="true", the netlify-honeypot attribute and the
-       hidden form-name input.
-    3. Rename the email field to email_address, which is what Kit expects.
-
-  Nothing else in this component needs to change.
+  NEWSLETTER
+  Posts to Netlify Forms, so every signup is stored in the Netlify dashboard
+  (Forms > newsletter) from day one. To move to an email tool later (Kit,
+  MailerLite, Beehiiv), change `action` to that tool's form endpoint, remove
+  data-netlify / netlify-honeypot / the hidden form-name input, and rename the
+  email field if the tool expects a different name.
 -->
-<section
-  class:list={[onInk ? 'on-ink bg-ink text-white' : 'board bg-white text-ink', className]}
-  aria-labelledby="newsletter-heading"
->
-  <div class:list={[onInk ? 'wrap py-12' : 'p-6']}>
-    <div class="grid items-center gap-6 lg:grid-cols-[1.1fr_1fr]">
-      <div>
-        <p class="eyebrow">The retest list</p>
-        <h2
-          id="newsletter-heading"
-          class="mt-3 font-condensed text-3xl font-bold uppercase leading-none sm:text-4xl"
-        >
-          One email when a score changes
-        </h2>
-        <p class:list={['mt-3 max-w-lg', onInk ? 'text-white/75' : 'text-ink-soft']}>
-          We retest every tool on this site twice a year and check prices more often than that.
-          When a score moves or a vendor changes what a plan includes, you get one short email.
-          Nothing else.
-        </p>
-      </div>
-
-      <form
-        name="newsletter"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="company-website"
-        action="/thanks/"
-        class="flex flex-col gap-3 sm:flex-row sm:items-start"
-      >
-        <input type="hidden" name="form-name" value="newsletter" />
-        <p class="hidden" aria-hidden="true">
-          <label>Do not fill this in <input name="company-website" tabindex="-1" autocomplete="off" /></label>
-        </p>
-
-        <div class="flex-1">
-          <label for="newsletter-email" class="sr-only">Email address</label>
-          <input
-            type="email"
-            id="newsletter-email"
-            name="email"
-            required
-            autocomplete="email"
-            placeholder="you@yourshop.com"
-            class:list={[
-              'w-full border px-3 py-3 text-ink',
-              onInk ? 'border-ink-line bg-white' : 'border-line bg-paper',
-            ]}
-          />
-          <p class:list={['mt-2 text-sm', onInk ? 'text-white/60' : 'text-ink-muted']}>
-            No more than twice a month. Unsubscribe in one click.
-          </p>
-        </div>
-
-        <button type="submit" class="btn btn-primary sm:mt-0">Send it</button>
-      </form>
+<section class:list={[dark ? 'wrap' : '', className]} aria-labelledby="newsletter-heading">
+  <div
+    class:list={[
+      'grid items-center gap-6 rounded-[20px] p-6 sm:p-10 lg:grid-cols-[1.1fr_1fr]',
+      dark ? 'on-dark bg-brand-deep text-white' : 'card',
+    ]}
+  >
+    <div>
+      <p class="kicker">Free monthly briefing</p>
+      <h2 id="newsletter-heading" class:list={['section-title mt-2', dark && '!text-white']}>
+        Price changes and new reviews, once a month
+      </h2>
+      <p class:list={['mt-3 max-w-lg', dark ? 'text-white/80' : 'text-ink-soft']}>
+        Software vendors change plans and prices without warning. Get one short email a month with
+        what changed, new comparisons and the guides worth reading. No spam, unsubscribe any time.
+      </p>
     </div>
+
+    <form
+      name="newsletter"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="company-website"
+      action="/thanks/"
+      class="flex flex-col gap-3"
+    >
+      <input type="hidden" name="form-name" value="newsletter" />
+      <p class="hidden" aria-hidden="true">
+        <label>Do not fill this in <input name="company-website" tabindex="-1" autocomplete="off" /></label>
+      </p>
+
+      <div class="flex flex-col gap-2.5 sm:flex-row">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input
+          type="email"
+          id="newsletter-email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="you@yourbusiness.com"
+          class="min-h-12 flex-1 rounded-[10px] border border-line bg-white px-4 text-ink placeholder:text-ink-muted"
+        />
+        <button type="submit" class:list={['btn btn-lg', dark ? 'bg-white text-brand-deep hover:bg-brand-wash' : 'btn-primary']}>
+          Subscribe
+        </button>
+      </div>
+      <p class:list={['text-sm', dark ? 'text-white/65' : 'text-ink-muted']}>
+        By subscribing you agree to our <a href="/privacy/" class="underline underline-offset-2">privacy policy</a>.
+      </p>
+    </form>
   </div>
 </section>

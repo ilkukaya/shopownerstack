@@ -8,9 +8,10 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<p class:list={['text-sm leading-snug text-ink-muted', className]}>
-  {DISCLOSURE}{' '}
-  <a href="/affiliate-disclosure/" class="underline underline-offset-2 hover:text-ink"
-    >Full disclosure</a
-  >.
+<p class:list={['flex gap-2 text-[0.8125rem] leading-snug text-ink-muted', className]}>
+  <svg class="mt-0.5 h-4 w-4 flex-none" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6.5" /><path d="M8 7.2V11M8 5h.01" stroke-linecap="round" /></svg>
+  <span>
+    {DISCLOSURE}{' '}
+    <a href="/affiliate-disclosure/" class="underline underline-offset-2 hover:text-ink">How we make money</a>.
+  </span>
 </p>

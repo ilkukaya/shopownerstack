@@ -8,122 +8,182 @@ affiliateUrl: ''
 partnerNetwork: direct
 categories:
   - salon-spa
-bestFor: Premium salons and med spas that want the booking experience to match the price of the service
+bestFor: Premium salons, spas and med spas that want a polished client booking experience and will pay for it
 teamSizes:
   - 2-5
   - 6-15
   - 16+
-priceFrom: 175
+priceFrom: 159
+pricingModel: Flat monthly fee per location, three published tiers plus an aesthetics bundle
+freeTrial: No self-serve free trial - demo and sales process
+freePlan: false
 pricing:
   - name: Essentials
-    users: Up to 5 providers
-    monthly: 195
-    annual: 175
-    forWhom: A single-location salon that mainly needs booking, notes and card on file
+    users: 1 location
+    monthly: 176
+    annual: 159
+    forWhom: A single-location salon that needs booking, client records, payments and basic marketing
   - name: Premier
-    users: Up to 15 providers
-    monthly: 375
-    annual: 325
-    forWhom: Salons using memberships, packages and stylist-level performance reporting
+    users: 1 location
+    monthly: 293
+    annual: 263
+    forWhom: Salons that want booking deposits, inventory, resource scheduling and the Duo check-in app
   - name: Prestige
-    users: Unlimited providers
-    monthly: 549
-    annual: 475
-    forWhom: Multi-location groups needing shared client records and cross-site reporting
-score: 8.5
+    users: 1 location
+    monthly: 410
+    annual: 369
+    forWhom: Larger salons that want forms, higher text and email allowances and more reporting
+score: 8
 subscores:
-  setup: 7.9
-  scheduling: 9.2
-  invoicing: 8.4
-  communication: 8.7
-  reporting: 8.6
-  value: 6.9
-testDate: 2026-06-04
-nextRetest: 2026-12-01
-planTested: Premier, billed annually, nine providers
-measurements:
-  - test: Client completes an online booking with a card on file
-    result: 3 steps, 51 seconds
-  - test: Fill a cancelled slot from the waitlist automatically
-    result: 4 minutes to first accepted offer
-  - test: Take a deposit against a no-show policy at booking
-    result: Built in, configurable per service
-  - test: Close out a day and reconcile card payments
-    result: 6 minutes, single settlement report
-  - test: Export client list, appointment history and notes
-    result: CSV self-serve; formulas and notes export separately
-  - test: First reply from support, live chat, weekday morning
-    result: 7 minutes
+  setup: 7.5
+  scheduling: 9
+  invoicing: 8.3
+  communication: 8.4
+  reporting: 7.6
+  value: 7
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $159/mo per location billed annually ($176 monthly)
+  - label: Pricing model
+    value: Flat fee per location, three tiers
+  - label: Free trial
+    value: None, demo and sales process
+  - label: Med spa option
+    value: Aesthetics bundle with HIPAA coverage
+  - label: Founded
+    value: 2016, Los Angeles
+  - label: Best for
+    value: Premium salons and med spas
+sources:
+  - title: Boulevard pricing and feature comparison
+    url: https://www.joinblvd.com/pricing
+  - title: Boulevard reviews on Capterra
+    url: https://capterra.com/p/180087/Boulevard/reviews/
+  - title: Boulevard pricing on G2
+    url: https://www.g2.com/products/boulevard-labs-inc-boulevard/pricing
+  - title: Boulevard pricing on Capterra
+    url: https://www.capterra.com/p/180087/Boulevard/pricing/
+  - title: Boulevard company profile on Built In LA
+    url: https://www.builtinla.com/company/boulevard
 pros:
-  - The best client booking experience in this category, and it visibly reduces no-shows when deposits are on
-  - Precision scheduling fills gaps between appointments instead of leaving dead twenty-minute holes
-  - Card on file plus automatic no-show fees is enforced without a receptionist having an awkward conversation
-  - Stylist-level reporting on rebooking rate and retail attachment is genuinely actionable
+  - The client-facing booking experience is one of the most praised in the category
+  - Published per-location pricing with a discount for annual billing
+  - Scheduling and appointment management are frequently described as clean and easy
+  - An aesthetics bundle adds HIPAA coverage for med spas
 cons:
-  - Expensive, and the price is per provider block rather than flat
-  - Inventory management is basic for a salon carrying serious retail
-  - Setup of service durations, processing time and resource rules takes a full day to get right
-  - Overkill for a two-chair salon
+  - Priced above many salon tools, and each extra location pays full price
+  - Some reviewers find KPIs hard to locate in reporting, especially across locations
+  - No self-serve trial, so you go through a sales process to see it properly
+  - Text and email allowances are tiered, so heavy marketers may need a higher plan
 getItIf:
-  - Your average ticket is high enough that a no-show genuinely hurts
-  - You want the booking page to feel like part of the brand, not a bolt-on
-  - You care about rebooking rate and want it measured per stylist
-  - You have the staff time to configure services and processing gaps properly
+  - Your prices are premium and you want booking to feel the same
+  - You are a single location or a small group and can absorb per-location pricing
+  - You run a med spa and need HIPAA coverage in the same system
+  - Your front desk spends too long managing the calendar by hand
 skipItIf:
-  - You are a one or two chair salon and the monthly price is a real percentage of revenue
-  - Retail inventory is a large part of your business
-  - You need class and membership management more than chair booking
-  - You want to be running the same week you sign up
+  - You are a solo stylist or a budget salon where the monthly fee is a real share of profit
+  - You are planning several locations and each one adds a full subscription
+  - Reporting across locations is the main thing you need
+  - You want to try the software yourself before talking to sales
 verdict: >-
-  Boulevard is the best booking and front-desk software for a premium salon or med spa, and its
-  deposit and waitlist handling pays for itself in recovered no-shows. It is priced accordingly, and
-  a small salon with a modest average ticket should not be looking at it.
+  Boulevard is our top pick for premium salons and med spas that care about the client booking
+  experience. Reviewers consistently rate its scheduling and design highly. It costs more than most
+  salon software, per location, and reporting draws more complaints than the rest of the product.
 faq:
   - q: How much does Boulevard cost?
-    a: Essentials is $175 a month billed annually for up to five providers, Premier $325 for up to fifteen and Prestige $475 for unlimited. Card processing is billed separately on top.
-  - q: Does Boulevard stop no-shows?
     a: >-
-      It gives you the tools that do: card on file at booking, configurable deposits per
-      service, and automatic fee capture. The policy still has to be yours, but the software
-      removes the awkward conversation at the front desk.
-  - q: Is Boulevard good for a small salon?
-    a: Below about five providers the price is hard to justify. The features that make it worth the money - precision scheduling, waitlist automation, per-stylist reporting - only matter once the calendar is genuinely full.
-  - q: Does Boulevard handle memberships?
-    a: Yes, from the Premier plan, including recurring billing and membership-priced services. For class-based memberships rather than appointment-based, Momence or Mindbody are the better fit.
+      Boulevard's published plans are Essentials at $159 a month per location billed annually ($176
+      monthly), Premier at $263 ($293) and Prestige at $369 ($410). An aesthetics bundle for med spas is
+      priced separately. Confirm current prices on Boulevard's site.
+  - q: Does Boulevard have a free trial?
+    a: >-
+      No self-serve free trial is advertised. You book a demo and go through a sales process.
+  - q: Is Boulevard good for med spas?
+    a: >-
+      It is built with med spas in mind. Boulevard offers an aesthetics bundle that adds HIPAA coverage,
+      and Capterra reviewers mention charting and forms alongside booking and point of sale.
+  - q: Is Boulevard worth it for a small salon?
+    a: >-
+      It depends on your prices. For a premium salon the booking experience can justify the fee. For a
+      budget salon or a solo stylist, the entry price is high compared with simpler tools.
+  - q: Boulevard or Mindbody?
+    a: >-
+      Boulevard is focused on salons, spas and med spas and is praised for its booking experience.
+      Mindbody covers fitness and wellness broadly and includes a consumer marketplace. See our Boulevard
+      vs Mindbody comparison.
 ---
 
-## What makes Boulevard different from cheaper salon software?
+## What is Boulevard?
 
-Two things: the client-facing booking experience and what it does with a gap in the
-calendar.
+Boulevard is salon, spa and med spa software built around appointment booking. It covers online
+booking, the front-desk calendar, client records, point of sale, payments, marketing and reporting,
+with a premium look aimed at higher-priced businesses.
 
-Booking took 51 seconds across three steps with a card stored, which is fast enough that
-clients finish it. And precision scheduling actively fills the awkward twenty-minute holes
-between appointments rather than leaving them dead, which over a week is real revenue.
+The company was founded in 2016 and is based in Los Angeles.
 
-We ran the Premier plan across nine providers in one salon for five weeks.
+## How much does Boulevard cost?
 
-## Does the deposit and waitlist handling actually work?
+Boulevard starts at $159 a month per location billed annually, or $176 month to month, for
+Essentials. Premier is $263 ($293 monthly) and Prestige is $369 ($410 monthly), based on published
+pricing checked on 2026-09-26.
 
-Yes. Deposits are configurable per service, taken at booking against the card on file, and
-the no-show fee captures automatically. That removes the front desk conversation that most
-salons quietly avoid having.
+Pricing is per location. For one salon that is straightforward. For a growing group, reviewers point
+out that every new location pays the full subscription, which makes scaling expensive. Payment
+processing is on top of the subscription. Prices change, so confirm on Boulevard's pricing page.
 
-The waitlist offered a cancelled slot and had an acceptance in four minutes. A cancelled
-appointment that refills in four minutes is not a cancelled appointment.
+## What do the plans include?
 
-## Where does it fall short?
+Essentials covers booking, the calendar, client profiles, payments and marketing, with a monthly
+allowance of two-way texts and email sends. Premier adds booking deposits, inventory, resource
+scheduling (rooms and equipment) and the Duo app for check-in and walk-ins, with larger text and email
+allowances. Prestige adds forms and much higher messaging allowances.
 
-Inventory. If retail is a meaningful part of your revenue, Boulevard's stock handling will
-frustrate you - it counts things, but it will not manage reorder points the way a shop
-carrying forty SKUs needs.
+The practical point is that deposits and inventory start on Premier. A salon that loses money to
+no-shows should budget for that tier.
 
-Setup is also a full day. Service durations, processing time and resource rules all have to
-be right or precision scheduling books nonsense.
+## What do users like about Boulevard?
+
+Boulevard holds about 4.6 out of 5 on Capterra from more than 350 reviews and about 4.4 out of 5 on
+G2 at the time of writing. Themes that come up frequently:
+
+- The client booking experience is modern and on-brand for a premium salon
+- Scheduling and managing appointments is clean and easy for front desk staff
+- Booking, forms, marketing and point of sale live in one system
+- Automated workflows reduce manual calendar work
+
+## What are the common complaints?
+
+The most common complaints in public reviews are price and reporting. Reviewers describe Boulevard as
+expensive relative to some competitors, especially for additional locations. Others say it takes too
+long to find key numbers in reports and to switch between locations. Some reviewers also want more
+configurable marketing automation.
 
 ## Boulevard or Mindbody?
 
-If your business is appointments in chairs, Boulevard. If it is classes and memberships,
-[Mindbody](/reviews/mindbody/) or [Momence](/reviews/momence/). Salons that do both should
-work out which side is the majority of revenue and buy for that, because neither product is
-good at being the other one.
+In our assessment, Boulevard is the better choice for a salon or med spa, and
+[Mindbody](/reviews/mindbody/) makes more sense for a class-based fitness or wellness business that
+wants marketplace exposure. Boulevard is built around one-to-one appointments in chairs and rooms.
+Mindbody's strength is its consumer app and breadth across fitness and wellness. See
+[Boulevard vs Mindbody](/compare/boulevard-vs-mindbody/) for the detail.
+
+## What should you check before signing up?
+
+Work out the full monthly cost for the tier you actually need, per location. Questions worth asking in
+the demo:
+
+- Which tier includes booking deposits and card-on-file protection for no-shows?
+- How many two-way texts and marketing emails does each tier include, and what happens above the
+  allowance?
+- What are the payment processing rates, and are they fixed or negotiable?
+- For med spas, what does the aesthetics bundle cost and what does its HIPAA coverage include?
+- How are client records, formulas and future appointments migrated from your current system?
+
+Get the quote in writing. For a salon planning a second location, ask for the two-location price up
+front, since that is where reviewers say the cost jumps.
+
+This is an editorial rating based on Boulevard's published pricing and plan details and on themes in
+public reviews on Capterra and G2, using the rubric on our [how we test](/how-we-test/) page. We did
+not run timed tests. Boulevard scores highest on scheduling, where reviewers are most consistent, and
+lowest on value and reporting.

@@ -1,0 +1,52 @@
+---
+import LogoMark from './LogoMark.astro';
+import AffiliateLink from './AffiliateLink.astro';
+
+interface Props {
+  slug: string;
+  name: string;
+  logoText: string;
+  logoColor: string;
+  note?: string;
+}
+
+const { slug, name, logoText, logoColor, note } = Astro.props;
+---
+
+<!-- Mobile-only bar that slides in once the reader is past the header, so the
+     next step is always one tap away without covering the verdict. -->
+<div
+  id="sticky-cta"
+  class="fixed inset-x-0 bottom-0 z-30 translate-y-full border-t border-line bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgb(16_21_29/0.08)] backdrop-blur transition-transform duration-200 lg:hidden"
+  style="padding-bottom:max(0.75rem,env(safe-area-inset-bottom))"
+  inert
+>
+  <div class="mx-auto flex max-w-xl items-center gap-3">
+    <LogoMark text={logoText} color={logoColor} size="sm" />
+    <div class="min-w-0 flex-1">
+      <p class="truncate font-semibold leading-tight text-ink">{name}</p>
+      {note && <p class="truncate text-sm text-ink-muted">{note}</p>}
+    </div>
+    <AffiliateLink slug={slug} name={name} label={`Try ${name}`} placement="sticky-mobile" class="!min-h-11 !px-4" />
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var bar = document.getElementById('sticky-cta');
+    if (!bar) return;
+    var footer = document.querySelector('footer');
+    var shown = false;
+    function update() {
+      var past = window.scrollY > 700;
+      var nearEnd = footer && footer.getBoundingClientRect().top < window.innerHeight;
+      var show = past && !nearEnd;
+      if (show === shown) return;
+      shown = show;
+      bar.style.transform = show ? 'translateY(0)' : '';
+      bar.inert = !show;
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>

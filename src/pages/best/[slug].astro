@@ -3,17 +3,21 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import VerdictBox from '../../components/VerdictBox.astro';
-import TestDates from '../../components/TestDates.astro';
+import UpdatedMeta from '../../components/UpdatedMeta.astro';
 import RankedTool from '../../components/RankedTool.astro';
+import LogoMark from '../../components/LogoMark.astro';
+import ScoreBadge from '../../components/ScoreBadge.astro';
 import Faq from '../../components/Faq.astro';
 import Disclosure from '../../components/Disclosure.astro';
 import NewsletterForm from '../../components/NewsletterForm.astro';
 import TradeIcon from '../../components/TradeIcon.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AffiliateLink from '../../components/AffiliateLink.astro';
 import { CATEGORY_META, TEAM_SIZES, TEAM_SIZE_LABELS } from '../../lib/site';
 import { bestSlug, bestUrl, toolUrl, CALCULATOR_URL } from '../../lib/urls';
-import { money, score1 } from '../../lib/format';
-import { breadcrumbs, faqPage } from '../../lib/schema';
-import { toolsInCategory, oldestTest, type Tool, type Trade } from '../../lib/content';
+import { money, score1, priceLabel } from '../../lib/format';
+import { breadcrumbs, faqPage, itemList, webPage } from '../../lib/schema';
+import { toolsInCategory, oldestUpdate, type Tool, type Trade } from '../../lib/content';
 
 export async function getStaticPaths() {
   const trades = await getCollection('trades');
@@ -36,69 +40,92 @@ interface Props {
 const { trade, ranked } = Astro.props;
 const category = CATEGORY_META[trade.data.category];
 const tradeName = trade.data.name.toLowerCase();
+const categoryLower = category.label.toLowerCase();
 
 const winner = ranked[0];
-const dates = oldestTest(ranked);
+const dates = oldestUpdate(ranked);
+const year = dates.updatedDate.getUTCFullYear();
 
-const title = `Best ${category.label.toLowerCase()} for ${tradeName}`;
+const h1 = `Best ${categoryLower} for ${tradeName} in ${year}`;
 const path = bestUrl(trade.data.category, trade.data.slug);
 
-// The verdict is assembled from the tested data rather than written per page,
-// so it can never drift away from the scores below it.
-const verdict = `${winner.data.name} is our pick for ${tradeName}, scoring ${score1(
+const priced = ranked.filter((t) => t.data.priceFrom !== null);
+const cheapest = [...priced].sort((a, b) => a.data.priceFrom! - b.data.priceFrom!)[0];
+const soloPick = ranked.find((t) => t.data.teamSizes.includes('solo'));
+const biggestPick = ranked.find((t) => t.data.teamSizes.includes('16+'));
+
+// Awards are derived from the data so they can never contradict the list.
+const awards = new Map<string, string>();
+awards.set(winner.id, 'Best overall');
+if (cheapest && !awards.has(cheapest.id)) awards.set(cheapest.id, 'Best budget pick');
+if (soloPick && !awards.has(soloPick.id)) awards.set(soloPick.id, 'Best for solo operators');
+if (biggestPick && !awards.has(biggestPick.id)) awards.set(biggestPick.id, 'Best for larger teams');
+
+const lc = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+
+// The verdict is assembled from the rated data rather than written per page,
+// so it can never drift away from the ratings below it.
+const verdict = `${winner.data.name} is our top pick for ${tradeName}, rated ${score1(
   winner.data.score,
-)} out of 10 and starting at ${money(winner.data.priceFrom)} a month. ${
+)}/10 (${lc(priceLabel(winner.data.priceFrom))}). ${
   ranked.length > 1
-    ? `${ranked[1].data.name} is the one to take instead if ${ranked[1].data.getItIf[0].charAt(0).toLowerCase()}${ranked[1].data.getItIf[0].slice(1)}.`
+    ? `Choose ${ranked[1].data.name} instead if ${lc(ranked[1].data.getItIf[0])}.`
     : ''
 }`;
 
-const soloPick = ranked.find((t) => t.data.teamSizes.includes('solo'));
-const biggestPick = ranked.find((t) => t.data.teamSizes.includes('16+'));
-const cheapest = [...ranked].sort((a, b) => a.data.priceFrom - b.data.priceFrom)[0];
-
 const faqItems = [
   {
-    q: `What is the best ${category.label.toLowerCase()} for ${tradeName}?`,
-    a: `${winner.data.name}, on our testing. It scored ${score1(winner.data.score)} out of 10 on the ${winner.data.planTested} and suits ${winner.data.bestFor.toLowerCase()}. ${verdict.split('. ').slice(1).join('. ')}`.trim(),
+    q: `What is the best ${categoryLower} for ${tradeName}?`,
+    a: `${winner.data.name} is our top pick, rated ${score1(winner.data.score)} out of 10. It suits ${lc(winner.data.bestFor)}. ${
+      ranked.length > 1 ? `${ranked[1].data.name} is the strongest alternative.` : ''
+    }`.trim(),
   },
-  {
-    q: `How much does ${category.label.toLowerCase()} cost for ${tradeName}?`,
-    a: `Across the ${ranked.length} tools we tested for this list, entry pricing runs from ${money(
-      cheapest.data.priceFrom,
-    )} to ${money(
-      Math.max(...ranked.map((t) => t.data.priceFrom)),
-    )} a month. Payment processing is billed separately by every vendor, and per-seat plans cost far more than the headline once you add the office.`,
-  },
+  ...(priced.length > 0
+    ? [
+        {
+          q: `How much does ${categoryLower} cost for ${tradeName}?`,
+          a: `Across the ${ranked.length} tools on this list, published entry pricing runs from ${money(
+            cheapest.data.priceFrom!,
+          )} to ${money(Math.max(...priced.map((t) => t.data.priceFrom!)))} a month on annual billing${
+            priced.length < ranked.length ? ', and some vendors only quote after a demo' : ''
+          }. Card processing is charged separately, and per-user plans cost more than the headline price once you add office staff.`,
+        },
+      ]
+    : []),
   ...(soloPick
     ? [
         {
-          q: `What should a solo ${tradeName.replace(/s$/, '')} use?`,
-          a: `${soloPick.data.name}. It is the highest scoring option on this list that supports a single-person operation, at ${money(soloPick.data.priceFrom)} a month. ${soloPick.data.getItIf[0]}.`,
+          q: `What should a one-person ${tradeName.replace(/s$/, '')} business use?`,
+          a: `${soloPick.data.name} is the highest-rated option on this list that supports a solo operator (${lc(
+            priceLabel(soloPick.data.priceFrom),
+          )}). ${soloPick.data.getItIf[0]}.`,
         },
       ]
     : []),
   ...(biggestPick
     ? [
         {
-          q: `What works for a team of sixteen or more?`,
-          a: `${biggestPick.data.name} is the highest scoring option here that handles that headcount. Above about fifteen field staff the deciding factor is usually pricing model rather than features - check whether you are paying per seat or per user block.`,
+          q: `What works for a team of 16 or more?`,
+          a: `${biggestPick.data.name} is the highest-rated option here that handles that headcount. At that size the pricing model (per user, per block of users, or quote) usually matters more than the feature list.`,
         },
       ]
     : []),
   {
-    q: `How often is this list retested?`,
-    a: `Every tool is fully retested twice a year and prices are checked more often. The oldest test behind this page was ${dates.testDate.toISOString().slice(0, 10)}, and the next retest is due ${dates.nextRetest.toISOString().slice(0, 10)}.`,
+    q: `How was this list put together?`,
+    a: `We rate each tool against a published six-part rubric using vendor documentation, published pricing and patterns in public user reviews, then rank by overall rating. Partner commissions never affect the order. See our methodology page for details.`,
   },
 ];
 
 const crumbs = [
   { name: 'Home', path: '/' },
-  { name: 'Best of', path: '/best/' },
-  { name: title, path },
+  { name: 'Best software', path: '/best/' },
+  { name: `For ${tradeName}`, path },
 ];
 
-const description = `Ranked ${category.label.toLowerCase()} for ${tradeName}, tested on real jobs. ${winner.data.name} scored highest at ${score1(winner.data.score)}/10. Filter the list by team size.`;
+const title = `${ranked.length} Best ${category.label} for ${trade.data.name} (${year})`;
+const description = `Compare the ${ranked.length} best ${categoryLower} for ${tradeName} in ${year}. ${winner.data.name} is our top pick (${score1(
+  winner.data.score,
+)}/10). Pricing, free trials and who each tool suits, filterable by team size.`;
 ---
 
 <BaseLayout
@@ -106,140 +133,134 @@ const description = `Ranked ${category.label.toLowerCase()} for ${tradeName}, te
   description={description}
   path={path}
   ogType="article"
-  jsonLd={[breadcrumbs(crumbs), faqPage(faqItems)]}
+  ogImage={`/og/best/${bestSlug(trade.data.category, trade.data.slug)}.png`}
+  ads
+  modified={dates.updatedDate}
+  jsonLd={[
+    webPage({ path, title: h1, description, dateModified: dates.updatedDate, type: 'CollectionPage' }),
+    breadcrumbs(crumbs),
+    itemList(h1, ranked.map((t) => ({ name: t.data.name, path: toolUrl(t.data.slug) }))),
+    faqPage(faqItems),
+  ]}
 >
   <Breadcrumbs items={crumbs} />
 
-  <div class="wrap pt-8">
-    <div class="flex items-start gap-4">
-      <span class="flex h-14 w-14 flex-none items-center justify-center bg-ink text-yellow">
-        <TradeIcon name={trade.data.icon} class="h-8 w-8" />
+  <header class="wrap pt-6 sm:pt-8">
+    <div class="max-w-3xl">
+      <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-wash text-brand">
+        <TradeIcon name={trade.data.icon} class="h-7 w-7" />
       </span>
-      <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
-        {title}
-      </h1>
+      <h1 class="mt-4 text-[2.1rem] leading-[1.1] sm:text-5xl">{h1}</h1>
+      <p class="mt-3 text-lg leading-relaxed text-ink-soft">{trade.data.description}</p>
+      <UpdatedMeta updatedDate={dates.updatedDate} pricesChecked={dates.pricesChecked} class="mt-5" />
     </div>
+  </header>
 
-    <!-- Verdict first, immediately after the H1. -->
-    <VerdictBox class="mt-6">
+  <div class="wrap mt-8">
+    <VerdictBox label="Quick answer" class="max-w-4xl">
       <p>{verdict}</p>
     </VerdictBox>
-
-    <TestDates testDate={dates.testDate} nextRetest={dates.nextRetest} class="mt-5" />
-
-    <p class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">{trade.data.description}</p>
     <Disclosure class="mt-4 max-w-3xl" />
   </div>
 
-  <!-- Size filter -->
-  <section class="wrap mt-10" aria-labelledby="filter-heading">
-    <div class="board p-4">
-      <h2 id="filter-heading" class="font-condensed text-lg font-bold uppercase tracking-[0.1em]">
-        Filter by team size
-      </h2>
-      <div class="mt-3 flex flex-wrap gap-2" role="group" aria-labelledby="filter-heading">
-        <button
-          type="button"
-          class="size-filter btn btn-primary"
-          data-size="all"
-          aria-pressed="true">All sizes</button
-        >
-        {
-          TEAM_SIZES.map((size) => (
-            <button type="button" class="size-filter btn btn-ghost" data-size={size} aria-pressed="false">
-              {TEAM_SIZE_LABELS[size]}
-            </button>
-          ))
-        }
-      </div>
-      <p class="mt-3 text-sm text-ink-muted" data-filter-status role="status">
-        Showing all {ranked.length} tools.
-      </p>
-    </div>
-  </section>
-
-  <!-- Ranked list -->
-  <section class="wrap mt-8" aria-label={`Ranked ${category.label.toLowerCase()} for ${tradeName}`}>
-    <ol class="space-y-6" data-tool-list>
-      {ranked.map((tool, i) => <li><RankedTool rank={i + 1} tool={tool.data} /></li>)}
-    </ol>
-    <p class="mt-6 hidden text-center text-ink-muted" data-empty-state>
-      None of the tools we have tested for this trade fit that team size yet. Clear the filter to
-      see the full list.
-    </p>
-  </section>
-
-  <!-- Score table -->
-  <section class="wrap mt-14" aria-labelledby="table-heading">
-    <h2 id="table-heading" class="font-condensed text-3xl font-bold uppercase sm:text-4xl">
-      How do the scores compare?
-    </h2>
-    <div class="table-scroll board mt-5">
-      <table class="w-full min-w-[40rem] border-collapse text-left">
-        <caption class="sr-only">
-          Scores and entry pricing for {category.label.toLowerCase()} tested for {tradeName}
-        </caption>
+  <!-- Quick comparison: the whole list on one screen before the detail. -->
+  <section class="wrap mt-10" aria-labelledby="summary-heading">
+    <h2 id="summary-heading" class="section-title">Our picks at a glance</h2>
+    <div class="table-scroll card mt-5">
+      <table class="data-table min-w-[40rem]">
+        <caption class="sr-only">Ratings and entry pricing for {categoryLower} for {tradeName}</caption>
         <thead>
-          <tr class="bg-ink text-white">
-            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">#</th>
-            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Tool</th>
-            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Score</th>
-            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">From</th>
-            <th scope="col" class="px-4 py-3 font-condensed text-sm font-bold uppercase tracking-[0.1em]">Best for</th>
+          <tr>
+            <th scope="col">Software</th>
+            <th scope="col">Best for</th>
+            <th scope="col">Price</th>
+            <th scope="col">Rating</th>
+            <th scope="col"><span class="sr-only">Link</span></th>
           </tr>
         </thead>
         <tbody>
           {
-            ranked.map((tool, i) => (
-              <tr class:list={['border-t border-line align-top', i === 0 && 'bg-yellow-wash']}>
-                <td class="px-4 py-3 font-condensed text-lg font-bold">{i + 1}</td>
-                <th scope="row" class="px-4 py-3">
-                  <a
-                    href={toolUrl(tool.data.slug)}
-                    class="font-condensed text-lg font-bold uppercase underline decoration-yellow decoration-[3px] underline-offset-2"
-                  >
-                    {tool.data.name}
+            ranked.map((tool) => (
+              <tr>
+                <th scope="row">
+                  <a href={`#pick-${tool.data.slug}`} class="flex items-center gap-3 no-underline">
+                    <LogoMark text={tool.data.logoText} color={tool.data.logoColor} size="xs" />
+                    <span>
+                      <span class="block font-semibold text-ink hover:text-brand">{tool.data.name}</span>
+                      {awards.has(tool.id) && <span class="block text-xs font-medium text-brand">{awards.get(tool.id)}</span>}
+                    </span>
                   </a>
                 </th>
-                <td class="px-4 py-3 font-condensed text-lg font-bold tabular-nums">
-                  {score1(tool.data.score)}
+                <td class="max-w-xs text-sm leading-snug text-ink-soft">{tool.data.bestFor}</td>
+                <td class="whitespace-nowrap text-sm font-medium text-ink">{priceLabel(tool.data.priceFrom)}</td>
+                <td class="font-bold tabular-nums text-ink">{score1(tool.data.score)}</td>
+                <td>
+                  <AffiliateLink slug={tool.data.slug} name={tool.data.name} variant="plain" label="Visit" placement="summary-table" class="text-sm" />
                 </td>
-                <td class="px-4 py-3 font-semibold tabular-nums">{money(tool.data.priceFrom)}/mo</td>
-                <td class="px-4 py-3 text-sm text-ink-soft">{tool.data.bestFor}</td>
               </tr>
             ))
           }
         </tbody>
       </table>
     </div>
+  </section>
 
-    <div class="board mt-6 flex flex-wrap items-center justify-between gap-4 border-l-[6px] border-l-yellow p-5">
+  <!-- Size filter -->
+  <section class="wrap mt-12" aria-labelledby="filter-heading">
+    <h2 id="filter-heading" class="section-title">The detailed reviews</h2>
+    <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div class="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label="Filter by team size">
+        <button type="button" class="size-filter pill !px-4 !py-2 !text-sm aria-pressed:!bg-night aria-pressed:!text-white" data-size="all" aria-pressed="true">All sizes</button>
+        {
+          TEAM_SIZES.map((size) => (
+            <button type="button" class="size-filter pill whitespace-nowrap !px-4 !py-2 !text-sm aria-pressed:!bg-night aria-pressed:!text-white" data-size={size} aria-pressed="false">
+              {TEAM_SIZE_LABELS[size]}
+            </button>
+          ))
+        }
+      </div>
+      <p class="text-sm text-ink-muted" data-filter-status role="status">Showing all {ranked.length} tools.</p>
+    </div>
+  </section>
+
+  <section class="wrap mt-6" aria-label={`Ranked ${categoryLower} for ${tradeName}`}>
+    <ol class="space-y-5" data-tool-list>
+      {ranked.map((tool, i) => <li><RankedTool rank={i + 1} tool={tool.data} award={awards.get(tool.id)} /></li>)}
+    </ol>
+    <p class="mt-6 hidden text-center text-ink-muted" data-empty-state>
+      None of the tools on this list fit that team size yet. Clear the filter to see all of them.
+    </p>
+  </section>
+
+  <div class="wrap"><AdSlot /></div>
+
+  <section class="wrap mt-4">
+    <div class="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
       <div>
-        <h3 class="font-condensed text-2xl font-bold uppercase leading-none">
-          Before you pick on price
-        </h3>
+        <h2 class="text-2xl">Before you choose on price</h2>
         <p class="mt-2 max-w-xl text-ink-soft">
-          Work out what an hour of your time actually costs. A $60 saving on software is not a
-          saving if the cheaper tool adds an hour of admin a week.
+          Work out what an hour of your time is worth. Saving $60 a month on software is not a saving
+          if the cheaper tool adds an hour of admin every week.
         </p>
       </div>
-      <a href={CALCULATOR_URL} class="btn btn-primary">Job pricing calculator</a>
+      <a href={CALCULATOR_URL} class="btn btn-secondary">Open the rate calculator</a>
     </div>
   </section>
 
   <div class="wrap">
-    <Faq items={faqItems} heading={`Questions about ${category.label.toLowerCase()} for ${tradeName}`} />
+    <Faq items={faqItems} heading={`${category.label} for ${tradeName}: FAQ`} />
   </div>
 
-  <!-- Other trades -->
   <section class="wrap mt-14">
-    <h2 class="font-condensed text-3xl font-bold uppercase sm:text-4xl">Every review on this list</h2>
-    <ul class="mt-5 flex flex-wrap gap-3">
+    <h2 class="section-title">Full reviews on this list</h2>
+    <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {
         ranked.map((tool) => (
           <li>
-            <a href={toolUrl(tool.data.slug)} class="btn btn-ghost">
-              {tool.data.name} review
+            <a href={toolUrl(tool.data.slug)} class="card card-link flex items-center gap-3 p-4 no-underline">
+              <LogoMark text={tool.data.logoText} color={tool.data.logoColor} size="sm" />
+              <span class="flex-1 font-semibold text-ink">{tool.data.name} review</span>
+              <ScoreBadge score={tool.data.score} />
             </a>
           </li>
         ))
@@ -253,9 +274,8 @@ const description = `Ranked ${category.label.toLowerCase()} for ${tradeName}, te
 </BaseLayout>
 
 <script is:inline>
-  // Team size filter. Vanilla, no framework: it toggles the `hidden` attribute
-  // on already-rendered cards, so the page works with JavaScript disabled and
-  // simply shows everything.
+  // Team size filter. Toggles `hidden` on already-rendered cards, so the page
+  // works with JavaScript disabled and simply shows everything.
   (function () {
     var buttons = Array.prototype.slice.call(document.querySelectorAll('.size-filter'));
     var cards = Array.prototype.slice.call(document.querySelectorAll('[data-tool-card]'));
@@ -265,28 +285,20 @@ const description = `Ranked ${category.label.toLowerCase()} for ${tradeName}, te
 
     function apply(size) {
       var shown = 0;
-
       cards.forEach(function (card) {
         var sizes = (card.getAttribute('data-sizes') || '').split(' ');
         var match = size === 'all' || sizes.indexOf(size) !== -1;
-        // The <li> wrapper is what carries layout spacing.
-        var item = card.parentElement;
-        (item || card).hidden = !match;
+        (card.parentElement || card).hidden = !match;
         if (match) shown += 1;
       });
-
       buttons.forEach(function (button) {
-        var active = button.getAttribute('data-size') === size;
-        button.setAttribute('aria-pressed', String(active));
-        button.classList.toggle('btn-primary', active);
-        button.classList.toggle('btn-ghost', !active);
+        button.setAttribute('aria-pressed', String(button.getAttribute('data-size') === size));
       });
-
       if (status) {
         status.textContent =
           size === 'all'
             ? 'Showing all ' + shown + ' tools.'
-            : 'Showing ' + shown + ' of ' + cards.length + ' tools that fit that team size.';
+            : 'Showing ' + shown + ' of ' + cards.length + ' tools for that team size.';
       }
       if (empty) empty.classList.toggle('hidden', shown !== 0);
     }

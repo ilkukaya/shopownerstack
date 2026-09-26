@@ -16,5 +16,4 @@ export const bestUrl = (category: Category, tradeSlug: string) =>
 
 export const CALCULATOR_URL = '/tools/job-pricing-calculator/';
 
-export const absolute = (path: string, site: URL | undefined) =>
-  new URL(path, site ?? 'https://shopownerstack.com').toString();
+export const SEARCH_URL = '/search/';

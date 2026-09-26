@@ -4,98 +4,102 @@ toolA: housecall-pro
 toolB: workiz
 title: Housecall Pro vs Workiz
 verdict: >-
-  Buy Workiz if the phone is your business and you cannot tell which calls turn into booked jobs. Buy
-  Housecall Pro for everything else - it has the better invoicing, the better customer experience and
-  the deeper marketing tools.
+  In our assessment, Housecall Pro is the easier all-round choice for most small home service
+  crews, with published pricing, a 14-day trial and strong customer communication. Workiz makes
+  sense when the phone is your main source of work and you want calls, recordings and AI answering
+  tied directly to jobs. Workiz no longer publishes prices, so get a written quote before comparing
+  totals.
 pickAIf:
-  - Work arrives by referral, repeat customer or online booking rather than by cold phone call
-  - Invoicing depth, financing and estimate presentation matter to you
-  - You want review requests and follow-up marketing built in
-  - You already have a phone system you are happy with
+  - You want to see prices on a public page before talking to sales
+  - You are solo or a very small crew and want the cheapest way in
+  - Customer communication, review requests and marketing tools matter to you
+  - You want a longer, card-free trial of the top plan
 pickBIf:
-  - Most jobs start with an inbound call and you suspect you are missing some
-  - You buy leads or run paid ads and need cost per booked job, not cost per call
-  - You want call recordings to train whoever answers the phone
-  - You want the caller's history on screen before you say hello
+  - Most of your jobs start with an inbound phone call
+  - You want call recording, call summaries and AI answering inside the job software
+  - You run a locksmith, junk removal, moving or similar call-driven business
+  - You are comfortable negotiating a quote and reading the contract term carefully
+updatedDate: 2026-09-26
+sources:
+  - title: Housecall Pro pricing and plans
+    url: https://www.housecallpro.com/pricing/
+  - title: Workiz AI phone system
+    url: https://www.workiz.com/features/phone-system/
+  - title: Workiz Genius Answering
+    url: https://www.workiz.com/features/genius-answering/
+  - title: Workiz doesn't list a free plan anymore (ToolBerry)
+    url: https://toolberry.net/en/blog/workiz-doesn-t-list-a-free-plan-anymore-here-s-what-to-do-if-that-was-your-plan/
+  - title: Housecall Pro vs Workiz (Capterra)
+    url: https://www.capterra.com/compare/140363-147525/HouseCall-Pro-vs-Workiz
+  - title: Workiz reviews (Capterra)
+    url: https://www.capterra.com/p/147525/Workiz/reviews/
 rows:
-  - feature: Entry price, billed annually
-    a: $79 per month, 1 user
-    b: $45 per month, up to 2 users
-    winner: b
-  - feature: Price for five users, billed annually
-    a: $169 per month
-    b: $129 per month
-    winner: b
+  - feature: Published pricing
+    a: Yes, three tiers listed on the pricing page
+    b: No, plans listed with a request-pricing button
+    winner: a
+  - feature: Pricing model
+    a: Tiered plans, user limits per tier, add-ons extra
+    b: Quote-based tiers, phone and AI answering sold as add-ons
+    winner: a
+  - feature: Free trial
+    a: 14 days, no credit card required
+    b: Short free trial reported by third-party reviewers, confirm with sales
+    winner: a
   - feature: Built-in phone system
-    a: Voice add-on on higher tiers
-    b: Full system - numbers, routing, recordings, screen pop
+    a: Voice phone system available
+    b: Phone system with call recording and summaries tied to jobs
     winner: b
-  - feature: Missed-call text-back, measured
-    a: Not built in
-    b: 14 seconds
-    winner: b
-  - feature: Call-to-job attribution
-    a: Not available
-    b: Tracking numbers per source, revenue attributed back
-    winner: b
-  - feature: Dispatch board
-    a: Technician-column board, best in class
-    b: Comparable board, slightly fewer options
+  - feature: AI call answering
+    a: CSR AI add-on, priced by quote
+    b: Genius Answering add-on, needs the phone system
+    winner: tie
+  - feature: Dispatch
+    a: Drag-and-drop dispatch board with GPS tracking
+    b: Drag-and-drop scheduling and dispatch
+    winner: tie
+  - feature: Customer communication
+    a: On-my-way texts, review requests, marketing tools
+    b: Two-way texting, AI-drafted messages
     winner: a
-  - feature: Invoicing and estimates
-    a: Strong templates, consumer financing built in
-    b: Competent but plainer
-    winner: a
-  - feature: Customer-facing polish
-    a: On-my-way texts, tracking link, review requests
-    b: Functional, less polished
-    winner: a
-  - feature: Time to first invoice, measured
-    a: 34 minutes
-    b: 46 minutes
-    winner: a
-  - feature: Number porting
-    a: Not applicable
-    b: 11 days with two follow-ups in our test
+  - feature: Industry focus
+    a: Broad home services
+    b: Broad, with workflows for locksmith, junk removal and moving
+    winner: tie
+  - feature: Common review complaint
+    a: Add-on costs and price jumps past five users
+    b: Billing, contract terms and cancellation friction
     winner: a
 ---
 
-## What is the actual decision here?
+## Which is better, Housecall Pro or Workiz?
 
-Whether you need a phone system inside your job software.
+For most small home service businesses, Housecall Pro is the simpler choice, because the pricing is public, the trial is longer and the customer communication tools are strong. Workiz is the better fit when the phone is how you win work and you want calls managed inside the job software.
 
-That sounds like a feature comparison and it is not. For a locksmith, garage door company or
-junk removal outfit, the phone is the business. Every job starts as a call, every missed
-call is a job that went to a competitor, and nobody can say which advert produced the calls
-that turned into money. Workiz is built for exactly that and nothing else here competes.
+Both products cover the same basics: scheduling, dispatch, estimates, invoicing, payments and a mobile app. The difference is where each one puts its weight.
 
-For a plumbing or HVAC shop with repeat customers, maintenance agreements and online
-booking, that machinery is expensive weight. Housecall Pro is the better product.
+## How does pricing compare?
 
-## Does the Workiz phone system really pay for itself?
+Housecall Pro publishes its plans. Workiz, as of mid-2026, lists its plans without dollar figures and asks you to request pricing.
 
-The measurable part is missed-call text-back: 14 seconds from a missed call to a text on the
-caller's phone. A caller who gets a text that fast is often still choosing who to ring.
+That makes Housecall Pro easier to budget. Its pricing page lists Basic (one user), Essentials (up to five users) and MAX, with lower rates for annual billing. Several add-ons cost extra. For Workiz, third-party pricing guides report that the phone system and Genius AI answering are add-ons on top of the base plan, and that extra users are charged per seat. Because Workiz is quote-based, ask for the total monthly cost for your team size, with the phone system included if you want it, and ask about the contract term. Prices change, so confirm both on the vendor sites.
 
-The bigger number is attribution. Tracking numbers per source, jobs created from calls,
-revenue attributed back to the source. That is cost per booked job rather than cost per
-click, and if you buy leads it is the difference between scaling and quietly losing money.
+## Which one is better for handling phone calls?
 
-## Where does Housecall Pro win?
+Workiz. Its phone system records calls, summarizes them and ties them to the customer and job, according to its feature pages, and Genius Answering can pick up missed calls and book jobs.
 
-Invoicing, estimate presentation, consumer financing, review requests and the on-my-way
-tracking link. All of Workiz's equivalents work; none of them are as good.
+Housecall Pro has a Voice phone system and a CSR AI add-on that answers calls and books jobs, so the gap is narrower than it used to be. Workiz still builds more of the product around the call, which matters for trades where most jobs start as a phone ring.
 
-It also starts faster - 34 minutes to first invoice against 46 - and there is no number
-porting to survive. Ours took eleven days.
+## What do users complain about?
 
-## Can you run both?
+Common complaints in public reviews point in different directions. For Housecall Pro, reviewers most often mention add-on costs, price jumps past five users and slower support on lower plans. For Workiz, reviews on Capterra, Trustpilot and BBB include complaints about annual contract terms, billing after cancellation requests and slow responses from support.
 
-Some shops do: Workiz for the phones, another product for the jobs. We would not recommend
-it. Two systems means double entry, and the attribution that justifies Workiz depends on the
-call and the job being the same record.
+Neither pattern means you will have that experience, but it tells you what to check before you sign: for Housecall Pro, the full price with the add-ons you need; for Workiz, the contract length and how cancellation works.
 
-## The short version
+## Which is better for a solo operator?
 
-Phone-driven work: [Workiz](/reviews/workiz/). Everything else:
-[Housecall Pro](/reviews/housecall-pro/).
+In our assessment, Housecall Pro, because its entry plan is built for one user and priced publicly. Workiz is aimed more at teams with a dispatcher or office staff taking calls.
+
+## What else should I compare?
+
+If quoting and follow-up matter more than phones, see [Housecall Pro vs Jobber](/compare/housecall-pro-vs-jobber/) and [Jobber vs Workiz](/compare/jobber-vs-workiz/). Full reviews: [Housecall Pro](/reviews/housecall-pro/) and [Workiz](/reviews/workiz/).

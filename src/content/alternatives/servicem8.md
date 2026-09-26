@@ -2,66 +2,69 @@
 tool: servicem8
 title: ServiceM8 alternatives
 whyPeopleLeave:
-  - Job caps force an unplanned upgrade in a busy month
-  - The Android app trails the iOS one badly
-  - The interface is dated enough that new staff need training
-  - There is no real reporting or job costing
+  - The Android app is a lighter version and lacks features such as time tracking
+  - Support is chat-based, which frustrates people with urgent problems
+  - Job caps mean a busy month can push you onto a higher plan
+  - Reviewers mention bugs, slow loading and features being removed
 verdict: >-
-  ServiceM8 is usually outgrown rather than abandoned. Jobber is the natural next step for a shop
-  that has passed three vans and needs polish and quoting; Tradify is the sideways move if labour
-  cost per job is what you are missing; Housecall Pro is the upgrade when dispatch becomes the job.
+  The most common reason to leave ServiceM8 is Android. Tradify is the simplest switch for a
+  mixed-phone crew, Jobber is the step up for crews that want stronger quoting and a client portal,
+  and Housecall Pro or Workiz suit teams that need a dispatcher's tools. ServiceM8 remains good
+  value for iPhone crews with moderate job volume.
 alternatives:
-  - jobber
   - tradify
+  - jobber
   - housecall-pro
   - workiz
+updatedDate: 2026-09-26
+sources:
+  - title: ServiceM8 reviews (Capterra)
+    url: https://www.capterra.com/p/110711/ServiceM8/reviews/
+  - title: ServiceM8 reviews (Trustpilot)
+    url: https://www.trustpilot.com/review/www.servicem8.com
+  - title: ServiceM8 pros and cons (G2)
+    url: https://www.g2.com/products/servicem8/reviews?qs=pros-and-cons
+  - title: ServiceM8 pricing (Capterra)
+    url: https://www.capterra.com/p/110711/ServiceM8/pricing/
+  - title: What is the Advanced Reporting Pack add-on (ServiceM8 Help Center)
+    url: https://support.servicem8.com/hc/en-us/articles/202296784-What-is-the-Advanced-Reporting-Pack-Add-on
+  - title: Tradify pricing (Capterra)
+    url: https://www.capterra.com/p/152413/Tradify/pricing/
 migrationSteps:
-  - name: Export clients and job history to CSV
-    text: The list views export cleanly. Do this before anything else so you have a snapshot with the current data.
-  - name: Bulk download job attachments separately
-    text: Photos, signed forms and signatures are attached to jobs and do not come out in the CSV. This is the longest part of leaving ServiceM8 - start it a week early.
-  - name: Note your job volume before choosing a plan elsewhere
-    text: You have been paying by jobs per month. Every alternative charges by seats, so count the logins you actually need before comparing prices.
-  - name: Rebuild forms and checklists in the new system
-    text: Custom job forms do not transfer. List the ones in active use - most shops find half of theirs are dead - and rebuild only those.
-  - name: Reconnect the accounting sync carefully
-    text: Disconnect ServiceM8 from Xero or QuickBooks only after the last invoice is posted, then connect the new system and check the first three invoices line by line.
-  - name: Finish open jobs where they started
-    text: Let jobs already scheduled complete in ServiceM8 and put new bookings in the new system. Cancel after the last open job closes.
+  - name: Turn on the Advanced Reporting Pack
+    text: ServiceM8's help center says client list and job list CSV exports come from the Advanced Reporting Pack add-on, enabled under Settings and ServiceM8 Add-ons. Only the Business Owner role can reach the Reports tab.
+  - name: Export clients and job history
+    text: Run the Client List and Job List exports. The help center notes these are text-only and do not include photos, PDFs or videos, so download any attachments you need separately.
+  - name: Export your services and materials
+    text: Save your price list so you can import it into the new system rather than retyping it.
+  - name: Check your accounting sync
+    text: Your invoices and payments should already be in Xero or QuickBooks. Disconnect ServiceM8 from your accounting software before connecting the new tool to avoid duplicates.
+  - name: Reconcile open quotes and unpaid invoices
+    text: List anything outstanding and track it in both systems during the switch.
+  - name: Run in parallel for a few weeks
+    text: Book new jobs in the new system and let open jobs finish in ServiceM8, then downgrade or cancel.
 ---
 
-## Why do shops leave ServiceM8?
+## Why do businesses leave ServiceM8?
 
-Growth, mostly. The job caps that made it cheap start being hit, the dated interface starts
-costing training time as you hire, and the absence of reporting starts mattering once the
-owner is off the tools.
+The most common complaint in public reviews is the Android app, which is a lighter version of the iPhone app. Other frequent themes are chat-only support, job caps that force an upgrade in busy months, and reports of bugs and slow loading.
 
-Android is the other reason, and it is a legitimate one. The Android app has never caught up
-with the iOS app and a crew that switched phones will notice immediately.
+Reviewers specifically mention time tracking being unavailable on Android, and some say that limitation alone made them stop using the product. If your whole crew uses iPhones, most of these issues matter less.
 
-## What is the natural next step?
+## What is the best ServiceM8 alternative for Android users?
 
-[Jobber](/reviews/jobber/). Modern interface a new hire learns unaided, real quoting with
-automated follow-ups, online booking and a client portal. You will pay more, because you are
-now paying by seat instead of by job.
+[Tradify](/reviews/tradify/). It has full iOS and Android apps, prices per user with unlimited jobs and keeps the interface simple.
 
-## What if you want to stay cheap?
+Per-user pricing costs more than ServiceM8 for larger crews with low job counts, so do the math. See [ServiceM8 vs Tradify](/compare/servicem8-vs-tradify/).
 
-[Tradify](/reviews/tradify/) is the closest in spirit: narrow, quick, no marketing fluff.
-The reason to move to it specifically is timesheets - a two-tap timer tied to the job that
-gives you real labour cost, which ServiceM8 does not produce.
+## What if I want better quoting and a client portal?
 
-At four or more users, Tradify's per-user pricing will cost more than ServiceM8 did. Check
-that before you commit.
+[Jobber](/reviews/jobber/). Optional line items on quotes, automated follow-ups and a Client Hub where customers approve quotes and pay invoices go further than ServiceM8 on the sales side. See [Jobber vs ServiceM8](/compare/jobber-vs-servicem8/).
 
-## What if dispatch has become the job?
+## What if I have a dispatcher and many techs?
 
-[Housecall Pro](/reviews/housecall-pro/). If the owner now spends the morning moving
-technicians around, the board is worth the extra money and neither Jobber nor Tradify
-replaces it.
+[Housecall Pro](/reviews/housecall-pro/) has a dispatch board with GPS tracking and strong customer communication. [Workiz](/reviews/workiz/) adds a phone system for call-driven businesses. Both cost more than ServiceM8.
 
-## Should you stay?
+## Is it worth staying on ServiceM8?
 
-If you are one to three vans on iPhones with steady job volume, staying is often the right
-answer. Nothing else costs this little per person, and the offline app is still the best in
-this category.
+For iPhone-only crews with steady, moderate job volume, often yes. Unlimited staff on every plan is unusual in this category. Prices change, so confirm current plans on each vendor's site.

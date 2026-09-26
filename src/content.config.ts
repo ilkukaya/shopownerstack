@@ -6,13 +6,16 @@ const md = (base: string) => glob({ pattern: '**/*.md', base });
 
 const score = z.number().min(0).max(10);
 
+/** A public page a factual claim was checked against. */
+const source = z.object({ title: z.string(), url: z.string().url() });
+
 const pricingPlan = z.object({
   name: z.string(),
   users: z.string(),
-  /** Monthly price on a month-to-month contract, in USD. */
-  monthly: z.number().nonnegative(),
-  /** Effective monthly price when billed annually, in USD. */
-  annual: z.number().nonnegative(),
+  /** Monthly price on a month-to-month contract, in USD. null = not published. */
+  monthly: z.number().nonnegative().nullable(),
+  /** Effective monthly price when billed annually, in USD. null = not published. */
+  annual: z.number().nonnegative().nullable(),
   forWhom: z.string(),
 });
 
@@ -30,7 +33,13 @@ const tools = defineCollection({
     categories: z.array(z.enum(CATEGORIES)).nonempty(),
     bestFor: z.string(),
     teamSizes: z.array(z.enum(TEAM_SIZES)).nonempty(),
-    priceFrom: z.number().nonnegative(),
+    /** Cheapest published monthly price (annual billing), USD. null = quote-based. */
+    priceFrom: z.number().nonnegative().nullable(),
+    /** One line on how pricing works: per user, per location, quote only... */
+    pricingModel: z.string(),
+    /** e.g. "14 days, no card required" or "No free trial - demo only". */
+    freeTrial: z.string(),
+    freePlan: z.boolean().default(false),
     pricing: z.array(pricingPlan).nonempty(),
     score: score.refine((n) => Number((n * 10).toFixed(0)) === n * 10, {
       message: 'score must have at most one decimal place',
@@ -43,10 +52,13 @@ const tools = defineCollection({
       reporting: score,
       value: score,
     }),
-    testDate: z.coerce.date(),
-    nextRetest: z.coerce.date(),
-    planTested: z.string(),
-    measurements: z.array(z.object({ test: z.string(), result: z.string() })).nonempty(),
+    /** Date the review was last revised by an editor. */
+    updatedDate: z.coerce.date(),
+    /** Date pricing was last checked against the vendor's public pricing page. */
+    pricesChecked: z.coerce.date(),
+    /** Quick facts shown in the review summary box. */
+    keyFacts: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+    sources: z.array(source).nonempty(),
     pros: z.array(z.string()).nonempty(),
     cons: z.array(z.string()).nonempty(),
     getItIf: z.array(z.string()).nonempty(),
@@ -64,9 +76,12 @@ const trades = defineCollection({
     slug: z.string(),
     icon: z.string(),
     category: z.enum(CATEGORIES),
-    /** What the trade bills per hour, USD. Drives the pricing calculator benchmarks. */
-    medianHourlyRate: z.number().positive(),
-    /** Non-billable cost of keeping a one-person operation open, per working hour, USD. */
+    /** Typical hourly rate charged to customers, USD (midpoint of rateRange). */
+    typicalHourlyRate: z.number().positive(),
+    /** Published range, e.g. "$45-$150". */
+    rateRange: z.string(),
+    rateSource: source,
+    /** Starting assumption for the calculator only; explicitly illustrative. */
     overheadPerHourSolo: z.number().positive(),
     description: z.string(),
   }),
@@ -82,6 +97,8 @@ const comparisons = defineCollection({
     verdict: z.string(),
     pickAIf: z.array(z.string()).nonempty(),
     pickBIf: z.array(z.string()).nonempty(),
+    updatedDate: z.coerce.date(),
+    sources: z.array(source).default([]),
     rows: z
       .array(
         z.object({
@@ -103,6 +120,8 @@ const alternatives = defineCollection({
     whyPeopleLeave: z.array(z.string()).nonempty(),
     verdict: z.string(),
     alternatives: z.array(reference('tools')).nonempty(),
+    updatedDate: z.coerce.date(),
+    sources: z.array(source).default([]),
     migrationSteps: z
       .array(z.object({ name: z.string(), text: z.string() }))
       .nonempty(),
@@ -117,6 +136,10 @@ const guides = defineCollection({
     description: z.string(),
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date(),
+    /** One or two sentence direct answer shown above the article (AEO). */
+    summary: z.string(),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    sources: z.array(source).default([]),
   }),
 });
 

@@ -4,94 +4,99 @@ toolA: servicem8
 toolB: tradify
 title: ServiceM8 vs Tradify
 verdict: >-
-  Both are built for small trade shops and both stay out of your way. Take ServiceM8 if you need the
-  best offline field app and unlimited logins for a fixed job volume. Take Tradify if you need labour
-  hours captured against jobs and quoting from saved kits of parts.
+  Both are straightforward job management apps for small trade businesses, with roots in
+  Australia and New Zealand. ServiceM8 prices by job volume with unlimited staff and is built for
+  iPhone. Tradify prices per user with unlimited jobs and runs on both iOS and Android. In our
+  assessment, the phones your crew carries and your job count per month decide this one.
 pickAIf:
-  - Your technicians regularly lose signal and paperwork has to work anyway
-  - You need many people to have a login without the bill moving
-  - Photos, forms and signatures on the job record are the main requirement
-  - Your job volume is predictable month to month
+  - Your whole crew uses iPhones or iPads
+  - You have several staff but a modest number of jobs a month
+  - You want a free plan to start on
+  - Offline use in poor-signal areas matters to you
 pickBIf:
-  - You need real labour cost per job from a timer your crew will actually use
-  - You quote the same job types repeatedly and want saved kits of parts
-  - Your accountant runs Xero and wants clean itemised invoices
-  - You want the product a new hire learns in an afternoon
+  - Anyone on your team uses Android
+  - You do a lot of small jobs and do not want a monthly job cap
+  - You want timesheets and job costing on a mid-tier plan
+  - You prefer a clean, simple interface over more configuration options
+updatedDate: 2026-09-26
+sources:
+  - title: ServiceM8 pricing (Capterra)
+    url: https://www.capterra.com/p/110711/ServiceM8/pricing/
+  - title: Tradify pricing (Capterra)
+    url: https://www.capterra.com/p/152413/Tradify/pricing/
+  - title: Tradify review 2026, pricing and the per-user catch (Contractor ToolStack)
+    url: https://contractortoolstack.com/software/tradify/
+  - title: Tradify job costing software
+    url: https://www.tradifyhq.com/features/job-costing-software
+  - title: ServiceM8 vs Tradify (Software Advice)
+    url: https://www.softwareadvice.com/field-service/servicem8-profile/vs/tradify/
+  - title: ServiceM8 reviews (Capterra)
+    url: https://www.capterra.com/p/110711/ServiceM8/reviews/
 rows:
-  - feature: Entry price, billed annually
-    a: $29 per month, 50 jobs
-    b: $39 per month, 1 user
-    winner: a
   - feature: Pricing model
-    a: Jobs per month, unlimited staff logins
-    b: Per user
+    a: Priced by jobs per month, unlimited staff
+    b: Priced per user per month, unlimited jobs
+    winner: tie
+  - feature: Free plan
+    a: Yes, with a low monthly job cap
+    b: No, paid plan required after the trial
     winner: a
-  - feature: Cost with four users, moderate volume
-    a: $79 per month
-    b: $196 per month
+  - feature: Free trial
+    a: 14 days
+    b: 14 days with all features
+    winner: tie
+  - feature: Mobile apps
+    a: Full app on iPhone and iPad, lighter Android app
+    b: Full iOS and Android apps
+    winner: b
+  - feature: Timesheets and job costing
+    a: Time tracking and job costing available, time tracking reported as iOS-only
+    b: Timesheets and job costing from the Pro plan
+    winner: b
+  - feature: Accounting integrations
+    a: Xero, QuickBooks Online and MYOB
+    b: Xero and QuickBooks Online
+    winner: tie
+  - feature: Customer notifications
+    a: SMS and email updates, including on-the-way messages
+    b: Email and SMS job communication
     winner: a
-  - feature: Offline field app
-    a: Full job record held locally
-    b: Partial, syncs on reconnect
-    winner: a
-  - feature: Time tracking against jobs
-    a: Basic start and stop
-    b: Two-tap timer, survives app restart, feeds job cost
-    winner: b
-  - feature: Quoting speed, measured
-    a: 2 min 45 s
-    b: 1 min 50 s from a saved kit
-    winner: b
-  - feature: Xero sync
-    a: Itemised, reliable
-    b: Itemised, cleanest we tested
-    winner: b
-  - feature: Ease of learning
-    a: Dated, needs a walkthrough
-    b: Learned unaided in an afternoon
-    winner: b
-  - feature: Customer communication
-    a: Job-level messaging
-    b: Minimal
-    winner: a
-  - feature: Job volume cap
-    a: 50, 150 or 500 per month by plan
-    b: None
-    winner: b
+  - feature: Features held for higher tiers
+    a: Job allowance rises with each tier
+    b: Purchase orders, bulk invoicing and several reports on Plus
+    winner: tie
+  - feature: Common review complaint
+    a: Limited Android app and chat-only support
+    b: Cost as the team grows, reporting and customization limits
+    winner: tie
 ---
 
-## Why compare these two?
+## Which is better, ServiceM8 or Tradify?
 
-They occupy the same slot: small trade shops that want paperwork to stop eating evenings,
-without paying Housecall Pro or Jobber prices. They solve it from opposite directions.
+Neither wins outright. ServiceM8 is usually better for iPhone crews with several staff and moderate job volume, and Tradify is usually better for mixed-phone crews or businesses doing many small jobs.
 
-ServiceM8 optimises for the technician in the field with no signal. Tradify optimises for
-knowing what a job cost when it is finished.
+## How does pricing compare?
 
-## Which is cheaper?
+ServiceM8 charges by the number of jobs you create each month and includes unlimited staff. Tradify charges per user per month and includes unlimited jobs.
 
-ServiceM8, at almost any realistic headcount, because it charges for jobs rather than
-people. Four users on Tradify Pro is $196 a month; ServiceM8's 150-job plan is $79 with
-unlimited logins.
+Run your own numbers. A three-person crew doing a few large jobs a week pays for three seats on Tradify but might fit a lower ServiceM8 tier. A one-person business doing ten small jobs a day pays for one seat on Tradify but could need a higher ServiceM8 tier. ServiceM8 also has a free plan for very light use, according to 2026 pricing listings, while Tradify has a 14-day trial and then requires a paid plan. Confirm current prices on both vendor sites, because they change.
 
-The exception is high job volume with few staff. If you complete 400 jobs a month with two
-people, Tradify's per-user pricing wins and ServiceM8's caps become an annoyance.
+## Which works better on Android?
 
-## Which tells you what a job cost?
+Tradify. It has full apps for iOS and Android. ServiceM8's full app is iPhone and iPad only, with a lighter Android app for field staff.
 
-Tradify, clearly. The two-tap timer ties to the job, survives the app being killed, and
-feeds a real labour figure. Most small shops cannot produce that number at all, and it is
-the difference between guessing your margin and knowing it.
+The Android gap is the most frequent ServiceM8 complaint in public reviews, so if even one technician uses Android and needs full functionality, weigh it heavily.
 
-ServiceM8 tracks time but does less with it.
+## Which is better for job costing and timesheets?
 
-## Which one will the crew use?
+Tradify, in our assessment. Its feature pages describe GPS-stamped timesheets that separate travel, work and break time, feeding job costing from the Pro plan.
 
-Both, but for different reasons. ServiceM8's iOS app is the best field app in this
-comparison and works with no signal. Tradify is the easier product to learn - our tester
-was quoting unaided the same afternoon, where ServiceM8 needed a walkthrough.
+ServiceM8 tracks time and costs too, but reviewers note that time tracking is not available in the Android app.
 
-## Practical recommendation
+## What do users complain about?
 
-Rural work, poor signal, lots of logins: [ServiceM8](/reviews/servicem8/).
-Repeatable job types and you want real labour cost: [Tradify](/reviews/tradify/).
+Common complaints in public reviews: for ServiceM8, the Android limitations, chat-only support and a dated interface; for Tradify, cost as the team grows, limited reporting and customization, and useful controls such as purchase orders and bulk invoicing held for the top plan.
+
+## What if I outgrow both?
+
+If you need stronger quoting, a client portal and automation, compare [Jobber vs ServiceM8](/compare/jobber-vs-servicem8/). If your work is project-based construction, see [Tradify vs Contractor Foreman](/compare/tradify-vs-contractor-foreman/). Full reviews: [ServiceM8](/reviews/servicem8/) and [Tradify](/reviews/tradify/).

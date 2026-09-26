@@ -1,62 +1,61 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import VerdictBox from '../../components/VerdictBox.astro';
-import RankedTool from '../../components/RankedTool.astro';
+import ToolTeaser from '../../components/ToolTeaser.astro';
 import NewsletterForm from '../../components/NewsletterForm.astro';
-import Disclosure from '../../components/Disclosure.astro';
-import { allTools, oldestTest } from '../../lib/content';
-import { score1, formatDate } from '../../lib/format';
-import { breadcrumbs } from '../../lib/schema';
+import { CATEGORY_META, CATEGORIES } from '../../lib/site';
+import { allTools, oldestUpdate } from '../../lib/content';
+import { toolUrl } from '../../lib/urls';
+import { formatDate } from '../../lib/format';
+import { breadcrumbs, itemList, webPage } from '../../lib/schema';
 
 const tools = await allTools();
-const dates = oldestTest(tools);
-const newest = tools
-  .map((t) => t.data.testDate)
-  .reduce((a, b) => (a > b ? a : b), tools[0].data.testDate);
+const dates = oldestUpdate(tools);
+const groups = CATEGORIES.map((c) => ({
+  category: c,
+  tools: tools.filter((t) => t.data.categories[0] === c),
+})).filter((g) => g.tools.length > 0);
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Reviews', path: '/reviews/' },
 ];
+const title = 'Software reviews for service businesses';
+const description = `Independent reviews of ${tools.length} tools for field service, salons, fitness studios and auto repair shops: pricing, pros and cons, and who each one suits.`;
 ---
 
 <BaseLayout
-  title="Every software review"
-  description={`All ${tools.length} tools we have bought, set up and scored, ranked. Field service, salon, fitness and auto repair software, retested twice a year.`}
+  title={title}
+  description={description}
   path="/reviews/"
-  jsonLd={[breadcrumbs(crumbs)]}
+  jsonLd={[
+    webPage({ path: '/reviews/', title, description, type: 'CollectionPage' }),
+    breadcrumbs(crumbs),
+    itemList(title, tools.map((t) => ({ name: `${t.data.name} review`, path: toolUrl(t.data.slug) }))),
+  ]}
 >
   <Breadcrumbs items={crumbs} />
 
-  <div class="wrap pt-8">
-    <h1 class="font-condensed text-5xl font-bold uppercase leading-none sm:text-6xl">
-      Every review
-    </h1>
-
-    <VerdictBox class="mt-6" label="The short answer">
-      <p>
-        {tools[0].data.name} is the highest scoring tool we have tested at {score1(tools[0].data.score)}
-        out of 10, but the right answer depends on your trade and your headcount - use the
-        <a href="/#trade-board" class="underline decoration-yellow decoration-[3px] underline-offset-2"
-          >trade board</a
-        > for a list ranked for the work you actually do.
-      </p>
-    </VerdictBox>
-
-    <p class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">
-      Every tool below was bought with our own money, set up from scratch and used on real jobs
-      before it got a number. Oldest test on this page: {formatDate(dates.testDate)}. Most recent:
-      {formatDate(newest)}.
+  <header class="wrap pt-6 sm:pt-8">
+    <p class="kicker">All reviews</p>
+    <h1 class="mt-3 max-w-3xl text-[2.1rem] leading-[1.1] sm:text-5xl">{title}</h1>
+    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
+      {description} Every review lists its sources and the date prices were last checked (oldest on
+      this page: {formatDate(dates.pricesChecked)}).
     </p>
-    <Disclosure class="mt-4 max-w-3xl" />
-  </div>
+  </header>
 
-  <section class="wrap mt-10" aria-label="All reviewed tools, ranked by score">
-    <ol class="space-y-6">
-      {tools.map((tool, i) => <li><RankedTool rank={i + 1} tool={tool.data} /></li>)}
-    </ol>
-  </section>
+  {
+    groups.map((g) => (
+      <section class="wrap mt-12" aria-labelledby={`g-${g.category}`}>
+        <h2 id={`g-${g.category}`} class="text-2xl">{CATEGORY_META[g.category].label}</h2>
+        <p class="mt-1 text-ink-muted">{CATEGORY_META[g.category].blurb}</p>
+        <ul class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {g.tools.map((tool) => <li><ToolTeaser tool={tool.data} /></li>)}
+        </ul>
+      </section>
+    ))
+  }
 
   <div class="mt-16">
     <NewsletterForm />

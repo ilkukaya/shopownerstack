@@ -1,0 +1,22 @@
+---
+import { formatDate, isoDate } from '../lib/format';
+
+interface Props {
+  updatedDate: Date;
+  pricesChecked?: Date;
+  class?: string;
+}
+
+const { updatedDate, pricesChecked, class: className = '' } = Astro.props;
+---
+
+<p class:list={['flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-ink-muted', className]}>
+  <span class="flex items-center gap-1.5">
+    <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-wash text-brand" aria-hidden="true">
+      <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8.5 6.5 12 13 4.5" /></svg>
+    </span>
+    By the <a href="/about/" class="font-medium text-ink-soft underline decoration-line-strong underline-offset-2 hover:text-brand">ShopOwnerStack editorial team</a>
+  </span>
+  <span>Updated <time datetime={isoDate(updatedDate)}>{formatDate(updatedDate)}</time></span>
+  {pricesChecked && <span>Prices checked <time datetime={isoDate(pricesChecked)}>{formatDate(pricesChecked)}</time></span>}
+</p>

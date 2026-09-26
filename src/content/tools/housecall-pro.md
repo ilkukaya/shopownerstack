@@ -10,138 +10,161 @@ categories:
   - field-service
   - invoicing
   - phone-system
-bestFor: Residential home-service teams that want dispatch, payments and follow-up marketing in one account
+bestFor: Residential home-service teams that want dispatch, payments and marketing tools in one account
 teamSizes:
   - solo
   - 2-5
   - 6-15
   - 16+
-priceFrom: 79
+priceFrom: 59
+pricingModel: Three tiers with a set user allowance, billed monthly or annually; many add-ons are quoted separately
+freeTrial: 14 days
+freePlan: false
 pricing:
   - name: Basic
     users: 1 user
-    monthly: 89
-    annual: 79
-    forWhom: A solo operator who needs a calendar, estimates and card payments and nothing else
+    monthly: 79
+    annual: 59
+    forWhom: A solo owner-operator who needs scheduling, invoicing and card payments
   - name: Essentials
-    users: 1-5 users
+    users: Up to 5 users
     monthly: 189
-    annual: 169
-    forWhom: The first crew hire, when someone has to dispatch and chase unpaid invoices
-  - name: Max
-    users: 1-8 users
-    monthly: 349
+    annual: 149
+    forWhom: Small teams that want a dispatch board, job costing basics and more automation
+  - name: MAX
+    users: Larger teams, extra users charged per seat
+    monthly: 329
     annual: 299
-    forWhom: Shops running paid ads that need job costing and per-technician revenue reporting
-score: 8.6
+    forWhom: >-
+      Established shops that want advanced reporting and the full feature set. Confirm the
+      included user count and per-seat price with Housecall Pro, as published figures vary.
+score: 7.9
 subscores:
-  setup: 8.5
-  scheduling: 9
-  invoicing: 8.8
-  communication: 8.9
-  reporting: 7.4
-  value: 7.6
-testDate: 2026-06-18
-nextRetest: 2026-12-15
-planTested: Essentials, billed annually, three seats
-measurements:
-  - test: Signup to first invoice emailed to a customer
-    result: 34 minutes
-  - test: Build and send an estimate from the phone app, on site
-    result: 2 min 05 s
-  - test: Drag a job to a different technician and confirm they were notified
-    result: 11 seconds
-  - test: Card payment settled into the connected bank account
-    result: 2 business days
-  - test: Export all customers and job history to CSV
-    result: Self-serve, 4 files, no support ticket needed
-  - test: First reply from support, live chat, weekday morning
-    result: 3 minutes
+  setup: 8.3
+  scheduling: 8.5
+  invoicing: 8.4
+  communication: 8.3
+  reporting: 7.3
+  value: 7
+updatedDate: 2026-09-26
+pricesChecked: 2026-09-26
+keyFacts:
+  - label: Starting price
+    value: $59/month (Basic, 1 user, billed annually)
+  - label: Free trial
+    value: 14 days
+  - label: Pricing model
+    value: Tiered plans; Voice, CSR AI, Pipeline and others are add-ons
+  - label: Mobile apps
+    value: iOS and Android
+  - label: Best for
+    value: Residential HVAC, plumbing, electrical and cleaning teams
+  - label: Founded / HQ
+    value: 2013, San Diego, California
+sources:
+  - title: Housecall Pro pricing page
+    url: https://www.housecallpro.com/pricing/
+  - title: Housecall Pro Help Center, CSR AI overview
+    url: https://help.housecallpro.com/en/articles/9740104-csr-ai-overview
+  - title: Housecall Pro February 2026 product updates
+    url: https://www.housecallpro.com/resources/february-2026-product-updates/
+  - title: Housecall Pro reviews and profile on Capterra
+    url: https://www.capterra.com/p/140363/HouseCall-Pro/
+  - title: Housecall Pro pricing 2026, full breakdown (Projul)
+    url: https://projul.com/blog/housecall-pro-pricing-analysis-2026/
 pros:
-  - The dispatch board is the clearest we tested; a dispatcher can move a full day of work without opening a single job
-  - Customer-facing communication is genuinely good, with on-my-way texts and a tracking link that cuts callback volume
-  - Payments, financing and invoicing are one flow, so nobody is re-keying totals into a separate card terminal
-  - Price book and estimate templates mean a new technician quotes the same numbers as the owner
+  - Capterra users rate it around 4.7 out of 5 across more than 2,700 reviews, with ease of use the most common praise
+  - Drag-and-drop dispatch board and GPS tracking suit a team with several technicians in the field
+  - Strong built-in review requests, postcards and email marketing for residential work
+  - Includes a user allowance per tier rather than pure per-seat pricing on the lower plans
 cons:
-  - Reporting is shallow until the Max plan, and true job costing needs the top tier
-  - Per-seat pricing climbs quickly once you pass five people
-  - The QuickBooks sync writes summary lines that your bookkeeper will probably want to re-map
-  - Commercial work with multi-stage progress billing does not fit the invoicing model
+  - Many useful tools (Voice phone system, CSR AI, Pipeline, Payroll) are add-ons, often with pricing only from sales
+  - Reporting depth is a common complaint from growing shops
+  - Some long-term users in public reviews describe rushed feature releases that break existing workflows
+  - Estimate and invoice formatting is less flexible for commercial or property-management clients
 getItIf:
-  - You run residential service calls and most jobs are quoted and paid the same day
-  - You want the office to stop fielding "where is the technician" phone calls
-  - You take cards in the field and want the money to land without a second terminal
-  - You are willing to pay more per seat for software your crew will actually open
+  - You run a residential service team with a dispatcher or an owner doing dispatch
+  - You want review requests and marketing campaigns in the same system as your jobs
+  - You are ready to pay extra for a phone system or AI call answering that lives inside the job software
 skipItIf:
-  - Most of your revenue is commercial contracts billed in stages against a schedule of values
-  - You need deep job costing and you are not prepared to pay for the top tier
-  - You have more than fifteen field staff and per-seat pricing is your main constraint
-  - Your work is project-based over weeks rather than visit-based over hours
+  - You are a solo operator on a tight budget and do not need dispatch or marketing
+  - You do mostly commercial or project work with complex estimates and progress billing
+  - You want every price published up front with no sales call for add-ons
 verdict: >-
-  Housecall Pro is the safest pick for a residential home-service business that wants scheduling,
-  payments and customer communication working on day one. You pay a premium per seat and the
-  reporting is thin below the top plan, but nothing else we tested gets a crew productive as fast.
+  Housecall Pro is a strong all-round choice for residential home-service teams that need dispatch,
+  payments and marketing in one place, and users rate it highly for ease of use. In our assessment
+  the value is dragged down by add-ons that are sold separately and often not publicly priced, so
+  the real monthly cost is usually higher than the plan price.
 faq:
   - q: How much does Housecall Pro cost?
-    a: Plans start at $79 a month billed annually for one user, $169 for up to five users on Essentials, and $299 for up to eight users on Max. Month-to-month pricing runs roughly 12 percent higher, and extra seats are billed on top of every plan.
-  - q: Does Housecall Pro work offline?
-    a: Partly. The mobile app shows already-synced jobs and lets a technician write notes and take photos with no signal, then uploads when the phone reconnects. Creating an estimate that needs live price book data is unreliable offline.
-  - q: Does Housecall Pro integrate with QuickBooks?
-    a: Yes, with QuickBooks Online and Desktop. In our test the sync pushed invoices and payments reliably but posted summary journal lines rather than itemised entries, so most bookkeepers will want to adjust the account mapping once at setup.
-  - q: Can I get my data out if I leave?
-    a: Yes. Customers, jobs, estimates and invoices export to CSV from the settings area without contacting support. Attached photos have to be downloaded per job, which is the slow part of any migration off it.
+    a: >-
+      Housecall Pro's pricing page lists plans from $59 a month. Third-party breakdowns from 2026
+      put Basic at $59 billed annually ($79 monthly) for one user, Essentials at $149 annually ($189
+      monthly) for up to five users, and MAX at $299 annually ($329 monthly). Add-ons such as Voice
+      and CSR AI are priced separately. Confirm current prices on Housecall Pro's site.
+  - q: Does Housecall Pro have a free trial?
+    a: Yes, a 14-day free trial. There is no permanent free plan.
+  - q: Does Housecall Pro have a phone system?
+    a: >-
+      Yes, as an add-on. Housecall Pro Voice provides business phone lines with call routing and
+      recording, and CSR AI can answer calls and chats and book jobs. Both are sold separately from
+      the base plans.
+  - q: Is Housecall Pro good for HVAC and plumbing?
+    a: >-
+      It is widely used by residential HVAC and plumbing shops for dispatch, price book, service
+      agreements and payments. Larger commercial HVAC contractors often need deeper reporting and
+      job costing than users say Housecall Pro provides.
+  - q: Housecall Pro vs Jobber, which is better?
+    a: >-
+      Housecall Pro is generally stronger for dispatching several technicians and for marketing
+      tools; Jobber is often preferred for quoting and simplicity. See our Housecall Pro vs Jobber
+      comparison for the detail.
 ---
 
-## What is Housecall Pro actually for?
+## Is Housecall Pro worth it?
 
-Housecall Pro is built around a single working day: a dispatcher looking at a board of
-technicians, dragging jobs between them, and a customer getting a text before the van
-arrives. Everything else in the product hangs off that. If your business runs on visits
-that are quoted, done and paid inside a day, the whole thing fits. If your work is
-projects that run for three weeks and get billed in stages, you will be fighting it.
+For a residential home-service team of two to fifteen people that dispatches daily and wants marketing built in, it usually is. Capterra users rate it about 4.7 out of 5 across more than 2,700 reviews, and ease of use for office and field staff is the most common praise.
 
-We bought the Essentials plan, put three seats on it, and ran fourteen real jobs through
-it over six weeks: eight residential service calls, four quoted installs and two warranty
-returns.
+It is less of a bargain than the plan price suggests. Housecall Pro sells many of its most talked-about features, such as the Voice phone system and CSR AI call answering, as add-ons, and third-party pricing guides note that several are "contact for pricing". Budget for the full set of tools you will actually use.
 
-## How long does it take to get running?
+## How much does Housecall Pro cost in 2026?
 
-Faster than anything else in this category. From signup to a first invoice landing in a
-customer inbox took 34 minutes, and most of that was typing in a price book rather than
-fighting the software. Importing an existing customer list from CSV worked on the first
-attempt as long as the phone number column is a single field.
+Housecall Pro's pricing page lists plans starting at $59 a month. Pricing breakdowns published in 2026 give these figures:
 
-The part that takes real time is the price book. Housecall Pro is much better when your
-common jobs are set up as flat-rate line items with a fixed price. Budget an afternoon for
-that, once, and every estimate afterwards takes two minutes on a phone instead of ten.
+- **Basic:** $59 a month billed annually, $79 month to month, one user.
+- **Essentials:** $149 billed annually, $189 month to month, up to five users.
+- **MAX:** $299 billed annually, $329 month to month, with extra users charged per seat.
 
-## Is the scheduling and dispatch any good?
+Sources disagree on MAX's included user count and extra-seat price, so confirm those with Housecall Pro directly. Prices change, and add-ons such as Voice, CSR AI, Pipeline, Payroll and vehicle GPS sit on top of the plan price.
 
-This is the reason to buy it. The dispatch board shows technicians as columns and the day
-as rows, and reassigning a job is a drag. The technician gets a push notification in about
-eleven seconds. Arrival windows, recurring service plans and multi-day jobs are all handled
-without workarounds.
+## What does Housecall Pro do well?
 
-Two limits worth knowing. There is no true capacity planning, so the board will happily let
-you double-book a technician and only warns after the fact. And route optimisation is
-basic: it will order a day sensibly but it is not going to beat a dispatcher who knows the
-city.
+Dispatch and residential marketing. The scheduling side has a drag-and-drop dispatch board, technician GPS tracking and online booking, which suits an office coordinating several vans. Reviews frequently mention how quickly field technicians pick up the mobile app.
 
-## How does invoicing and getting paid work?
+On the marketing side, automated review requests, email and postcard campaigns and service-agreement tools are built into the same account as your jobs. For residential businesses that live on repeat customers and online reviews, this is a real advantage over a pure quoting tool.
 
-Estimate to invoice to payment is one continuous flow, which is the single biggest time
-saving for a small office. A technician converts an approved estimate to an invoice on the
-phone, takes a card in the driveway, and the money settles in about two business days.
-Consumer financing is built in for larger tickets.
+Housecall Pro has also been adding AI tools. Its help centre describes CSR AI as answering calls and chats and booking jobs around the clock, and the February 2026 release notes cover payroll and further AI features.
 
-Where it gets thin: progress billing. You can take a deposit and a balance, but a
-five-stage draw schedule against a commercial contract is not something you should try to
-run here.
+## What are the common complaints about Housecall Pro?
+
+Cost creep is the theme that comes up most. The base plan is affordable, but users describe their real bill growing once add-ons are stacked.
+
+Other themes from public reviews on Capterra and G2:
+
+- **Reporting ceiling.** Growing shops say standard reports do not answer questions about technician performance, marketing return and job margin.
+- **Feature release stability.** Some long-term users feel new features ship before they are ready and occasionally disrupt established workflows.
+- **Commercial paperwork.** Property managers and commercial clients report frustration with invoice formatting and the flexibility of estimates.
+
+## How does Housecall Pro compare with Jobber and Workiz?
+
+[Jobber](/reviews/jobber/) is simpler and quote-first; Housecall Pro has more dispatch and marketing depth. [Workiz](/reviews/workiz/) is built around its phone system and suits call-driven trades. Compare them in [Housecall Pro vs Jobber](/compare/housecall-pro-vs-jobber/) and [Housecall Pro vs Workiz](/compare/housecall-pro-vs-workiz/).
 
 ## Who should not buy Housecall Pro?
 
-Commercial contractors, anyone whose main pain is job costing rather than dispatch, and
-teams over fifteen field staff who will feel the per-seat pricing. For those, look at
-[ServiceM8](/reviews/servicem8/) if you are small and cost-sensitive,
-[Contractor Foreman](/reviews/contractor-foreman/) if you need project and cost controls,
-or [Jobber](/reviews/jobber/) if you want a similar shape at a lower per-seat price.
+A solo operator who mostly needs quotes and invoices will pay for dispatch and marketing tools they do not use; [ServiceM8](/reviews/servicem8/) or Jobber's Core plan are cheaper starting points. Project-based contractors who need change orders and progress billing should look at [Contractor Foreman](/reviews/contractor-foreman/) instead.
+
+If you already use Housecall Pro and the add-on costs are the issue, see our [Housecall Pro alternatives](/alternatives/housecall-pro/).
+
+## How we rated Housecall Pro
+
+This is an editorial rating based on Housecall Pro's published pricing and documentation and on themes in public user reviews, weighted using our [how we test](/how-we-test/) rubric. We did not run a paid, hands-on test for this review. Scheduling and invoicing score highest; value scores lower because so much of the product is sold as add-ons.
